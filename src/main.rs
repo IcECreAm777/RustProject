@@ -1,4 +1,9 @@
+mod default_structures;
+
+use crate::default_structures::pokemon;
+
 fn main() {
-    println!("Hello, world!");
-    println!("Kilian riecht nach Rosen");
+    let b = pokemon::bulbasur();
+    println!("{}", b.name);
+    println!();
 }

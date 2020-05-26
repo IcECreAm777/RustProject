@@ -40,3 +40,21 @@ pub fn bulbasur() -> Pokemon {
         m4: attacks::dummy(),
     }
 }
+
+pub fn abra() -> Pokemon {
+    return Pokemon {
+        name: "Abra",
+        ftype: Type::Psychic,
+        stype: Type::None,
+        health: 160,
+        atk: 40,
+        def: 31,
+        sp_atk: 193,
+        sp_def: 103,
+        init: 166,
+        m1: attacks::dummy(),
+        m2: attacks::dummy(),
+        m3: attacks::dummy(),
+        m4: attacks::dummy(),
+    }
+}

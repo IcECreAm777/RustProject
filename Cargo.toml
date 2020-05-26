@@ -1,5 +1,5 @@
 [package]
-name = "pokemon_stadium"
+name = "RustProject"
 version = "0.1.0"
 authors = ["icecream777 <hgk.1998@googlemail.com>"]
 edition = "2018"

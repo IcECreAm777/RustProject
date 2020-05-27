@@ -1324,18 +1324,552 @@ pub fn quick_attack() -> Attack {
     };
 }
 
-/*pub fn name() -> Attack {
+pub fn rage() -> Attack {
     return Attack {
-        name: name,
-        etype: Type::,
-        atype: AttackType::,
-        strength: ,
-        acc: ,
-        //ap: ,
-        //effect: ,
-        //mirror move: ,
+        name: "Rage",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 20,
+        acc: 100,
+        //ap: 20,
+        //effect: endlos rage loop till fait oder end of battle wenn dmg genommen: atk 1 stage up; multi move: 1 for each
+        //wenn es im 1. Turn missed keine side effects,
+        //mirror move: True,
     };
-}*/
+}
+
+pub fn razor_leaf() -> Attack {
+    return Attack {
+        name: "Razor Leaf",
+        etype: Type::Grass,
+        atype: AttackType::Physicial,
+        strength: 55,
+        acc: 95,
+        //ap: 25,
+        //effect: increased crit ratio,
+        //mirror move: True,
+    };
+}
+
+pub fn razor_wind() -> Attack {
+    return Attack {
+        name: "Razor Wind",
+        etype: Type::Normal,
+        atype: AttackType::Special,
+        strength: 80,
+        acc: 100, //gen 1 75
+        //ap: 10,
+        //effect: 1. move nichts (<> made a whirlwind) turn danach dmg und -pp,
+        //mirror move: False,
+    };
+}
+
+pub fn recover() -> Attack {
+    return Attack {
+        name: "Recover",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 10, //20 in gen1
+        //effect: up to 50% of hp restore,
+        //mirror move: False,
+    };
+}
+
+pub fn reflect() -> Attack {
+    return Attack {
+        name: "Reflect",
+        etype: Type::Psychic,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 20,
+        //effect: doubles defense when attacked with phys move bissle wie light screen,
+        //mirror move: False,
+    };
+}
+
+pub fn roar() -> Attack {
+    return Attack {
+        name: "Roar",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 20,
+        //effect: in gen 1 none, in gen 2 force pokemon switch (random),
+        //mirror move: True,
+    };
+}
+
+pub fn rock_slide() -> Attack {
+    return Attack {
+        name: "Rock Slide",
+        etype: Type::Rock,
+        atype: AttackType::Physicial,
+        strength: 75,
+        acc: 90,
+        //ap: 10,
+        //effect: none,
+        //mirror move: True,
+    };
+}
+
+pub fn rock_throw() -> Attack {
+    return Attack {
+        name: "Rock Throw",
+        etype: Type::Rock,
+        atype: AttackType::Physicial,
+        strength: 50,
+        acc: 100, //gen 1 65
+        //ap: 15,
+        //effect: none,
+        //mirror move: True,
+    };
+}
+
+pub fn rolling_kick() -> Attack {
+    return Attack {
+        name: "Rolling Kick",
+        etype: Type::Fighting,
+        atype: AttackType::Physicial,
+        strength: 60,
+        acc: 85,
+        //ap: 15,
+        //effect: 30% flinch,
+        //mirror move: True,
+    };
+}
+
+pub fn sand_attack() -> Attack {
+    return Attack {
+        name: "Sand Attack",
+        etype: Type::Ground, //gen 1 normal
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 100,
+        //ap: 15,
+        //effect: accuracy down 1 stage,
+        //mirror move: True,
+    };
+}
+
+pub fn scratch() -> Attack {
+    return Attack {
+        name: "Scratch",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 40,
+        acc: 100,
+        //ap: 35,
+        //effect: none,
+        //mirror move: True,
+    };
+}
+
+pub fn screech() -> Attack {
+    return Attack {
+        name: "Screech",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 85,
+        //ap: 40,
+        //effect: defense down 2 stages,
+        //mirror move: True,
+    };
+}
+
+pub fn seismic_toss() -> Attack {
+    return Attack {
+        name: "Seismic toss",
+        etype: Type::Fighting,
+        atype: AttackType::Physicial,
+        strength: 0,
+        acc: 100,
+        //ap: 20,
+        //effect: equal to user level in gen1, keinerlei Type-Inflictions -> kann auch ghost hitten,
+        //mirror move: True,
+    };
+}
+
+pub fn self_destruct() -> Attack {
+    return Attack {
+        name: "Self-Destruct",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 200, //gen 1 130 + halves defense
+        acc: 100,
+        //ap: 5,
+        //effect: user faints,
+        //mirror move: True,
+    };
+}
+
+pub fn sharpen() -> Attack {
+    return Attack {
+        name: "Sharpen",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 30,
+        //effect: attack up 1 stage,
+        //mirror move: False,
+    };
+}
+
+pub fn sing() -> Attack {
+    return Attack {
+        name: "Sing",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 55,
+        //ap: 15,
+        //effect: schleep,
+        //mirror move: True,
+    };
+}
+
+pub fn skull_bash() -> Attack {
+    return Attack {
+        name: "Skull Bash",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 130,
+        acc: 100,
+        //ap: 10,
+        //effect: turn 1 nothing "lower head" turn 2 dmg -pp cant be switched out till completed,
+        //mirror move: True,
+    };
+}
+
+pub fn sky_attack() -> Attack {
+    return Attack {
+        name: "Sky Attack",
+        etype: Type::Flying,
+        atype: AttackType::Physicial,
+        strength: 140,
+        acc: 90,
+        //ap: 5,
+        //effect: turn 1 nothing "glow" turn 2 dmg -pp,
+        //mirror move: True,
+    };
+}
+
+pub fn slam() -> Attack {
+    return Attack {
+        name: "Slam",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 80,
+        acc: 75,
+        //ap: 20,
+        //effect: none,
+        //mirror move: True,
+    };
+}
+
+pub fn slash() -> Attack {
+    return Attack {
+        name: "Slash",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 70,
+        acc: 100,
+        //ap: 20,
+        //effect: increased crit,
+        //mirror move: True,
+    };
+}
+
+pub fn sleep_powder() -> Attack {
+    return Attack {
+        name: "Sleep Powder",
+        etype: Type::Grass,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 75,
+        //ap: 15,
+        //effect: schleep,
+        //mirror move: True,
+    };
+}
+
+pub fn sludge() -> Attack {
+    return Attack {
+        name: "Sludge",
+        etype: Type::Poison,
+        atype: AttackType::Special,
+        strength: 65,
+        acc: 100,
+        //ap: 20,
+        //effect: 40% poison,
+        //mirror move: True,
+    };
+}
+
+pub fn smog() -> Attack {
+    return Attack {
+        name: "Smog",
+        etype: Type::Poison,
+        atype: AttackType::Special,
+        strength: 30,
+        acc: 70,
+        //ap: 20,
+        //effect: 40% poison,
+        //mirror move: True,
+    };
+}
+
+pub fn smokescreen() -> Attack {
+    return Attack {
+        name: "Smokescreen",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 100,
+        //ap: 20,
+        //effect: acc down 1 stage,
+        //mirror move: True,
+    };
+}
+
+pub fn soft_boiled() -> Attack {
+    return Attack {
+        name: "Soft-Boiled",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 10,
+        //effect: up to 50% regen,
+        //mirror move: False,
+    };
+}
+
+pub fn solar_beam() -> Attack {
+    return Attack {
+        name: "Solar Beam",
+        etype: Type::Grass,
+        atype: AttackType::Special,
+        strength: 120,
+        acc: 100,
+        //ap: 10,
+        //effect: turn 1 "take in sunlight" turn 2 dmg etc.,
+        //mirror move: True,
+    };
+}
+
+pub fn sonic_boom() -> Attack {
+    return Attack {
+        name: "Sonic Boom",
+        etype: Type::Normal,
+        atype: AttackType::Special,
+        strength: 0,
+        acc: 90,
+        //ap: 20,
+        //effect: 20 dmg no weakness/resistance,
+        //mirror move: True,
+    };
+}
+
+pub fn spike_cannon() -> Attack {
+    return Attack {
+        name: "Spike Cannon",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 20,
+        acc: 100,
+        //ap: 15,
+        //effect: wie Barrage,
+        //mirror move: True,
+    };
+}
+
+pub fn splash() -> Attack {
+    return Attack {
+        name: "Splash",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 40,
+        //effect: none "No effect!",
+        //mirror move: False,
+    };
+}
+
+pub fn spore() -> Attack {
+    return Attack {
+        name: "Spore",
+        etype: Type::Grass,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 100,
+        //ap: 15,
+        //effect: schleep,
+        //mirror move: True,
+    };
+}
+
+pub fn stomp() -> Attack {
+    return Attack {
+        name: "Stomp",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 65,
+        acc: 100,
+        //ap: 20,
+        //effect: 30% flinch,
+        //mirror move: True,
+    };
+}
+
+pub fn strength() -> Attack {
+    return Attack {
+        name: "Strength",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 80,
+        acc: 100,
+        //ap: 15,
+        //effect: none,
+        //mirror move: True,
+    };
+}
+
+pub fn string_shot() -> Attack {
+    return Attack {
+        name: "String Shot",
+        etype: Type::Bug,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 95,
+        //ap: 40,
+        //effect: init down 1 stage,
+        //mirror move: True,
+    };
+}
+
+pub fn struggle() -> Attack {
+    return Attack {
+        name: "Struggle",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 50,
+        acc: 100,
+        //ap: 1,
+        //effect: 1/2 of dmg recoil, automatisch wenn keine ap mehr aber move,
+        //mirror move: False,
+    };
+}
+
+pub fn stun_spore() -> Attack {
+    return Attack {
+        name: "Stun Spore",
+        etype: Type::Grass,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 75,
+        //ap: 30,
+        //effect: Paral,
+        //mirror move: True,
+    };
+}
+
+pub fn submission() -> Attack {
+    return Attack {
+        name: "Submission",
+        etype: Type::Fighting,
+        atype: AttackType::Physicial,
+        strength: 80,
+        acc: 80,
+        //ap: 20,
+        //effect: 25% recoil,
+        //mirror move: True,
+    };
+}
+
+pub fn substitue() -> Attack { //cancer???
+    return Attack {
+        name: "Substitute",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 10,
+        //effect: https://bulbapedia.bulbagarden.net/wiki/Substitute_(move)#Generation_I,
+        //mirror move: False,
+    };
+}
+
+pub fn super_fang() -> Attack {
+    return Attack {
+        name: "Super Fang",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 0,
+        acc: 90,
+        //ap: 10,
+        //effect: 1/2 of enemy hp can hit ghost in gen1,
+        //mirror move: True,
+    };
+}
+
+pub fn supersonic() -> Attack {
+    return Attack {
+        name: "Supersonic",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 55,
+        //ap: 20,
+        //effect: Konfuzius,
+        //mirror move: True,
+    };
+}
+
+pub fn surf() -> Attack {
+    return Attack {
+        name: "Surf",
+        etype: Type::Water,
+        atype: AttackType::Special,
+        strength: 90,
+        acc: 100,
+        //ap: 15,
+        //effect: none ,
+        //mirror move: True,
+    };
+}
+
+pub fn swift() -> Attack {
+    return Attack {
+        name: "Swift",
+        etype: Type::Normal,
+        atype: AttackType::Special,
+        strength: 60,
+        acc: 0,
+        //ap: 20,
+        //effect: trifft immer auch dig oder dive(nur in gen 1),
+        //mirror move: True,
+    };
+}
+
+pub fn sword_dance() -> Attack {
+    return Attack {
+        name: "Sword Dance",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 20,
+        //effect: attack up 2 stages,
+        //mirror move: False,
+    };
+}
 
 pub fn tackle() -> Attack {
     return Attack {
@@ -1347,5 +1881,279 @@ pub fn tackle() -> Attack {
         //ap: 35,
         //effect none
         //mirror move: True
+    }
+}
+
+pub fn tail_whip() -> Attack {
+    return Attack {
+        name: "Tail Whip",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 100,
+        //ap: 30,
+        //effect: defense down 1 stage,
+        //mirror move: True,
+    };
+}
+
+pub fn take_down() -> Attack {
+    return Attack {
+        name: "Take Down",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 90,
+        acc: 85,
+        //ap: 20,
+        //effect: 1/4 recoil,
+        //mirror move: True,
+    };
+}
+
+pub fn teleport() -> Attack {
+    return Attack {
+        name: "Teleport",
+        etype: Type::Psychic,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 20,
+        //effect: kinda wie roar nur mit user,
+        //mirror move: False,
+    };
+}
+
+pub fn thrash() -> Attack {
+    return Attack {
+        name: "Thrash",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 120, // gen 1 90
+        acc: 100,
+        //ap: 10, //gen 1 20
+        //effect: dmg 3-4 turns kann nicht forcefully von selbst beendet werden auch, wenn richtig beendet confuse,
+        //mirror move: True,
+    };
+}
+
+pub fn thunder() -> Attack {
+    return Attack {
+        name: "Thunder",
+        etype: Type::Electric,
+        atype: AttackType::Special,
+        strength: 110,
+        acc: 70,
+        //ap: 10,
+        //effect: 10% paral not elec, later during fly bounce sky drop,
+        //mirror move: True,
+    };
+}
+
+pub fn thunder_punch() -> Attack {
+    return Attack {
+        name: "Thunder Punch",
+        etype: Type::Electric,
+        atype: AttackType::Physicial,
+        strength: 75,
+        acc: 100,
+        //ap: 15,
+        //effect: 10% paral not elec,
+        //mirror move: True,
+    };
+}
+
+pub fn thunder_shock() -> Attack {
+    return Attack {
+        name: "Thunder Shock",
+        etype: Type::Electric,
+        atype: AttackType::Special,
+        strength: 40,
+        acc: 100,
+        //ap: 30,
+        //effect: 10% paral not elec,
+        //mirror move: True,
+    };
+}
+
+pub fn thunder_wave() -> Attack {
+    return Attack {
+        name: "Thunder Wave",
+        etype: Type::Electric,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 100,
+        //ap: 20,
+        //effect: paral cannot ground,
+        //mirror move: True,
+    };
+}
+
+pub fn thunderbolt() -> Attack {
+    return Attack {
+        name: "Thunderbolt",
+        etype: Type::Electric,
+        atype: AttackType::Special,
+        strength: 90,
+        acc: 100,
+        //ap: 15,
+        //effect: 10% paral not elec auch later schon,
+        //mirror move: True,
+    };
+}
+
+pub fn toxic() -> Attack {
+    return Attack {
+        name: "Toxic",
+        etype: Type::Poison,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 90, //gen 1 85
+        //ap: 10,
+        //effect: badly poisons dmg: N*x x is 1/16 of target max hp, while badly poisend n++ every dmg by poison or leech seed
+        //haze/switch/end -> normal poison, rest: cured but N remains(maybe change),
+        //mirror move: True,
+    };
+}
+
+pub fn transform() -> Attack { //fr??
+    return Attack {
+        name: "Transform",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 10,
+        //effect: https://bulbapedia.bulbagarden.net/wiki/Transform_(move),
+        //mirror move: False,
+    }
+}
+
+pub fn tri_attack() -> Attack {
+    return Attack {
+        name: "Tri Attack",
+        etype: Type::Normal,
+        atype: AttackType::Special,
+        strength: 80,
+        acc: 100,
+        //ap: 10,
+        //effect: none,
+        //mirror move: True,
+    }
+}
+
+pub fn twineedle() -> Attack {
+    return Attack {
+        name: "Twineedle",
+        etype: Type::Bug,
+        atype: AttackType::Physicial,
+        strength: 25,
+        acc: 100,
+        //ap: 20,
+        //effect: double hit 2nd: 20% poison unless poison,
+        //mirror move: True,
+    }
+}
+
+pub fn vine_whip() -> Attack {
+    return Attack {
+        name: "Vine Whip",
+        etype: Type::Grass,
+        atype: AttackType::Physicial,
+        strength: 45, //gen 1 35
+        acc: 100,
+        //ap: 25, //gen 1 10
+        //effect: none,
+        //mirror move: True,
+    }
+}
+
+pub fn vise_grip() -> Attack {
+    return Attack {
+        name: "Vise Grip",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 55,
+        acc: 100,
+        //ap: 30,
+        //effect: none,
+        //mirror move: True,
+    }
+}
+
+pub fn water_gum() -> Attack {
+    return Attack {
+        name: "Water Gun",
+        etype: Type::Water,
+        atype: AttackType::Special,
+        strength: 40,
+        acc: 100,
+        //ap: 25,
+        //effect: none,
+        //mirror move: True,
+    }
+}
+
+pub fn waterfall() -> Attack {
+    return Attack {
+        name: "Waterfall",
+        etype: Type::Water,
+        atype: AttackType::Physicial,
+        strength: 80,
+        acc: 100,
+        //ap: 15,
+        //effect: none,
+        //mirror move: True,
+    }
+}
+
+pub fn whirlwind() -> Attack {
+    return Attack {
+        name: "Whirlwind",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0, //gen 1 85(?)
+        //ap: 20,
+        //effect: switch out opponent pok,
+        //mirror move: True,
+    }
+}
+
+pub fn wing_attack() -> Attack {
+    return Attack {
+        name: "Wing Attack",
+        etype: Type::Flying,
+        atype: AttackType::Physicial,
+        strength: 60, //gen 1 35
+        acc: 100,
+        //ap: 35,
+        //effect: None,
+        //mirror move: True,
+    }
+}
+
+pub fn withdraw() -> Attack {
+    return Attack {
+        name: "Withdraw",
+        etype: Type::Water,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 40,
+        //effect: defense up 1 stage,
+        //mirror move: False,
+    }
+}
+
+pub fn wrap() -> Attack {
+    return Attack {
+        name: "Wrap",
+        etype: Type::Normal,
+        atype: AttackType::Physicial,
+        strength: 15,
+        acc: 90,
+        //ap: 20,
+        //effect: wie bind etc.,
+        //mirror move: True,
     }
 }

@@ -450,6 +450,19 @@ pub fn double_slap() -> Attack {
     };
 }
 
+pub fn double_team() -> Attack {
+    Attack {
+        name: "Double Team",
+        etype: Type::Normal,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 100,
+        //ap: 15,
+        //effect: erhöht evasion (Muss nnoch geadded werden?)
+        //mirror move: False
+    }
+}
+
 pub fn double_edge() -> Attack {
     return Attack {
         name: "Double Edge",
@@ -1388,6 +1401,19 @@ pub fn reflect() -> Attack {
         //effect: doubles defense when attacked with phys move bissle wie light screen,
         //mirror move: False,
     };
+}
+
+pub fn rest() -> Attack {
+    Attack {
+        name: "Rest",
+        etype: Type::Psychic,
+        atype: AttackType::Status,
+        strength: 0,
+        acc: 0,
+        //ap: 10,
+        //effect: user is put to sleep but HP are restored,
+        //mirror move: False,
+    }
 }
 
 pub fn roar() -> Attack {

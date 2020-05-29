@@ -1,5 +1,7 @@
 pub mod pokemon;
 pub mod attacks;
+pub mod battle;
+pub mod team_picking;
 
 pub enum Type {
     Bug,

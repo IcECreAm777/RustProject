@@ -1,5 +1,6 @@
 use crate::default_structures::Type;
 
+#[derive(Copy, Clone)]
 pub struct Attack {
     pub name: &'static str,
     pub etype: Type,
@@ -11,6 +12,7 @@ pub struct Attack {
     //mirror move: Bool,
 }
 
+#[derive(Copy, Clone)]
 pub enum AttackType {
     Physicial,
     Special,

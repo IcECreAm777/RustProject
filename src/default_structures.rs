@@ -3,6 +3,7 @@ pub mod attacks;
 pub mod battle;
 pub mod team_picking;
 
+#[derive(Copy, Clone)]
 pub enum Type {
     Bug,
     Dragon,

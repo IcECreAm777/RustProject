@@ -6,6 +6,7 @@ pub enum Action {
     Picking
 }
 
+#[derive(Copy, Clone)]
 pub struct Battlemon {
     pub pokemon: pokemon::Pokemon,
     pub current_health: u32,
@@ -15,15 +16,26 @@ pub struct Battlemon {
 }
 
 pub struct Battle {
-    ownTeam: [pokemon::Pokemon; 6],
-    enemyTeam: [pokemon::Pokemon; 6],
-    pub p1: pokemon::Pokemon,
-    pub p2: pokemon::Pokemon,
+    ownTeam: [Battlemon; 6],
+    enemyTeam: [Battlemon; 6],
+    pub p1: Battlemon,
+    pub p2: Battlemon,
     pub a1: Action,
     pub a2: Action
 }
 
 impl Battle {
+    pub fn new(own: [Battlemon; 6], enemy: [Battlemon; 6]) -> Battle {
+        Battle {
+            ownTeam: own,
+            enemyTeam: enemy,
+            p1: own[0],
+            p2: enemy[0],
+            a1: Action::Picking,
+            a2: Action::Picking
+        }
+    }
+
     pub fn pick_phase(&mut self) {
         let own_picking = std::thread::spawn(|| {
            //TODO implement picking algorithm 

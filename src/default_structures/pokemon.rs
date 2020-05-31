@@ -2,6 +2,7 @@
 use crate::default_structures::Type;
 use crate::default_structures::attacks;
 
+#[derive(Copy, Clone)]
 pub struct Pokemon {
     //id: u32, //TODO maybe later
     pub name: &'static str,

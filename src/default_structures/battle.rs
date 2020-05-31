@@ -6,6 +6,14 @@ pub enum Action {
     Picking
 }
 
+pub struct Battlemon {
+    pub pokemon: pokemon::Pokemon,
+    pub current_health: u32,
+    pub evasion: u32,
+    pub accuracy: u32
+    //TODO add sprites, sounds, etc
+}
+
 pub struct Battle {
     ownTeam: [pokemon::Pokemon; 6],
     enemyTeam: [pokemon::Pokemon; 6],

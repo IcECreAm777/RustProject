@@ -1,6 +1,6 @@
 
-use crate::default_structures::Type;
-use crate::default_structures::attacks;
+use crate::default_structures::{Type, attacks};
+use std::fmt::{Display, Result, Formatter};
 
 #[derive(Copy, Clone)]
 pub struct Pokemon {
@@ -20,8 +20,34 @@ pub struct Pokemon {
     pub m4: attacks::Attack
 }
 
+impl Display for Pokemon {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "{}\n{} | {}\n{:<10}{}\n{:<10}{}\n{:<10}{}\n{:<10}{}\n{:<10}{}\n{:<10}{}\n", 
+            self.name, self.ftype, self.stype, "hp", self.health, "atk", self.atk, 
+            "def", self.def, "sp atk", self.sp_atk, "sp def", self.sp_def, "init", self.init)
+    }
+}
+
 impl Pokemon {
     //TODO add functions
+}
+
+pub fn dummy_pokemon() -> Pokemon {
+    Pokemon {
+        name: "Dummy",
+        ftype: Type::None,
+        stype: Type::None,
+        health: 0,
+        atk: 0,
+        def: 0,
+        sp_atk: 0,
+        sp_def: 0,
+        init: 0,
+        m1: attacks::dummy(),
+        m2: attacks::dummy(),
+        m3: attacks::dummy(),
+        m4: attacks::dummy(),
+    }
 }
 
 pub fn abra() -> Pokemon {

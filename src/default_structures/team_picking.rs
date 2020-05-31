@@ -2,14 +2,16 @@ use crate::default_structures::{pokemon, attacks};
 use std::collections::HashMap;
 use std::vec::Vec;
 
-struct Team {
-    pub usable_moves_table: HashMap<&'static str, Vec<attacks::Attack>>
+pub struct Team {
+    pub usable_moves_table: HashMap<&'static str, Vec<attacks::Attack>>,
+    pub team: [pokemon::Pokemon; 6]
 }
 
 impl Team {
     pub fn new() -> Team {
         let mut team = Team {
-            usable_moves_table: HashMap::new()
+            usable_moves_table: HashMap::new(),
+            team: [pokemon::dummy_pokemon(); 6]
         };
         team.init_usable_moves();
         team

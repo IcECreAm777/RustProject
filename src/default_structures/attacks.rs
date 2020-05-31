@@ -1,4 +1,5 @@
 use crate::default_structures::Type;
+use std::fmt::{Display, Formatter, Result};
 
 #[derive(Copy, Clone)]
 pub struct Attack {
@@ -10,6 +11,12 @@ pub struct Attack {
     //ap: u8,
     //effect: //TODO data type
     //mirror move: Bool,
+}
+
+impl Display for Attack {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "{}", self.name)
+    }
 }
 
 #[derive(Copy, Clone)]

@@ -710,7 +710,7 @@ pub fn glare() -> Attack {
     };
 }
 
-pub fn grwol() -> Attack {
+pub fn growl() -> Attack {
     return Attack {
         name: "Growl",
         etype: Type::Normal,
@@ -762,7 +762,7 @@ pub fn gust() -> Attack {
     };
 }
 
-pub fn hardne() -> Attack {
+pub fn harden() -> Attack {
     return Attack {
         name: "Harden",
         etype: Type::Normal,
@@ -2106,7 +2106,7 @@ pub fn vise_grip() -> Attack {
     }
 }
 
-pub fn water_gum() -> Attack {
+pub fn water_gun() -> Attack {
     return Attack {
         name: "Water Gun",
         etype: Type::Water,

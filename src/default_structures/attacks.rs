@@ -26,6 +26,25 @@ pub enum AttackType {
     Status,
 }
 
+pub enum Status {
+    //TODO Para etc.
+}
+
+pub enum StatChange {
+    //TODO implement
+}
+
+pub enum Dot {
+    //TODO leech seed, etc.
+}
+
+pub enum Effect {
+    None,
+    Status (Status),
+    StatChange (StatChange),
+    Dot (Dot)
+}
+
 pub fn dummy() -> Attack {
     return  Attack {
         name: "None",

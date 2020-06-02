@@ -17,6 +17,10 @@ impl Team {
         team
     }
 
+    fn pick_pokemon() {} // TODO implement
+
+    fn pick_attack() {} //TODO implement
+
     fn init_usable_moves(&mut self) {
         self.usable_moves_table = HashMap::new();
 

@@ -11,7 +11,7 @@ use std::path::Path;
 fn main() {
     // Make a Context and an EventLoop.
     let (mut ctx, mut event_loop) =
-    ContextBuilder::new("Pokemon Rust edition", "Niklas Rosseck | Killian Woick | Henning Gütschow")
+    ContextBuilder::new("Pokemon Rust edition", "Niklas Rosseck | Kilian Woick | Henning Gütschow")
         .window_setup(WindowSetup::default().title("Pokemon Stadium - Rust Edition").icon(""))
         .build()
         .unwrap();

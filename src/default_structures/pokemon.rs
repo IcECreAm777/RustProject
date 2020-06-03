@@ -344,7 +344,7 @@ pub fn cubone() -> Pokemon {
     }
 }
 
-pub fn Dewgong() -> Pokemon {
+pub fn dewgong() -> Pokemon {
     Pokemon {
         name: "Dewgong",
         ftype: Type::Water,
@@ -613,7 +613,7 @@ pub fn fearow() -> Pokemon {
     }
 }
 
-pub fn Flareon() -> Pokemon {
+pub fn flareon() -> Pokemon {
     Pokemon {
         name: "Flareon",
         ftype: Type::Fire,

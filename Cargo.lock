@@ -5,6 +5,7 @@ name = "RustProject"
 version = "0.1.0"
 dependencies = [
  "ggez",
+ "indexmap",
  "rand 0.7.3",
 ]
 
@@ -870,6 +871,15 @@ dependencies = [
  "num-traits 0.2.11",
  "png",
  "tiff",
+]
+
+[[package]]
+name = "indexmap"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c398b2b113b55809ceb9ee3e753fcbac793f1956663f3c36549c1346015c2afe"
+dependencies = [
+ "autocfg 1.0.0",
 ]
 
 [[package]]

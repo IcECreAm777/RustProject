@@ -1,38 +1,58 @@
 use crate::default_structures::{pokemon, attacks};
 use std::collections::HashMap;
 use std::vec::Vec;
+use indexmap::map::*;
 use rand::prelude::*;
 
 pub struct Team {
-    pub usable_moves_table: HashMap<pokemon::Pokemon, Vec<attacks::Attack>>,
+    pub usable_moves_table: IndexMap<pokemon::Pokemon, Vec<attacks::Attack>>,
     pub team: [pokemon::Pokemon; 6]
 }
 
 impl Team {
     pub fn new() -> Team {
         let mut team = Team {
-            usable_moves_table: HashMap::new(),
+            usable_moves_table: IndexMap::with_capacity(151),
             team: [pokemon::dummy_pokemon(); 6]
         };
         team.init_usable_moves();
         team
     }
 
-    fn pick_pokemon(&mut self, index: usize, pokemon: pokemon::Pokemon) {
+    pub fn pick_pokemon(&mut self, index: usize, pokemon: pokemon::Pokemon) {
         self.team[index] = pokemon;
     }
 
-    fn pick_attack(&mut self, pindex: usize, aindex: usize, attack: attacks::Attack) {
+    pub fn pick_attack(&mut self, pindex: usize, aindex: usize, attack: attacks::Attack) {
         self.team[pindex].moves[aindex] = attack;
     } 
 
-    fn generate_ai_team(&mut self) {
+    pub fn generate_ai_team(&mut self) {
         let mut rng = rand::thread_rng();
-        
+        for i in 0..self.team.len() {
+            let pokedex = rng.gen_range(0, self.usable_moves_table.len());
+            self.team[i] = *self.usable_moves_table.get_index(pokedex).unwrap().0;
+            //prevent duplicates
+            while self.has_dup(&self.team[i].moves) {
+                for j in 0..self.team[i].moves.len() {
+                    let moves = self.usable_moves_table.get_index(pokedex).unwrap().1;
+                    self.team[i].moves[j] = moves[rng.gen_range(0, moves.len())];
+                }
+            }
+        }
     } 
 
+    pub fn has_dup<T: PartialEq>(&self, slice: &[T]) -> bool {
+        for i in 1..slice.len() {
+            if slice[i..].contains(&slice[i - 1]) {
+                return true;
+            }
+        }
+        false
+    }
+
     fn init_usable_moves(&mut self) {
-        self.usable_moves_table = HashMap::new();
+        self.usable_moves_table = IndexMap::with_capacity(151);
 
         //abra 
         self.usable_moves_table.insert(pokemon::abra(), vec![

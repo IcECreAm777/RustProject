@@ -28,7 +28,7 @@ impl Team {
 
     fn generate_ai_team(&mut self) {
         let mut rng = rand::thread_rng();
-
+        
     } 
 
     fn init_usable_moves(&mut self) {

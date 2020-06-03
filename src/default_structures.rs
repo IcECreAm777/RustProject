@@ -5,7 +5,7 @@ pub mod team_picking;
 
 use std::fmt::{Display, Result, Formatter};
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
 pub enum Type {
     Bug,
     Dragon,

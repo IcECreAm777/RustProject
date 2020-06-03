@@ -1,7 +1,7 @@
 use crate::default_structures::{pokemon, attacks};
 
 pub enum Action {
-    Swap (pokemon::Pokemon),
+    Swap (Battlemon),//(pokemon::Pokemon), // change swap to index in array
     Attack (attacks::Attack),
     Picking
 }
@@ -55,7 +55,30 @@ impl Battle {
     pub fn battle_phase(&mut self) {
         //TODO implement battle logic
 
-        //swap 
+        //swap
+        let mut swap1: bool = false;
+        let mut swap2: bool = false;
+        let mut to_switch: Battlemon = Battlemon {
+                                            pokemon: pokemon::dummy_pokemon(),
+                                            current_health: 0,
+                                            evasion: 0,
+                                            accuracy: 0,
+                                        };
+        match self.a1 {
+            Action::Swap (pok) => {swap1 = true; to_switch = pok;},
+            _ => {},
+        };
+        if swap1 == true {
+            Battle::swap_pokemon(&mut self.p1, &mut to_switch);
+        }
+
+        match self.a2 {
+            Action::Swap (pok) => {swap2 = true; to_switch = pok;},
+            _ => {},
+        };
+        if swap2 == true {
+            Battle::swap_pokemon(&mut self.p2, &mut to_switch);
+        }
 
         //attack
 
@@ -65,7 +88,13 @@ impl Battle {
         self.a2 = Action::Picking;
     }
 
-    pub fn swap_pokemon() {} //TODO implement
+    pub fn swap_pokemon(current: &mut Battlemon, pok: &Battlemon) {
+        *current = *pok;
+    } //TODO implement
+
+//    pub fn swap_enemy_pokemon(&mut self, pok: Battlemon) {
+//        self.p2 = pok;
+//    } //TODO implement
 
     pub fn attacks(attack: attacks::Attack, target: Battlemon) {
         //let multiplier; -> look in hashmap of type for pokemon types and set it accordingly

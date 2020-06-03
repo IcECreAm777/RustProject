@@ -6,7 +6,6 @@ use ggez::{Context, ContextBuilder, GameResult};
 use ggez::event::{self, EventHandler};
 use ggez::graphics;
 use ggez::conf::WindowSetup;
-use std::path::Path;
 
 fn main() {
     // Make a Context and an EventLoop.

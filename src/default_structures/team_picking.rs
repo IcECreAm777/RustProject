@@ -1,9 +1,10 @@
 use crate::default_structures::{pokemon, attacks};
 use std::collections::HashMap;
 use std::vec::Vec;
+use rand::prelude::*;
 
 pub struct Team {
-    pub usable_moves_table: HashMap<&'static str, Vec<attacks::Attack>>,
+    pub usable_moves_table: HashMap<pokemon::Pokemon, Vec<attacks::Attack>>,
     pub team: [pokemon::Pokemon; 6]
 }
 
@@ -17,15 +18,24 @@ impl Team {
         team
     }
 
-    fn pick_pokemon() {} // TODO implement
+    fn pick_pokemon(&mut self, index: usize, pokemon: pokemon::Pokemon) {
+        self.team[index] = pokemon;
+    }
 
-    fn pick_attack() {} //TODO implement
+    fn pick_attack(&mut self, pindex: usize, aindex: usize, attack: attacks::Attack) {
+        self.team[pindex].moves[aindex] = attack;
+    } 
+
+    fn generate_ai_team(&mut self) {
+        let mut rng = rand::thread_rng();
+
+    } 
 
     fn init_usable_moves(&mut self) {
         self.usable_moves_table = HashMap::new();
 
         //abra 
-        self.usable_moves_table.insert(pokemon::abra().name, vec![
+        self.usable_moves_table.insert(pokemon::abra(), vec![
             attacks::teleport(),
             attacks::mega_punch(),
             attacks::mega_kick(),
@@ -53,7 +63,7 @@ impl Team {
         ]);
 
         //aerodacty
-        self.usable_moves_table.insert(pokemon::aerodactyl().name, vec![
+        self.usable_moves_table.insert(pokemon::aerodactyl(), vec![
             attacks::wing_attack(),
             attacks::agility(),
             attacks::supersonic(),
@@ -81,7 +91,7 @@ impl Team {
         ]);
 
         //alakazam
-        self.usable_moves_table.insert(pokemon::alakazam().name, vec![
+        self.usable_moves_table.insert(pokemon::alakazam(), vec![
             attacks::teleport(),
             attacks::kinesis(),
             attacks::confusion(),
@@ -117,7 +127,7 @@ impl Team {
         ]);
 
         //arbok
-        self.usable_moves_table.insert(pokemon::arbok().name, vec![
+        self.usable_moves_table.insert(pokemon::arbok(), vec![
             attacks::wrap(),
             attacks::leer(),
             attacks::poison_sting(),
@@ -144,7 +154,7 @@ impl Team {
         ]);
 
         //arcanine
-        self.usable_moves_table.insert(pokemon::arcanine().name, vec![
+        self.usable_moves_table.insert(pokemon::arcanine(), vec![
             attacks::roar(),
             attacks::ember(),
             attacks::leer(),
@@ -172,7 +182,7 @@ impl Team {
         ]);
 
         //articuno
-        self.usable_moves_table.insert(pokemon::articuno().name, vec![
+        self.usable_moves_table.insert(pokemon::articuno(), vec![
             attacks::peck(),
             attacks::ice_beam(),
             attacks::blizzard(),
@@ -199,7 +209,7 @@ impl Team {
         ]);
 
         //beedrill
-        self.usable_moves_table.insert(pokemon::beedrill().name, vec![
+        self.usable_moves_table.insert(pokemon::beedrill(), vec![
             attacks::fury_attack(),
             attacks::focus_energy(),
             attacks::twineedle(),
@@ -228,7 +238,7 @@ impl Team {
         ]);
 
         //bellsprout
-        self.usable_moves_table.insert(pokemon::bellsprout().name, vec![
+        self.usable_moves_table.insert(pokemon::bellsprout(), vec![
             attacks::vine_whip(),
             attacks::growth(),
             attacks::wrap(),
@@ -255,7 +265,7 @@ impl Team {
         ]);
 
         //blastoise
-        self.usable_moves_table.insert(pokemon::blastoise().name, vec![
+        self.usable_moves_table.insert(pokemon::blastoise(), vec![
             attacks::tackle(),
             attacks::tail_whip(),
             attacks::bubble(),
@@ -293,7 +303,7 @@ impl Team {
         ]);
 
         //bulbasaur
-        self.usable_moves_table.insert(pokemon::bulbasur().name, vec![
+        self.usable_moves_table.insert(pokemon::bulbasur(), vec![
             attacks::tackle(), 
             attacks::growl(),
             attacks::leech_seed(),
@@ -321,7 +331,7 @@ impl Team {
         ]);
 
         //butterfree
-        self.usable_moves_table.insert(pokemon::butterfree().name, vec![
+        self.usable_moves_table.insert(pokemon::butterfree(), vec![
             attacks::confusion(),
             attacks::poison_powder(),
             attacks::stun_spore(),
@@ -352,13 +362,13 @@ impl Team {
         ]);
 
         //caterpie
-        self.usable_moves_table.insert(pokemon::caterpie().name, vec![
+        self.usable_moves_table.insert(pokemon::caterpie(), vec![
             attacks::tackle(),
             attacks::string_shot()
         ]);
 
         //chansey
-        self.usable_moves_table.insert(pokemon::chansey().name, vec![
+        self.usable_moves_table.insert(pokemon::chansey(), vec![
             attacks::pound(),
             attacks::tail_whip(),
             attacks::double_slap(),
@@ -407,7 +417,7 @@ impl Team {
         ]);
 
         //charizard
-        self.usable_moves_table.insert(pokemon::charizard().name, vec![
+        self.usable_moves_table.insert(pokemon::charizard(), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::ember(),
@@ -447,7 +457,7 @@ impl Team {
         ]);
 
         //charmaleon
-        self.usable_moves_table.insert(pokemon::charmaleon().name, vec![
+        self.usable_moves_table.insert(pokemon::charmaleon(), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::ember(),
@@ -483,7 +493,7 @@ impl Team {
         ]);
 
         //charmander
-        self.usable_moves_table.insert(pokemon::charmander().name, vec![
+        self.usable_moves_table.insert(pokemon::charmander(), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::ember(),
@@ -519,7 +529,7 @@ impl Team {
         ]);
 
         //clefable
-        self.usable_moves_table.insert(pokemon::clefable().name, vec![
+        self.usable_moves_table.insert(pokemon::clefable(), vec![
             attacks::sing(),
             attacks::double_slap(),
             attacks::minimize(),
@@ -565,7 +575,7 @@ impl Team {
         ]);
 
         //clefairy
-        self.usable_moves_table.insert(pokemon::clefairy().name, vec![
+        self.usable_moves_table.insert(pokemon::clefairy(), vec![
             attacks::pound(),
             attacks::growl(),
             attacks::sing(),
@@ -610,7 +620,7 @@ impl Team {
         ]);
 
         //cloyster
-        self.usable_moves_table.insert(pokemon::cloyster().name, vec![
+        self.usable_moves_table.insert(pokemon::cloyster(), vec![
             attacks::withdraw(),
             attacks::supersonic(),
             attacks::clamp(),
@@ -642,7 +652,7 @@ impl Team {
         ]);
 
         //cubone
-        self.usable_moves_table.insert(pokemon::cubone().name, vec![
+        self.usable_moves_table.insert(pokemon::cubone(), vec![
             attacks::growl(),
             attacks::bone_club(),
             attacks::tail_whip(),

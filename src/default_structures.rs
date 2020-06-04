@@ -46,13 +46,13 @@ pub fn normap() -> HashMap<Type,f32> {let map = [(ROCK,0.5),(GHOST,0.0)].iter().
 pub fn fimap() -> HashMap<Type,f32> {let map = [(FIRE,0.5),(WATER,0.5),(GRASS,2.0),(ICE,2.0),(BUG,2.0),(ROCK,0.5),(DRAGON,0.5)].iter().cloned().collect(); map}
 pub fn wamap() -> HashMap<Type,f32> {let map = [(FIRE,2.0),(WATER,0.5),(GRASS,0.5),(GROUND,2.0),(ROCK,2.0),(DRAGON,0.5)].iter().cloned().collect(); map}
 pub fn elmap() -> HashMap<Type,f32> {let map = [(WATER,2.0),(ELECTRIC,0.5),(GRASS,0.5),(GROUND,0.0),(FLYING,2.0),(DRAGON,0.5)].iter().cloned().collect(); map}
-pub fn gramap() -> HashMap<Type,f32> {[(FIRE,0.5),(WATER,2.0),(GRASS,0.5),(POISON,0.5),(GROUND,2.0),(FLYING,0.5),(BUG,0.5),(ROCK,2.0),(DRAGON,0.5)].iter().cloned().collect(); map}
-pub fn icemap() -> HashMap<Type,f32> {[(WATER,0.5),(GRASS,2.0),(ICE,0.5),(GROUND,2.0),(FLYING,2.0),(DRAGON,2.0)].iter().cloned().collect(); map}
-pub fn figmap() -> HashMap<Type,f32> {[(NORMAL,2.0),(ICE,2.0),(POISON,0.5),(FLYING,0.5),(PSYCHIC,0.5),(BUG,0.5),(ROCK,2.0),(GHOST,0.0)].iter().cloned().collect(); map}
-pub fn poimap() -> HashMap<Type,f32> {[(GRASS,2.0),(POISON,0.5),(GROUND,0.5),(BUG,0.5),(ROCK,0.5),(GHOST,0.5)].iter().cloned().collect(); map}
-pub fn gromap() -> HashMap<Type,f32> {[(FIRE,2.0),(ELECTRIC,2.0),(GRASS,0.5),(POISON,2.0),(FLYING,0.0),(BUG,0.5)].iter().cloned().collect(); map}
-pub fn flymap() -> HashMap<Type,f32> {[(ELECTRIC,0.5),(GRASS,2.0),(FIGHTING,2.0),(BUG,2.0),(ROCK,0.5)].iter().cloned().collect(); map}
-pub fn psymap() -> HashMap<Type,f32> {[(FIGHTING,2.0),(POISON,2.0),(PSYCHIC,0.5),(GHOST,2.0)].iter().cloned().collect(); map}
+pub fn gramap() -> HashMap<Type,f32> {let map = [(FIRE,0.5),(WATER,2.0),(GRASS,0.5),(POISON,0.5),(GROUND,2.0),(FLYING,0.5),(BUG,0.5),(ROCK,2.0),(DRAGON,0.5)].iter().cloned().collect(); map}
+pub fn icemap() -> HashMap<Type,f32> {let map = [(WATER,0.5),(GRASS,2.0),(ICE,0.5),(GROUND,2.0),(FLYING,2.0),(DRAGON,2.0)].iter().cloned().collect(); map}
+pub fn figmap() -> HashMap<Type,f32> {let map = [(NORMAL,2.0),(ICE,2.0),(POISON,0.5),(FLYING,0.5),(PSYCHIC,0.5),(BUG,0.5),(ROCK,2.0),(GHOST,0.0)].iter().cloned().collect(); map}
+pub fn poimap() -> HashMap<Type,f32> {let map = [(GRASS,2.0),(POISON,0.5),(GROUND,0.5),(BUG,0.5),(ROCK,0.5),(GHOST,0.5)].iter().cloned().collect(); map}
+pub fn gromap() -> HashMap<Type,f32> {let map = [(FIRE,2.0),(ELECTRIC,2.0),(GRASS,0.5),(POISON,2.0),(FLYING,0.0),(BUG,0.5)].iter().cloned().collect(); map}
+pub fn flymap() -> HashMap<Type,f32> {let map = [(ELECTRIC,0.5),(GRASS,2.0),(FIGHTING,2.0),(BUG,2.0),(ROCK,0.5)].iter().cloned().collect(); map}
+pub fn psymap() -> HashMap<Type,f32> {let map = [(FIGHTING,2.0),(POISON,2.0),(PSYCHIC,0.5),(GHOST,2.0)].iter().cloned().collect(); map}
 pub fn bugmap() -> HashMap<Type,f32> {let map = [(FIRE,0.5),(GRASS,2.0),(FIGHTING,0.5),(POISON,2.0),(FLYING,0.5),(PSYCHIC,2.0),(GHOST,0.5)].iter().cloned().collect(); map}
 pub fn rockmap() -> HashMap<Type,f32> {let map = [(FIRE,2.0),(ICE,2.0),(FIGHTING,0.5),(GROUND,0.5),(FLYING,2.0),(BUG,2.0)].iter().cloned().collect(); map}
 pub fn ghomap() -> HashMap<Type,f32> {let map = [(NORMAL,0.0),(PSYCHIC,2.0),(GHOST,2.0)].iter().cloned().collect(); map}

@@ -1,4 +1,5 @@
-use crate::default_structures::{pokemon, attacks};
+use crate::default_structures::{pokemon, attacks, Type, self};
+
 
 pub enum Action {
     Swap (Battlemon),//(pokemon::Pokemon), // change swap to index in array
@@ -144,15 +145,94 @@ impl Battle {
         *current = *pok;
     } //TODO implement
 
-    pub fn attacks(attack: &attacks::Attack, user: &Battlemon, target: &mut Battlemon) {
+    pub fn attacks(attack: &attacks::Attack, user: &mut Battlemon, target: &mut Battlemon) {
         // for now: just basic damage calculation
+        let mult = effective(&attack.etype, &target.pokemon.ftype)*effective(&attack.etype, &target.pokemon.stype);
         // TODO effect checks like constant damage/status
         // TODO differentiate physical/special, include status etc.
-        target.current_health -= 42*attack.strength*(user.pokemon.atk/(50*target.pokemon.def))+2;  //TODO F1, crit, stab, effectiveness
+        let basic: f32 = (42*attack.strength*(user.pokemon.atk/(50*target.pokemon.def))+2) as f32;
+        let stab: f32 = stab(&attack.etype, &user.pokemon);
+        //let z: f32 = 100-random0bis15/100
+        let damage: u32 = (basic*mult*stab) as u32;
+        target.current_health -= damage;  //TODO F1, crit, Z
         // TODO check for effects after dmg calc
     }
 
     pub fn effect() {
         //TODO implement -> apply changes based on effect
     } 
+}
+
+pub fn stab(atk_type: &Type, pok: &pokemon::Pokemon) -> f32 {
+    if pok.ftype == *atk_type || pok.stype == *atk_type {
+        return 1.5;
+    }
+    else {return 1.0;}
+
+}
+
+pub fn effective(type1: &Type, type2: &Type) -> f32 {
+    match type1 {
+        Type::Normal => {if default_structures::normap().contains_key(type2) {
+                    return *default_structures::normap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Fire => {if default_structures::fimap().contains_key(type2) {
+                    return *default_structures::fimap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Water => {if default_structures::wamap().contains_key(type2) {
+                    return *default_structures::wamap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Electric => {if default_structures::elmap().contains_key(type2) {
+                    return *default_structures::elmap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Grass => {if default_structures::gramap().contains_key(type2) {
+                    return *default_structures::gramap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Ice => {if default_structures::icemap().contains_key(type2) {
+                    return *default_structures::icemap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Fighting => {if default_structures::figmap().contains_key(type2) {
+                    return *default_structures::figmap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Poison => {if default_structures::poimap().contains_key(type2) {
+                    return *default_structures::poimap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Ground => {if default_structures::gromap().contains_key(type2) {
+                    return *default_structures::gromap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Flying => {if default_structures::flymap().contains_key(type2) {
+                    return *default_structures::flymap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Psychic => {if default_structures::psymap().contains_key(type2) {
+                    return *default_structures::psymap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Bug => {if default_structures::bugmap().contains_key(type2) {
+                    return *default_structures::bugmap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Rock => {if default_structures::rockmap().contains_key(type2) {
+                    return *default_structures::rockmap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Ghost => {if default_structures::ghomap().contains_key(type2) {
+                    return *default_structures::ghomap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::Dragon => {if default_structures::dramap().contains_key(type2) {
+                    return *default_structures::dramap().get(type2).unwrap();}
+                    else {return 1.0;}
+            },
+        Type::None => return 1.0,
+    };
 }

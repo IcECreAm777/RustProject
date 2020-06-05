@@ -13,7 +13,8 @@ pub struct Battlemon {
     pub current_health: u32,
     pub evasion: u32,
     pub accuracy: u32,
-    //effect
+    pub status: attacks::Status,
+    pub flinch: bool,
     //TODO add sprites, sounds, etc
 }
 
@@ -23,7 +24,7 @@ pub struct Battle {
     pub p1: Battlemon,
     pub p2: Battlemon,
     pub a1: Action,
-    pub a2: Action
+    pub a2: Action,
 }
 
 impl Battle {
@@ -34,7 +35,7 @@ impl Battle {
             p1: own[0],
             p2: enemy[0],
             a1: Action::Picking,
-            a2: Action::Picking
+            a2: Action::Picking,
         }
     }
 
@@ -64,6 +65,8 @@ impl Battle {
                                             current_health: 0,
                                             evasion: 0,
                                             accuracy: 0,
+                                            status: attacks::Status::None,
+                                            flinch: false,
                                         };
         let mut atk1: bool = false;
         let mut atk2: bool = false;
@@ -78,7 +81,7 @@ impl Battle {
             _ => {},
         };
         if swap1 == true {
-            Battle::swap_pokemon(&mut self.p1, &mut to_switch);
+            Battle::swap_pokemon(&mut self.p1, &to_switch);
             //swap1 = false;
         }
 
@@ -88,53 +91,116 @@ impl Battle {
             _ => {},
         };
         if swap2 == true {
-            Battle::swap_pokemon(&mut self.p2, &mut to_switch);
+            Battle::swap_pokemon(&mut self.p2, &to_switch);
             //swap2 = false;
         }
+        if swap1 && swap2 {return}
 
         //attack
-
-        if atk1 == true {
-            Battle::attacks(&to_atk1, &mut self.p1, &mut self.p2);
-            //atk1 = false;
-            for i in self.own_team.iter() {         // check if either team dead
-                if i.current_health == 0 {
-                    dead += 1;
-                }
+        //decide who moves first
+        let prio: bool;
+        if to_atk1.effect_1 == attacks::Effect::Prio || to_atk1.effect_2 == attacks::Effect::Prio {
+            if to_atk2.effect_2 == attacks::Effect::Prio || to_atk2.effect_2 == attacks::Effect::Prio {
+                prio = self.p1.pokemon.init >= self.p2.pokemon.init;
             }
-            if dead == 6 {return}
-            else {dead = 0;}
-            for i in self.enemy_team.iter() {
+            else {prio = true;}
+        }
+        else {
+            if to_atk2.effect_2 == attacks::Effect::Prio || to_atk2.effect_2 == attacks::Effect::Prio {prio = false;}
+            else {prio = self.p1.pokemon.init >= self.p2.pokemon.init;}
+        }
+
+        if prio {       // TODO: Add freeze/paralysis/sleep check
+            if atk1 == true {
+                Battle::attacks(&to_atk1, &mut self.p1, &mut self.p2);
+                //atk1 = false;
+                for i in self.own_team.iter() {         // check if either team dead
                     if i.current_health == 0 {
                         dead += 1;
                     }
+                }
+                if dead == 6 {return}
+                else {dead = 0;}
+                for i in self.enemy_team.iter() {
+                        if i.current_health == 0 {
+                            dead += 1;
+                        }
+                }
+                if dead == 6 {return}
+                else {dead = 0;}
             }
-            if dead == 6 {return}
-            else {dead = 0;}
-        }
 
-        if atk2 == true {
-            Battle::attacks(&to_atk2, &mut self.p2, &mut self.p1);
-            //atk2 = false;
-            for i in self.own_team.iter() {         // again check if either team dead
-                if i.current_health == 0 {
-                    dead += 1;
+            if atk2 == true {
+                if self.p2.flinch == true {self.p2.flinch = false}
+                else {
+                    Battle::attacks(&to_atk2, &mut self.p2, &mut self.p1);
+                    //atk2 = false;
+                    for i in self.own_team.iter() {         // again check if either team dead
+                        if i.current_health == 0 {
+                            dead += 1;
+                        }
+                    }
+                    if dead == 6 {return}
+                    else {dead = 0;}
+                     for i in self.enemy_team.iter() {
+                        if i.current_health == 0 {
+                            dead += 1;
+                        }
+                    }
+                    if dead == 6 {return}
                 }
             }
-            if dead == 6 {return}
-            else {dead = 0;}
-            for i in self.enemy_team.iter() {
-                if i.current_health == 0 {
-                    dead += 1;
+
+        else {
+            if atk2 == true {
+                Battle::attacks(&to_atk2, &mut self.p2, &mut self.p1);
+                //atk2 = false;
+                for i in self.own_team.iter() {         // check if either team dead
+                    if i.current_health == 0 {
+                        dead += 1;
+                    }
+                }
+                if dead == 6 {return}
+                else {dead = 0;}
+                for i in self.enemy_team.iter() {
+                        if i.current_health == 0 {
+                            dead += 1;
+                        }
+                }
+                if dead == 6 {return}
+                else {dead = 0;}
+            }
+
+            if atk1 == true {
+                if self.p1.flinch == true {self.p1.flinch = false;}
+                else {
+                    Battle::attacks(&to_atk1, &mut self.p1, &mut self.p2);
+                    //atk2 = false;
+                    for i in self.own_team.iter() {         // again check if either team dead
+                        if i.current_health == 0 {
+                            dead += 1;
+                        }
+                    }
+                    if dead == 6 {return}
+                    else {dead = 0;}
+                    for i in self.enemy_team.iter() {
+                        if i.current_health == 0 {
+                            dead += 1;
+                        }
+                    }
+                    if dead == 6 {return}
                 }
             }
-            if dead == 6 {return}
         }
+    }
 
         // TODO: implement check to return if one team is completely dead after each atk
 
         //effects (burn, sleep, etc.)
-
+        match self.p1.status {
+            attacks::Status::Burn | attacks::Status::Poison => self.p1.current_health -= self.p1.pokemon.health/16,
+            _ => {},
+        };  // Poison 1/8 in gen 2+
         // TODO: again check if either team dead after effects
 
         self.a1 = Action::Picking;
@@ -148,20 +214,30 @@ impl Battle {
     pub fn attacks(attack: &attacks::Attack, user: &mut Battlemon, target: &mut Battlemon) {
         // for now: just basic damage calculation
         let mult = effective(&attack.etype, &target.pokemon.ftype)*effective(&attack.etype, &target.pokemon.stype);
+        let brt: u32 = if user.status == attacks::Status::Burn && attack.atype == attacks::AttackType::Physical {2} else {1};
         // TODO effect checks like constant damage/status
         // TODO differentiate physical/special, include status etc.
-        let basic: f32 = (42*attack.strength*(user.pokemon.atk/(50*target.pokemon.def))+2) as f32;
+        let basic: f32 = (42*attack.strength*(user.pokemon.atk/(50*target.pokemon.def))/(brt)+2) as f32;
         let stab: f32 = stab(&attack.etype, &user.pokemon);
         //let z: f32 = 100-random0bis15/100
         let damage: u32 = (basic*mult*stab) as u32;
-        target.current_health -= damage;  //TODO F1, crit, Z
+        if damage >= target.current_health {target.current_health = 0; return}
+        target.current_health -= damage;  //TODO crit, Z
+
+        match attack.effect_1 {
+            attacks::Effect::Flinch10 => if 5/(11) == 0 {target.flinch = true}, //randomness einbauen
+            attacks::Effect::Flinch33 => if 5/(34) == 0 {target.flinch = true},
+            _ => {},
+        };
+
+        }
         // TODO check for effects after dmg calc
     }
 
     pub fn effect() {
         //TODO implement -> apply changes based on effect
     } 
-}
+
 
 pub fn stab(atk_type: &Type, pok: &pokemon::Pokemon) -> f32 {
     if pok.ftype == *atk_type || pok.stype == *atk_type {

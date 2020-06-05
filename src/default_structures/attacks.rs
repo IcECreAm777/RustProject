@@ -9,7 +9,8 @@ pub struct Attack {
     pub strength: u32,
     pub acc: u32,
     //ap: u8,
-    //effect: //TODO data type
+    pub effect_1: Effect,
+    pub effect_2: Effect,
     //mirror move: Bool,
 }
 
@@ -21,39 +22,55 @@ impl Display for Attack {
 
 #[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
 pub enum AttackType {
-    Physicial,
+    Physical,
     Special,
     Status,
 }
 
+#[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
 pub enum Status {
-    //TODO Para etc.
+    None,
+    Paralysis,
+    Burn,
+    Freeze (u8),
+    Poison,
+    //Bad_Poison,
+    Sleep (u8),
 }
+// if let Foo::Bar(ref mut wrapped_value) = foo {
+//     *wrapped_value = 15;
+// }
+// foo = Foo::Bar(15)
 
+#[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
 pub enum StatChange {
     //TODO implement
 }
 
-pub enum Dot {
+//pub enum Dot {
     //TODO leech seed, etc.
-}
-
+//}
+#[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
 pub enum Effect {
     None,
+    Prio,
     Status (Status),
     StatChange (StatChange),
-    Dot (Dot)
+    Flinch10,
+    Flinch33,
+    //Dot (Dot)
 }
 
 pub fn dummy() -> Attack {
     Attack {
         name: "None",
         etype: Type::None,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
-        acc: 0
+        acc: 0,
         //ap: 0,
-        //effect: None,
+        effect_1: Effect::None,
+        effect_2: Effect::None,
         //mirror move: false
     }
 }
@@ -66,7 +83,8 @@ pub fn absorb() -> Attack {
         strength: 20,
         acc: 100,
         //ap: 25,
-        //effect: Heal dmg/2, außer substitute
+        effect_1: Effect::None,//effect: Heal dmg/2, außer substitute
+        effect_2: Effect::None,
         //mirror move: True
     }
 } 
@@ -79,7 +97,8 @@ pub fn acid() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 30,
-        //effect: 33.2% chance Def um "1 stage" runter
+        effect_1: Effect::None,//effect: 33.2% chance Def um "1 stage" runter
+        effect_2: Effect::None,
         //mirror move: True
     }
 }
@@ -90,9 +109,10 @@ pub fn acid_armor() -> Attack {
         etype: Type::Poison,
         atype: AttackType::Status,
         strength: 0,
-        acc: 0
+        acc: 0,
         //ap: 20,
-        //effect: Defense up 2 stages,
+        effect_1: Effect::None,//effect: Defense up 2 stages,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -105,7 +125,8 @@ pub fn agility() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: Speed up 2 stages,
+        effect_1: Effect::None,//effect: Speed up 2 stages,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -118,7 +139,8 @@ pub fn amnesia() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: Special Def up 2 stages,
+        effect_1: Effect::None,//effect: Special Def up 2 stages,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -131,7 +153,8 @@ pub fn aurora_beam() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        //effect: 33,2% chance opp. attack down 1 stage,
+        effect_1: Effect::None,//effect: 33,2% chance opp. attack down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -140,11 +163,12 @@ pub fn barrage() -> Attack {
     Attack {
         name: "Barrage",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 15,
         acc: 85,
         //ap: 20,
-        //effect: Chance 2, 3 Hits: 37,5%, 4,5: 12,5%, alle konsekutiven Hits schaden so viel wie der erste,
+        effect_1: Effect::None,//effect: Chance 2, 3 Hits: 37,5%, 4,5: 12,5%, alle konsekutiven Hits schaden so viel wie der erste,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -157,7 +181,8 @@ pub fn barrier() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: Defense up 2 stages,
+        effect_1: Effect::None,//effect: Defense up 2 stages,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -166,13 +191,14 @@ pub fn bide() -> Attack {
     Attack {
         name: "Bide",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
         acc: 101,
         //ap: ,
-        //effect: 2 oder 3 Runden (random) nichts tun (kann geswichted werden) / returned Schaden_received*2, 
+        effect_1: Effect::None,//effect: 2 oder 3 Runden (random) nichts tun (kann geswichted werden) / returned Schaden_received*2, 
         //Typ hat keinen Effekt!! trifft auch Ghost trifft IMMER auch während Dig oder Fly
         //https://bulbapedia.bulbagarden.net/wiki/Bide_(move) ,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -181,12 +207,13 @@ pub fn bind() -> Attack {
     Attack {
         name: "Bind",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 15,
         acc: 85,
         //ap: 20,
-        //effect: Damage für 2-5 turns, in Gen1: kann für Duration nicht angreifen, chances wie bei Barrage
+        effect_1: Effect::None,//effect: Damage für 2-5 turns, in Gen1: kann für Duration nicht angreifen, chances wie bei Barrage
         //https://bulbapedia.bulbagarden.net/wiki/Bind_(move),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -195,11 +222,12 @@ pub fn bite() -> Attack {
     Attack {
         name: "Bite",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 60,
         acc: 100,
         //ap: 25,
-        //effect: 10% flinch chance,
+        effect_1: Effect::None,//effect: 10% flinch chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -212,7 +240,8 @@ pub fn blizzard() -> Attack {
         strength: 110,
         acc: 90,
         //ap: 5,
-        //effect: 10% freeze chance,
+        effect_1: Effect::None,//effect: 10% freeze chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -221,11 +250,12 @@ pub fn body_slam() -> Attack {
     Attack {
         name: "Body Slam",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 85,
         acc: 100,
         //ap: 15,
-        //effect: 30% paral, kann keine normal paralysieren(??),
+        effect_1: Effect::None,//effect: 30% paral, kann keine normal paralysieren(??),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -234,11 +264,12 @@ pub fn bone_club() -> Attack {
     Attack {
         name: "Bone Club",
         etype: Type::Ground,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 65,
         acc: 85,
         //ap: 20,
-        //effect: 10% flinch,
+        effect_1: Effect::None,//effect: 10% flinch,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -247,11 +278,12 @@ pub fn bonemerang() -> Attack {
     Attack {
         name: "Bonemerang",
         etype: Type::Ground,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 50,
         acc: 90,
         //ap: 10,
-        //effect: two hits, 2. Hit dealt genauso viel wie erster,
+        effect_1: Effect::None,//effect: two hits, 2. Hit dealt genauso viel wie erster,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -264,7 +296,8 @@ pub fn bubble() -> Attack {
         strength: 20,
         acc: 100,
         //ap: 30,
-        //effect: 33,2% chance speed down one stage,
+        effect_1: Effect::None,//effect: 33,2% chance speed down one stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -277,7 +310,8 @@ pub fn bubble_beam() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        //effect: 33,2% chance speed down one stage,
+        effect_1: Effect::None,//effect: 33,2% chance speed down one stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -286,11 +320,12 @@ pub fn clamp() -> Attack {
     Attack {
         name: "Clamp",
         etype: Type::Water,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 35,
         acc: 85,
         //ap: 15,
-        //effect: wie Bind eventuell changen?,
+        effect_1: Effect::None,//effect: wie Bind eventuell changen?,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -299,11 +334,12 @@ pub fn comet_punch() -> Attack {
     Attack {
         name: "Comet Punch",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 18,
         acc: 85,
         //ap: 15,
-        //effect: Siehe Barrage,
+        effect_1: Effect::None,//effect: Siehe Barrage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -316,7 +352,8 @@ pub fn confuse_ray() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 10,
-        //effect: causes confusion,
+        effect_1: Effect::None,//effect: causes confusion,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -329,7 +366,8 @@ pub fn confusion() -> Attack {
         strength: 50,
         acc: 100,
         //ap: 25,
-        //effect: 10% confuse chance,
+        effect_1: Effect::None,//effect: 10% confuse chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -338,11 +376,12 @@ pub fn constrict() -> Attack {
     Attack {
         name: "Constrict",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 10,
         acc: 100,
         //ap: 35,
-        //effect: 33,2% chance speed down one stage,
+        effect_1: Effect::None,//effect: 33,2% chance speed down one stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -355,7 +394,8 @@ pub fn conversion() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: ändert Typ of self zu Typ des Targets,
+        effect_1: Effect::None,//effect: ändert Typ of self zu Typ des Targets,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -364,12 +404,13 @@ pub fn counter() -> Attack {
     Attack {
         name: "Counter",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
         acc: 100,
         //ap: 20,
-        //effect: last dmg done for counter > 0 und von Normal/Fighting attack -> double dmg sonst miss, keine Typ-Effectiveness
+        effect_1: Effect::None,//effect: last dmg done for counter > 0 und von Normal/Fighting attack -> double dmg sonst miss, keine Typ-Effectiveness
         //decreased priority, konter auch nur letzten Hit von Moves mit mehreren Hits,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -378,11 +419,12 @@ pub fn crabhammer() -> Attack {
     Attack {
         name: "Crabhammer",
         etype: Type::Water,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 90,
         acc: 85,
         //ap: 10,
-        //effect: increased crit rate,
+        effect_1: Effect::None,//effect: increased crit rate,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -391,11 +433,12 @@ pub fn cut() -> Attack {
     Attack {
         name: "Cut",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 50,
         acc: 95,
         //ap: 30,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: 30,
     }
 }
@@ -408,7 +451,8 @@ pub fn defense_curl() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 40,
-        //effect: Def up 1 stage,
+        effect_1: Effect::None,//effect: Def up 1 stage,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -417,11 +461,12 @@ pub fn dig() -> Attack {
     Attack {
         name: "Dig",
         etype: Type::Ground,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80, //100 in gen1
         acc: 100,
         //ap: 10,
-        //effect: 1. Turn semi invulnerable (bis auf Bide, Swift, Transform),
+        effect_1: Effect::None,//effect: 1. Turn semi invulnerable (bis auf Bide, Swift, Transform),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -434,7 +479,8 @@ pub fn disable() -> Attack {
         strength: 0,
         acc: 20,
         //ap: 100,
-        //effect: disables randomly 1 attack für 0-7 turns, -1 jede Runde,
+        effect_1: Effect::None,//effect: disables randomly 1 attack für 0-7 turns, -1 jede Runde,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -443,11 +489,12 @@ pub fn dizzy_punch() -> Attack {
     Attack {
         name: "Dizzy Punch",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 70,
         acc: 100,
         //ap: 10,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -456,11 +503,12 @@ pub fn double_kick() -> Attack {
     Attack {
         name: "Double Kick",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 30,
         acc: 100,
         //ap: 30,
-        //effect: hits twice, 2. as much as 1st nur 1. kann critten,
+        effect_1: Effect::None,//effect: hits twice, 2. as much as 1st nur 1. kann critten,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -469,11 +517,12 @@ pub fn double_slap() -> Attack {
     Attack {
         name: "Double Slap",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 15,
         acc: 85,
         //ap: 10,
-        //effect: hits 2-5 times siehe Barrage,
+        effect_1: Effect::None,//effect: hits 2-5 times siehe Barrage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -486,7 +535,8 @@ pub fn double_team() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 15,
-        //effect: erhöht evasion (Muss nnoch geadded werden?)
+        effect_1: Effect::None,//effect: erhöht evasion (Muss nnoch geadded werden?)
+        effect_2: Effect::None,
         //mirror move: False
     }
 }
@@ -495,11 +545,12 @@ pub fn double_edge() -> Attack {
     Attack {
         name: "Double Edge",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 120, //100 in gen1
         acc: 100,
         //ap: 15,
-        //effect: recoil: 1/4 of dmg done,
+        effect_1: Effect::None,//effect: recoil: 1/4 of dmg done,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -512,7 +563,8 @@ pub fn dragon_rage() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 10,
-        //effect: genau 40HP dmg keine Weaknesses/Resistances,
+        effect_1: Effect::None,//effect: genau 40HP dmg keine Weaknesses/Resistances,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -525,7 +577,8 @@ pub fn dream_eater() -> Attack {
         strength: 100,
         acc: 100,
         //ap: 15,
-        //effect: nur if target asleep, heals 50% of dmg dealt, nothing if target not asleep,
+        effect_1: Effect::None,//effect: nur if target asleep, heals 50% of dmg dealt, nothing if target not asleep,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -534,11 +587,12 @@ pub fn drill_peck() -> Attack {
     Attack {
         name: "Drill Peck",
         etype: Type::Flying,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 100,
         //ap: 2ß,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -547,11 +601,12 @@ pub fn earthquake() -> Attack {
     Attack {
         name: "Earthquake",
         etype: Type::Ground,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 100,
         acc: 100,
         //ap: 10,
-        //effect: none, maybe include hitting dig? if so power *2
+        effect_1: Effect::None,//effect: none, maybe include hitting dig? if so power *2
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -560,11 +615,12 @@ pub fn egg_bomb() -> Attack {
     Attack {
         name: "Egg Bomb",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 100,
         acc: 75,
         //ap: 10,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -577,7 +633,8 @@ pub fn ember() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 25,
-        //effect: 10% burn chance,
+        effect_1: Effect::None,//effect: 10% burn chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -586,11 +643,12 @@ pub fn explosion() -> Attack {
     Attack {
         name: "Explosion",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 250,  // gen 1 170 (theoretisch mal 2)
         acc: 100,
         //ap: 5,
-        //effect: rip user (gen 1 halves target defense during calc),
+        effect_1: Effect::None,//effect: rip user (gen 1 halves target defense during calc),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -603,7 +661,8 @@ pub fn fire_blast() -> Attack {
         strength: 110,
         acc: 85,
         //ap: 5,
-        //effect: 30% burn chance,
+        effect_1: Effect::None,//effect: 30% burn chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -612,11 +671,12 @@ pub fn fire_punch() -> Attack {
     Attack {
         name: "Fire Punch",
         etype: Type::Fire,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 75,
         acc: 100,
         //ap: 15,
-        //effect: 10% burn chance,
+        effect_1: Effect::None,//effect: 10% burn chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -629,7 +689,8 @@ pub fn fire_spin() -> Attack {
         strength: 35, // gen 1 15
         acc: 85, // gen 1 75
         //ap: 15,
-        //effect: Wie Bind etc,
+        effect_1: Effect::None,//effect: Wie Bind etc,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -638,11 +699,12 @@ pub fn fissure() -> Attack {
     Attack {
         name: "Fissure",
         etype: Type::Ground,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
         acc: 30,
         //ap: 5,
-        //effect: INSTAKILL POGGERS (gen 1: wont hit target with higher speed),
+        effect_1: Effect::None,//effect: INSTAKILL POGGERS (gen 1: wont hit target with higher speed),
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -655,7 +717,8 @@ pub fn flamethrower() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 15,
-        //effect: 10% burn chance,
+        effect_1: Effect::None,//effect: 10% burn chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -668,7 +731,8 @@ pub fn flash() -> Attack {
         strength: 0,
         acc: 100, // gen 1 70
         //ap: 20,
-        //effect: target acc one stage down,
+        effect_1: Effect::None, //effect: target acc one stage down,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -677,11 +741,12 @@ pub fn fly() -> Attack {
     Attack {
         name: "Fly",
         etype: Type::Flying,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 90,
         acc: 95,
         //ap: 15,
-        //effect: wie Dig kann auch von paraly./confusion disrupted werden etc (maybe also include hit by thunder?),
+        effect_1: Effect::None,//effect: wie Dig kann auch von paraly./confusion disrupted werden etc (maybe also include hit by thunder?),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -694,7 +759,8 @@ pub fn focus_energy() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: Gen 1 bug: statt *4 /4 crit rate ((andere Formel in Stadium)),
+        effect_1: Effect::None,//effect: Gen 1 bug: statt *4 /4 crit rate ((andere Formel in Stadium)),
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -703,11 +769,12 @@ pub fn fury_attack() -> Attack {
     Attack {
         name: "Fury Attack",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 15,
         acc: 85,
         //ap: 20,
-        //effect: wie barrage,
+        effect_1: Effect::None,//effect: wie barrage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -716,11 +783,12 @@ pub fn fury_swipes() -> Attack {
     Attack {
         name: "Fury Swipes",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 18,
         acc: 80,
         //ap: 15,
-        //effect: wie barrage,
+        effect_1: Effect::None,//effect: wie barrage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -733,7 +801,8 @@ pub fn glare() -> Attack {
         strength: 0,
         acc: 75, // gen 1 75, gen 5 90, gen 6+ 100
         //ap: 30,
-        //effect: paralysis (gen 1 can hit ghost),
+        effect_1: Effect::None,//effect: paralysis (gen 1 can hit ghost),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -746,7 +815,8 @@ pub fn growl() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 40,
-        //effect: attack down 1 stage,
+        effect_1: Effect::None,//effect: attack down 1 stage,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -759,7 +829,8 @@ pub fn growth() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: special atk up 1 stage,
+        effect_1: Effect::None,//effect: special atk up 1 stage,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -768,11 +839,12 @@ pub fn guillotine() -> Attack {
     Attack {
         name: "Guillotine",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
         acc: 30,
         //ap: 5,
-        //effect: OHK (again no hit if target init > in gen 1),
+        effect_1: Effect::None,//effect: OHK (again no hit if target init > in gen 1),
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -785,7 +857,8 @@ pub fn gust() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 35,
-        //effect: none (gen 2: can hit fly),
+        effect_1: Effect::None,//effect: none (gen 2: can hit fly),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -798,7 +871,8 @@ pub fn harden() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: def up 1 stage,
+        effect_1: Effect::None,//effect: def up 1 stage,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -811,8 +885,9 @@ pub fn haze() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: reset stat stages to 0 remove stat reductions from burn and paral, - focus energy
+        effect_1: Effect::None,//effect: reset stat stages to 0 remove stat reductions from burn and paral, - focus energy
         //cures confusion, bad poison -> regular poison, -non-volatile status -> burn, paral,...,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -821,11 +896,12 @@ pub fn headbutt() -> Attack {
     Attack {
         name: "Headbutt",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 70,
         acc: 100,
         //ap: 15,
-        //effect: 30% flinch,
+        effect_1: Effect::None,//effect: 30% flinch,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -834,11 +910,12 @@ pub fn high_jump() -> Attack {
     Attack {
         name: "High Jump",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 130, //gen 1 85
         acc: 90,
         //ap: 10,
-        //effect: if miss: 1hp dmg,
+        effect_1: Effect::None,//effect: if miss: 1hp dmg,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -847,11 +924,12 @@ pub fn horn_attack() -> Attack {
     Attack {
         name: "Horn Attack",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 65,
         acc: 100,
         //ap: 25,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -860,12 +938,12 @@ pub fn horn_drill() -> Attack {
     Attack {
         name: "Horn Drill",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
         acc: 30,
         //ap: 5,
-        //effect: OHK again if init > oof,
-        //mirror move: False,
+        effect_1: Effect::None,//effect: OHK again if init > oof,
+        effect_2: Effect::None,//mirror move: False,
     }
 }
 
@@ -877,7 +955,8 @@ pub fn hydro_pump() -> Attack {
         strength: 110,
         acc: 80,
         //ap: 5,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -890,7 +969,8 @@ pub fn hyper_beam() -> Attack {
         strength: 150,
         acc: 90,
         //ap: 5,
-        //effect: recharge turn (not if miss in gen 1) ist quasi aktiv,
+        effect_1: Effect::None,//effect: recharge turn (not if miss in gen 1) ist quasi aktiv,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -899,11 +979,12 @@ pub fn hyper_fang() -> Attack {
     Attack {
         name: "Hyper Fang",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 90,
         //ap: 15,
-        //effect: 10% flinch,
+        effect_1: Effect::None,//effect: 10% flinch,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -916,7 +997,8 @@ pub fn hypnosis() -> Attack {
         strength: 0,
         acc: 60,
         //ap: 20,
-        //effect: schleep,
+        effect_1: Effect::None,//effect: schleep,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -929,7 +1011,8 @@ pub fn ice_beam() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 10,
-        //effect: 10% freeze chance,
+        effect_1: Effect::None,//effect: 10% freeze chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -938,11 +1021,12 @@ pub fn ice_punch() -> Attack {
     Attack {
         name: "Ice Punch",
         etype: Type::Ice,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 75,
         acc: 100,
         //ap: 15,
-        //effect: 10% freeze chance,
+        effect_1: Effect::None,//effect: 10% freeze chance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -951,11 +1035,12 @@ pub fn jump_kick() -> Attack {
     Attack {
         name: "Jump Kick",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 100, //gen 1 70
         acc: 95,
         //ap: 10,
-        //effect: ,
+        effect_1: Effect::None,//effect: ,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -964,11 +1049,12 @@ pub fn karate_chop() -> Attack {
     Attack {
         name: "Karate Chop",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 50,
         acc: 100,
         //ap: 25,
-        //effect: crit hit rate up,
+        effect_1: Effect::None,//effect: crit hit rate up,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -981,7 +1067,8 @@ pub fn kinesis() -> Attack {
         strength: 0,
         acc: 80,
         //ap: 15,
-        //effect: target acc down 1 stage,
+        effect_1: Effect::None,//effect: target acc down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -990,11 +1077,12 @@ pub fn leech_life() -> Attack {
     Attack {
         name: "Leech Life",
         etype: Type::Bug,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 100,
         //ap: 10,
-        //effect: heal up to 50% of dealt,
+        effect_1: Effect::None,//effect: heal up to 50% of dealt,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1007,8 +1095,9 @@ pub fn leech_seed() -> Attack {
         strength: 0,
         acc: 90,
         //ap: 10,
-        //effect: plant seed gachiBass after turn 1/16 of target hp drained (round down, not 0) + added to other pok
+        effect_1: Effect::None,//effect: plant seed gachiBass after turn 1/16 of target hp drained (round down, not 0) + added to other pok
         //doesnt work against plant pok also if toxic durch N parameter affected -> ^ each turn,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1021,7 +1110,8 @@ pub fn leer() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 30,
-        //effect: defense down 1 stage,
+        effect_1: Effect::None,//effect: defense down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1030,11 +1120,12 @@ pub fn lick() -> Attack {
     Attack {
         name: "Lick",
         etype: Type::Ghost,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 30,
         acc: 100,
         //ap: 30,
-        //effect: 30% paral chance, cannot paral ghost in gen1,
+        effect_1: Effect::None,//effect: 30% paral chance, cannot paral ghost in gen1,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1047,7 +1138,8 @@ pub fn light_screen() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: user special def +2 stages when opponent dmges user with special move,
+        effect_1: Effect::None, //effect: user special def +2 stages when opponent dmges user with special move,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1060,7 +1152,8 @@ pub fn lovely_kiss() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 10,
-        //effect: schleep,
+        effect_1: Effect::None,//effect: schleep,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1069,11 +1162,12 @@ pub fn low_kick() -> Attack { // wenn nicht Gen 1 def: weight etc.
     Attack {
         name: "Low Kick",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 50,
         acc: 90,
         //ap: 20,
-        //effect: 30% flinch,
+        effect_1: Effect::None,//effect: 30% flinch,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1086,7 +1180,8 @@ pub fn meditate() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 40,
-        //effect: attack up 1 stage,
+        effect_1: Effect::None,//effect: attack up 1 stage,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1099,7 +1194,8 @@ pub fn mega_drain() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 15,
-        //effect: heal up to 50% of dealt,
+        effect_1: Effect::None,//effect: heal up to 50% of dealt,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1108,11 +1204,12 @@ pub fn mega_kick() -> Attack {
     Attack {
         name: "Mega Kick",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 120,
         acc: 75,
         //ap: 5,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1121,11 +1218,12 @@ pub fn mega_punch() -> Attack {
     Attack {
         name: "Mega Punch",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 85,
         //ap: 20,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1138,7 +1236,8 @@ pub fn metronome() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 10,
-        //effect: select random move and execute,
+        effect_1: Effect::None,//effect: select random move and execute,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1151,7 +1250,8 @@ pub fn mimic() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 10,
-        //effect: Copy target move, until battle end or switch out,
+        effect_1: Effect::None,//effect: Copy target move, until battle end or switch out,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1164,7 +1264,8 @@ pub fn minimize() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 10, 20 till gen 5
-        //effect: evasion up 1 stage + tiny image till faint/switch/end in gen1,
+        effect_1: Effect::None,//effect: evasion up 1 stage + tiny image till faint/switch/end in gen1,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1177,8 +1278,9 @@ pub fn mirror_move() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: use last move targetted at user by Pokemon on field
+        effect_1: Effect::None,//effect: use last move targetted at user by Pokemon on field
         //fail if no move selection, switch out in same round oder last use war mirror move,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1191,7 +1293,8 @@ pub fn mist() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: protection from stat changes till switched out Moves die Stat change als Side effect haben können weiterhin (z.B. Acid) in gen1,
+        effect_1: Effect::None,//effect: protection from stat changes till switched out Moves die Stat change als Side effect haben können weiterhin (z.B. Acid) in gen1,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1204,7 +1307,8 @@ pub fn night_shade() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 15,
-        //effect: so viel wie user level,
+        effect_1: Effect::None,//effect: so viel wie user level,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1213,11 +1317,12 @@ pub fn pay_day() -> Attack {
     Attack {
         name: "Pay Day",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 40,
         acc: 100,
         //ap: 20,
-        //effect: none for battle,
+        effect_1: Effect::None,//effect: none for battle,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1226,11 +1331,12 @@ pub fn peck() -> Attack {
     Attack {
         name: "Pekc",
         etype: Type::Flying,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 35,
         acc: 100,
         //ap: 35,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1243,7 +1349,8 @@ pub fn petal_dance() -> Attack {
         strength: 120, //gen 1 70
         acc: 100,
         //ap: 10, //gen 1 20
-        //effect: 3-4 moves in a row, cannot switch out can only use petal, if fully exec. confusion,
+        effect_1: Effect::None,//effect: 3-4 moves in a row, cannot switch out can only use petal, if fully exec. confusion,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1252,11 +1359,12 @@ pub fn pin_missile() -> Attack {
     Attack {
         name: "Pin Missile",
         etype: Type::Bug,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 25, //gen 1 14
         acc: 95, //gen 1 85
         //ap: 20,
-        //effect: wie barrage,
+        effect_1: Effect::None,//effect: wie barrage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1269,7 +1377,8 @@ pub fn poison_gas() -> Attack {
         strength: 0,
         acc: 90, //gen 1 55
         //ap: 40,
-        //effect: poison,
+        effect_1: Effect::None,//effect: poison,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1282,7 +1391,8 @@ pub fn poison_powder() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 35,
-        //effect: poisons (not steel/poison),
+        effect_1: Effect::None,//effect: poisons (not steel/poison),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1291,11 +1401,12 @@ pub fn poison_sting() -> Attack {
     Attack {
         name: "Poison Sting",
         etype: Type::Poison,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 15,
         acc: 100,
         //ap: 35,
-        //effect: 20% poison,
+        effect_1: Effect::None,//effect: 20% poison,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1304,11 +1415,12 @@ pub fn pound() -> Attack {
     Attack {
         name: "Pound",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 40,
         acc: 100,
         //ap: 35,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1321,7 +1433,8 @@ pub fn psybeam() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        //effect: 10% confusion,
+        effect_1: Effect::None,//effect: 10% confusion,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1334,7 +1447,8 @@ pub fn psychic() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 10,
-        //effect: 33,2% sp def down 1 stage,
+        effect_1: Effect::None,//effect: 33,2% sp def down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1347,7 +1461,8 @@ pub fn psywave() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 15,
-        //effect: dmg random von 1 bis 1.5x user level,
+        effect_1: Effect::None,//effect: dmg random von 1 bis 1.5x user level,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1356,11 +1471,12 @@ pub fn quick_attack() -> Attack {
     Attack {
         name: "Quick Attack",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 40,
         acc: 100,
         //ap: 30,
-        //effect: prio 1,
+        effect_1: Effect::Prio,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1369,12 +1485,13 @@ pub fn rage() -> Attack {
     Attack {
         name: "Rage",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 20,
         acc: 100,
         //ap: 20,
-        //effect: endlos rage loop till fait oder end of battle wenn dmg genommen: atk 1 stage up; multi move: 1 for each
+        effect_1: Effect::None,//effect: endlos rage loop till fait oder end of battle wenn dmg genommen: atk 1 stage up; multi move: 1 for each
         //wenn es im 1. Turn missed keine side effects,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1383,11 +1500,12 @@ pub fn razor_leaf() -> Attack {
     Attack {
         name: "Razor Leaf",
         etype: Type::Grass,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 55,
         acc: 95,
         //ap: 25,
-        //effect: increased crit ratio,
+        effect_1: Effect::None,//effect: increased crit ratio,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1400,7 +1518,8 @@ pub fn razor_wind() -> Attack {
         strength: 80,
         acc: 100, //gen 1 75
         //ap: 10,
-        //effect: 1. move nichts (<> made a whirlwind) turn danach dmg und -pp,
+        effect_1: Effect::None,//effect: 1. move nichts (<> made a whirlwind) turn danach dmg und -pp,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1413,7 +1532,8 @@ pub fn recover() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 10, //20 in gen1
-        //effect: up to 50% of hp restore,
+        effect_1: Effect::None,//effect: up to 50% of hp restore,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1426,7 +1546,8 @@ pub fn reflect() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: doubles defense when attacked with phys move bissle wie light screen,
+        effect_1: Effect::None,//effect: doubles defense when attacked with phys move bissle wie light screen,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1439,7 +1560,8 @@ pub fn rest() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 10,
-        //effect: user is put to sleep but HP are restored,
+        effect_1: Effect::None,//effect: user is put to sleep but HP are restored,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1452,7 +1574,8 @@ pub fn roar() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: in gen 1 none, in gen 2 force pokemon switch (random),
+        effect_1: Effect::None,//effect: in gen 1 none, in gen 2 force pokemon switch (random),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1461,11 +1584,12 @@ pub fn rock_slide() -> Attack {
     Attack {
         name: "Rock Slide",
         etype: Type::Rock,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 75,
         acc: 90,
         //ap: 10,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1474,11 +1598,12 @@ pub fn rock_throw() -> Attack {
     Attack {
         name: "Rock Throw",
         etype: Type::Rock,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 50,
         acc: 100, //gen 1 65
         //ap: 15,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1487,11 +1612,12 @@ pub fn rolling_kick() -> Attack {
     Attack {
         name: "Rolling Kick",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 60,
         acc: 85,
         //ap: 15,
-        //effect: 30% flinch,
+        effect_1: Effect::None,//effect: 30% flinch,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1504,7 +1630,8 @@ pub fn sand_attack() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 15,
-        //effect: accuracy down 1 stage,
+        effect_1: Effect::None,//effect: accuracy down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1513,11 +1640,12 @@ pub fn scratch() -> Attack {
     Attack {
         name: "Scratch",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 40,
         acc: 100,
         //ap: 35,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1530,7 +1658,8 @@ pub fn screech() -> Attack {
         strength: 0,
         acc: 85,
         //ap: 40,
-        //effect: defense down 2 stages,
+        effect_1: Effect::None,//effect: defense down 2 stages,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1539,11 +1668,12 @@ pub fn seismic_toss() -> Attack {
     Attack {
         name: "Seismic toss",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
         acc: 100,
         //ap: 20,
-        //effect: equal to user level in gen1, keinerlei Type-Inflictions -> kann auch ghost hitten,
+        effect_1: Effect::None,//effect: equal to user level in gen1, keinerlei Type-Inflictions -> kann auch ghost hitten,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1552,11 +1682,12 @@ pub fn self_destruct() -> Attack {
     Attack {
         name: "Self-Destruct",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 200, //gen 1 130 + halves defense
         acc: 100,
         //ap: 5,
-        //effect: user faints,
+        effect_1: Effect::None,//effect: user faints,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1569,7 +1700,8 @@ pub fn sharpen() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        //effect: attack up 1 stage,
+        effect_1: Effect::None,//effect: attack up 1 stage,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1582,7 +1714,8 @@ pub fn sing() -> Attack {
         strength: 0,
         acc: 55,
         //ap: 15,
-        //effect: schleep,
+        effect_1: Effect::None,//effect: schleep,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1591,11 +1724,12 @@ pub fn skull_bash() -> Attack {
     Attack {
         name: "Skull Bash",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 130,
         acc: 100,
         //ap: 10,
-        //effect: turn 1 nothing "lower head" turn 2 dmg -pp cant be switched out till completed,
+        effect_1: Effect::None,//effect: turn 1 nothing "lower head" turn 2 dmg -pp cant be switched out till completed,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1604,11 +1738,12 @@ pub fn sky_attack() -> Attack {
     Attack {
         name: "Sky Attack",
         etype: Type::Flying,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 140,
         acc: 90,
         //ap: 5,
-        //effect: turn 1 nothing "glow" turn 2 dmg -pp,
+        effect_1: Effect::None,//effect: turn 1 nothing "glow" turn 2 dmg -pp,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1617,11 +1752,12 @@ pub fn slam() -> Attack {
     Attack {
         name: "Slam",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 75,
         //ap: 20,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1630,11 +1766,12 @@ pub fn slash() -> Attack {
     Attack {
         name: "Slash",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 70,
         acc: 100,
         //ap: 20,
-        //effect: increased crit,
+        effect_1: Effect::None,//effect: increased crit,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1647,7 +1784,8 @@ pub fn sleep_powder() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 15,
-        //effect: schleep,
+        effect_1: Effect::None,//effect: schleep,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1660,7 +1798,8 @@ pub fn sludge() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        //effect: 40% poison,
+        effect_1: Effect::None,//effect: 40% poison,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1673,7 +1812,8 @@ pub fn smog() -> Attack {
         strength: 30,
         acc: 70,
         //ap: 20,
-        //effect: 40% poison,
+        effect_1: Effect::None,//effect: 40% poison,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1686,7 +1826,8 @@ pub fn smokescreen() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 20,
-        //effect: acc down 1 stage,
+        effect_1: Effect::None,//effect: acc down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1699,7 +1840,8 @@ pub fn soft_boiled() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 10,
-        //effect: up to 50% regen,
+        effect_1: Effect::None,//effect: up to 50% regen,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1712,7 +1854,8 @@ pub fn solar_beam() -> Attack {
         strength: 120,
         acc: 100,
         //ap: 10,
-        //effect: turn 1 "take in sunlight" turn 2 dmg etc.,
+        effect_1: Effect::None,//effect: turn 1 "take in sunlight" turn 2 dmg etc.,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1725,7 +1868,8 @@ pub fn sonic_boom() -> Attack {
         strength: 0,
         acc: 90,
         //ap: 20,
-        //effect: 20 dmg no weakness/resistance,
+        effect_1: Effect::None,//effect: 20 dmg no weakness/resistance,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1734,11 +1878,12 @@ pub fn spike_cannon() -> Attack {
     Attack {
         name: "Spike Cannon",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 20,
         acc: 100,
         //ap: 15,
-        //effect: wie Barrage,
+        effect_1: Effect::None,//effect: wie Barrage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1751,7 +1896,8 @@ pub fn splash() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 40,
-        //effect: none "No effect!",
+        effect_1: Effect::None,//effect: none "No effect!",
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1764,7 +1910,8 @@ pub fn spore() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 15,
-        //effect: schleep,
+        effect_1: Effect::None,//effect: schleep,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1773,11 +1920,12 @@ pub fn stomp() -> Attack {
     Attack {
         name: "Stomp",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 65,
         acc: 100,
         //ap: 20,
-        //effect: 30% flinch,
+        effect_1: Effect::None,//effect: 30% flinch,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1786,11 +1934,12 @@ pub fn strength() -> Attack {
     Attack {
         name: "Strength",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 100,
         //ap: 15,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1803,7 +1952,8 @@ pub fn string_shot() -> Attack {
         strength: 0,
         acc: 95,
         //ap: 40,
-        //effect: init down 1 stage,
+        effect_1: Effect::None,//effect: init down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1812,11 +1962,12 @@ pub fn struggle() -> Attack {
     Attack {
         name: "Struggle",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 50,
         acc: 100,
         //ap: 1,
-        //effect: 1/2 of dmg recoil, automatisch wenn keine ap mehr aber move,
+        effect_1: Effect::None,//effect: 1/2 of dmg recoil, automatisch wenn keine ap mehr aber move,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1829,7 +1980,8 @@ pub fn stun_spore() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 30,
-        //effect: Paral,
+        effect_1: Effect::None,//effect: Paral,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1838,11 +1990,12 @@ pub fn submission() -> Attack {
     Attack {
         name: "Submission",
         etype: Type::Fighting,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 80,
         //ap: 20,
-        //effect: 25% recoil,
+        effect_1: Effect::None,//effect: 25% recoil,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1855,7 +2008,8 @@ pub fn substitue() -> Attack { //cancer???
         strength: 0,
         acc: 0,
         //ap: 10,
-        //effect: https://bulbapedia.bulbagarden.net/wiki/Substitute_(move)#Generation_I,
+        effect_1: Effect::None,//effect: https://bulbapedia.bulbagarden.net/wiki/Substitute_(move)#Generation_I,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1864,11 +2018,12 @@ pub fn super_fang() -> Attack {
     Attack {
         name: "Super Fang",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 0,
         acc: 90,
         //ap: 10,
-        //effect: 1/2 of enemy hp can hit ghost in gen1,
+        effect_1: Effect::None,//effect: 1/2 of enemy hp can hit ghost in gen1,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1881,7 +2036,8 @@ pub fn supersonic() -> Attack {
         strength: 0,
         acc: 55,
         //ap: 20,
-        //effect: Konfuzius,
+        effect_1: Effect::None,//effect: Konfuzius,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1894,7 +2050,8 @@ pub fn surf() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 15,
-        //effect: none ,
+        effect_1: Effect::None,//effect: none ,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1907,7 +2064,8 @@ pub fn swift() -> Attack {
         strength: 60,
         acc: 0,
         //ap: 20,
-        //effect: trifft immer auch dig oder dive(nur in gen 1),
+        effect_1: Effect::None,//effect: trifft immer auch dig oder dive(nur in gen 1),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1920,7 +2078,8 @@ pub fn sword_dance() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: attack up 2 stages,
+        effect_1: Effect::None,//effect: attack up 2 stages,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1929,11 +2088,12 @@ pub fn tackle() -> Attack {
     Attack {
         name: "Tackle",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 35,
-        acc: 95
+        acc: 95,
         //ap: 35,
-        //effect none
+        effect_1: Effect::None,//effect none
+        effect_2: Effect::None,
         //mirror move: True
     }
 }
@@ -1946,7 +2106,8 @@ pub fn tail_whip() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 30,
-        //effect: defense down 1 stage,
+        effect_1: Effect::None,//effect: defense down 1 stage,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1955,11 +2116,12 @@ pub fn take_down() -> Attack {
     Attack {
         name: "Take Down",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 90,
         acc: 85,
         //ap: 20,
-        //effect: 1/4 recoil,
+        effect_1: Effect::None,//effect: 1/4 recoil,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1972,7 +2134,8 @@ pub fn teleport() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        //effect: kinda wie roar nur mit user,
+        effect_1: Effect::None,//effect: kinda wie roar nur mit user,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -1981,11 +2144,12 @@ pub fn thrash() -> Attack {
     Attack {
         name: "Thrash",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 120, // gen 1 90
         acc: 100,
         //ap: 10, //gen 1 20
-        //effect: dmg 3-4 turns kann nicht forcefully von selbst beendet werden auch, wenn richtig beendet confuse,
+        effect_1: Effect::None,//effect: dmg 3-4 turns kann nicht forcefully von selbst beendet werden auch, wenn richtig beendet confuse,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -1998,7 +2162,8 @@ pub fn thunder() -> Attack {
         strength: 110,
         acc: 70,
         //ap: 10,
-        //effect: 10% paral not elec, later during fly bounce sky drop,
+        effect_1: Effect::None,//effect: 10% paral not elec, later during fly bounce sky drop,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2007,11 +2172,12 @@ pub fn thunder_punch() -> Attack {
     Attack {
         name: "Thunder Punch",
         etype: Type::Electric,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 75,
         acc: 100,
         //ap: 15,
-        //effect: 10% paral not elec,
+        effect_1: Effect::None,//effect: 10% paral not elec,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2024,7 +2190,8 @@ pub fn thunder_shock() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 30,
-        //effect: 10% paral not elec,
+        effect_1: Effect::None,//effect: 10% paral not elec,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2037,7 +2204,8 @@ pub fn thunder_wave() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 20,
-        //effect: paral cannot ground,
+        effect_1: Effect::None,//effect: paral cannot ground,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2050,7 +2218,8 @@ pub fn thunderbolt() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 15,
-        //effect: 10% paral not elec auch later schon,
+        effect_1: Effect::None,//effect: 10% paral not elec auch later schon,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2063,8 +2232,9 @@ pub fn toxic() -> Attack {
         strength: 0,
         acc: 90, //gen 1 85
         //ap: 10,
-        //effect: badly poisons dmg: N*x x is 1/16 of target max hp, while badly poisend n++ every dmg by poison or leech seed
+        effect_1: Effect::None,//effect: badly poisons dmg: N*x x is 1/16 of target max hp, while badly poisend n++ every dmg by poison or leech seed
         //haze/switch/end -> normal poison, rest: cured but N remains(maybe change),
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2077,7 +2247,8 @@ pub fn transform() -> Attack { //fr??
         strength: 0,
         acc: 0,
         //ap: 10,
-        //effect: https://bulbapedia.bulbagarden.net/wiki/Transform_(move),
+        effect_1: Effect::None,//effect: https://bulbapedia.bulbagarden.net/wiki/Transform_(move),
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -2090,7 +2261,8 @@ pub fn tri_attack() -> Attack {
         strength: 80,
         acc: 100,
         //ap: 10,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2099,11 +2271,12 @@ pub fn twineedle() -> Attack {
     Attack {
         name: "Twineedle",
         etype: Type::Bug,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 25,
         acc: 100,
         //ap: 20,
-        //effect: double hit 2nd: 20% poison unless poison,
+        effect_1: Effect::None,//effect: double hit 2nd: 20% poison unless poison,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2112,11 +2285,12 @@ pub fn vine_whip() -> Attack {
     Attack {
         name: "Vine Whip",
         etype: Type::Grass,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 45, //gen 1 35
         acc: 100,
         //ap: 25, //gen 1 10
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2125,11 +2299,12 @@ pub fn vise_grip() -> Attack {
     Attack {
         name: "Vise Grip",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 55,
         acc: 100,
         //ap: 30,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2142,7 +2317,8 @@ pub fn water_gun() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 25,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2151,11 +2327,12 @@ pub fn waterfall() -> Attack {
     Attack {
         name: "Waterfall",
         etype: Type::Water,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 80,
         acc: 100,
         //ap: 15,
-        //effect: none,
+        effect_1: Effect::None,//effect: none,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2168,7 +2345,8 @@ pub fn whirlwind() -> Attack {
         strength: 0,
         acc: 0, //gen 1 85(?)
         //ap: 20,
-        //effect: switch out opponent pok,
+        effect_1: Effect::None,//effect: switch out opponent pok,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2177,11 +2355,12 @@ pub fn wing_attack() -> Attack {
     Attack {
         name: "Wing Attack",
         etype: Type::Flying,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 60, //gen 1 35
         acc: 100,
         //ap: 35,
-        //effect: None,
+        effect_1: Effect::None,//effect: None,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }
@@ -2194,7 +2373,8 @@ pub fn withdraw() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 40,
-        //effect: defense up 1 stage,
+        effect_1: Effect::None,//effect: defense up 1 stage,
+        effect_2: Effect::None,
         //mirror move: False,
     }
 }
@@ -2203,11 +2383,12 @@ pub fn wrap() -> Attack {
     Attack {
         name: "Wrap",
         etype: Type::Normal,
-        atype: AttackType::Physicial,
+        atype: AttackType::Physical,
         strength: 15,
         acc: 90,
         //ap: 20,
-        //effect: wie bind etc.,
+        effect_1: Effect::None,//effect: wie bind etc.,
+        effect_2: Effect::None,
         //mirror move: True,
     }
 }

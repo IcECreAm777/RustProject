@@ -843,9 +843,9 @@ pub fn high_jump() -> Attack {
     }
 }
 
-pub fn horn() -> Attack {
+pub fn horn_attack() -> Attack {
     Attack {
-        name: "Horn",
+        name: "Horn Attack",
         etype: Type::Normal,
         atype: AttackType::Physicial,
         strength: 65,

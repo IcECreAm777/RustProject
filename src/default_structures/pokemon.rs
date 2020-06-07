@@ -808,9 +808,9 @@ pub fn gyarados() -> Pokemon {
     }
 }
 
-pub fn hauter() -> Pokemon {
+pub fn haunter() -> Pokemon {
     Pokemon {
-        name: "Hauter",
+        name: "Haunter",
         ftype: Type::Ghost,
         stype: Type::Poison,
         health: 200,

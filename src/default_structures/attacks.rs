@@ -43,9 +43,34 @@ pub enum Status {
 // foo = Foo::Bar(15)
 
 #[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
-pub enum StatChange {
-    //TODO implement
+pub enum StatChange1 {       // Werte mit i8/u8 sind mit einer Chance z.B. 33,2% auf Def down 1 stage ist DC(-1,33)
+    Attack (i8),
+    Defense (i8),
+    SAttack (i8),
+    SDefense (i8),
+    Init (i8),
+    AC (i8,u8),
+    DC (i8,u8),
+    SAC (i8,u8),
+    SDC (i8,u8),
+    IC (i8,u8),
 }
+
+#[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
+pub enum StatChange2 {       // Werte mit i8/u8 sind mit einer Chance z.B. 33,2% auf Def down 1 stage ist DC(-1,33)
+    Attack (i8),
+    Defense (i8),
+    SAttack (i8),
+    SDefense (i8),
+    Init (i8),
+    AC (i8,u8),
+    DC (i8,u8),
+    SAC (i8,u8),
+    SDC (i8,u8),
+    IC (i8,u8),
+}
+
+//TODO impl stat change function in battle
 
 //pub enum Dot {
     //TODO leech seed, etc.
@@ -54,8 +79,9 @@ pub enum StatChange {
 pub enum Effect {
     None,
     Prio,
-    Status (Status),
-    StatChange (StatChange),
+    Status,                     // seperate enum for applying with chance?
+    StatusChange1 (StatChange1),
+    StatusChange2 (StatChange2),
     Flinch10,
     Flinch33,
     //Dot (Dot)
@@ -97,7 +123,7 @@ pub fn acid() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 30,
-        effect_1: Effect::None,//effect: 33.2% chance Def um "1 stage" runter
+        effect_1: Effect::StatusChange2(StatChange2::DC(-1,33)),//effect: 33.2% chance Def um "1 stage" runter
         effect_2: Effect::None,
         //mirror move: True
     }
@@ -111,7 +137,7 @@ pub fn acid_armor() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        effect_1: Effect::None,//effect: Defense up 2 stages,
+        effect_1: Effect::StatusChange1(StatChange1::Defense(2)),//effect: Defense up 2 stages,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -125,7 +151,7 @@ pub fn agility() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        effect_1: Effect::None,//effect: Speed up 2 stages,
+        effect_1: Effect::StatusChange1(StatChange1::Init(2)),//effect: Speed up 2 stages,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -139,7 +165,7 @@ pub fn amnesia() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        effect_1: Effect::None,//effect: Special Def up 2 stages,
+        effect_1: Effect::StatusChange1(StatChange1::SDefense(2)),//effect: Special Def up 2 stages,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -153,7 +179,7 @@ pub fn aurora_beam() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        effect_1: Effect::None,//effect: 33,2% chance opp. attack down 1 stage,
+        effect_1: Effect::StatusChange2(StatChange2::AC(-1,33)),//effect: 33,2% chance opp. attack down 1 stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -181,7 +207,7 @@ pub fn barrier() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        effect_1: Effect::None,//effect: Defense up 2 stages,
+        effect_1: Effect::StatusChange1(StatChange1::Defense(2)),//effect: Defense up 2 stages,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -226,7 +252,7 @@ pub fn bite() -> Attack {
         strength: 60,
         acc: 100,
         //ap: 25,
-        effect_1: Effect::None,//effect: 10% flinch chance,
+        effect_1: Effect::Flinch10,//effect: 10% flinch chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -268,7 +294,7 @@ pub fn bone_club() -> Attack {
         strength: 65,
         acc: 85,
         //ap: 20,
-        effect_1: Effect::None,//effect: 10% flinch,
+        effect_1: Effect::Flinch10,//effect: 10% flinch,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -296,7 +322,7 @@ pub fn bubble() -> Attack {
         strength: 20,
         acc: 100,
         //ap: 30,
-        effect_1: Effect::None,//effect: 33,2% chance speed down one stage,
+        effect_1: Effect::StatusChange2(StatChange2::IC(-1,33)),//effect: 33,2% chance speed down one stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -310,7 +336,7 @@ pub fn bubble_beam() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        effect_1: Effect::None,//effect: 33,2% chance speed down one stage,
+        effect_1: Effect::StatusChange2(StatChange2::IC(-1,33)),//effect: 33,2% chance speed down one stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -380,7 +406,7 @@ pub fn constrict() -> Attack {
         strength: 10,
         acc: 100,
         //ap: 35,
-        effect_1: Effect::None,//effect: 33,2% chance speed down one stage,
+        effect_1: Effect::StatusChange2(StatChange2::IC(-1,33)),//effect: 33,2% chance speed down one stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -451,7 +477,7 @@ pub fn defense_curl() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 40,
-        effect_1: Effect::None,//effect: Def up 1 stage,
+        effect_1: Effect::StatusChange1(StatChange1::Defense(1)),//effect: Def up 1 stage,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -815,7 +841,7 @@ pub fn growl() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 40,
-        effect_1: Effect::None,//effect: attack down 1 stage,
+        effect_1: Effect::StatusChange2(StatChange2::Attack(-1)),//effect: attack down 1 stage,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -829,7 +855,7 @@ pub fn growth() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        effect_1: Effect::None,//effect: special atk up 1 stage,
+        effect_1: Effect::StatusChange1(StatChange1::SAttack(1)),//effect: special atk up 1 stage,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -871,7 +897,7 @@ pub fn harden() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        effect_1: Effect::None,//effect: def up 1 stage,
+        effect_1: Effect::StatusChange1(StatChange1::Defense(1)),//effect: def up 1 stage,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -900,7 +926,7 @@ pub fn headbutt() -> Attack {
         strength: 70,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: 30% flinch,
+        effect_1: Effect::Flinch33,//effect: 30% flinch,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -983,7 +1009,7 @@ pub fn hyper_fang() -> Attack {
         strength: 80,
         acc: 90,
         //ap: 15,
-        effect_1: Effect::None,//effect: 10% flinch,
+        effect_1: Effect::Flinch10,//effect: 10% flinch,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1110,7 +1136,7 @@ pub fn leer() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 30,
-        effect_1: Effect::None,//effect: defense down 1 stage,
+        effect_1: Effect::StatusChange2(StatChange2::Defense(-1)),//effect: defense down 1 stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1166,7 +1192,7 @@ pub fn low_kick() -> Attack { // wenn nicht Gen 1 def: weight etc.
         strength: 50,
         acc: 90,
         //ap: 20,
-        effect_1: Effect::None,//effect: 30% flinch,
+        effect_1: Effect::Flinch33,//effect: 30% flinch, do 33
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1180,7 +1206,7 @@ pub fn meditate() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 40,
-        effect_1: Effect::None,//effect: attack up 1 stage,
+        effect_1: Effect::StatusChange1(StatChange1::Attack(1)),//effect: attack up 1 stage,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -1447,7 +1473,7 @@ pub fn psychic() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 10,
-        effect_1: Effect::None,//effect: 33,2% sp def down 1 stage,
+        effect_1: Effect::StatusChange2(StatChange2::SDC(-1,33)),//effect: 33,2% sp def down 1 stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1616,7 +1642,7 @@ pub fn rolling_kick() -> Attack {
         strength: 60,
         acc: 85,
         //ap: 15,
-        effect_1: Effect::None,//effect: 30% flinch,
+        effect_1: Effect::Flinch33,//effect: 30% flinch, do 33
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1658,7 +1684,7 @@ pub fn screech() -> Attack {
         strength: 0,
         acc: 85,
         //ap: 40,
-        effect_1: Effect::None,//effect: defense down 2 stages,
+        effect_1: Effect::StatusChange2(StatChange2::Defense(-2)),//effect: defense down 2 stages,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1700,7 +1726,7 @@ pub fn sharpen() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 30,
-        effect_1: Effect::None,//effect: attack up 1 stage,
+        effect_1: Effect::StatusChange1(StatChange1::Attack(1)),//effect: attack up 1 stage,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -1924,7 +1950,7 @@ pub fn stomp() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        effect_1: Effect::None,//effect: 30% flinch,
+        effect_1: Effect::Flinch33,//effect: 30% flinch,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1952,7 +1978,7 @@ pub fn string_shot() -> Attack {
         strength: 0,
         acc: 95,
         //ap: 40,
-        effect_1: Effect::None,//effect: init down 1 stage,
+        effect_1: Effect::StatusChange2(StatChange2::Init(-1)),//effect: init down 1 stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2050,7 +2076,7 @@ pub fn surf() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: none ,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2078,7 +2104,7 @@ pub fn sword_dance() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 20,
-        effect_1: Effect::None,//effect: attack up 2 stages,
+        effect_1: Effect::StatusChange1(StatChange1::Attack(2)),//effect: attack up 2 stages,
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -2092,7 +2118,7 @@ pub fn tackle() -> Attack {
         strength: 35,
         acc: 95,
         //ap: 35,
-        effect_1: Effect::None,//effect none
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True
     }
@@ -2106,7 +2132,7 @@ pub fn tail_whip() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 30,
-        effect_1: Effect::None,//effect: defense down 1 stage,
+        effect_1: Effect::StatusChange2(StatChange2::Defense(-1)),//effect: defense down 1 stage,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2261,7 +2287,7 @@ pub fn tri_attack() -> Attack {
         strength: 80,
         acc: 100,
         //ap: 10,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2289,7 +2315,7 @@ pub fn vine_whip() -> Attack {
         strength: 45, //gen 1 35
         acc: 100,
         //ap: 25, //gen 1 10
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2303,7 +2329,7 @@ pub fn vise_grip() -> Attack {
         strength: 55,
         acc: 100,
         //ap: 30,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2317,7 +2343,7 @@ pub fn water_gun() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 25,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2331,7 +2357,7 @@ pub fn waterfall() -> Attack {
         strength: 80,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2359,7 +2385,7 @@ pub fn wing_attack() -> Attack {
         strength: 60, //gen 1 35
         acc: 100,
         //ap: 35,
-        effect_1: Effect::None,//effect: None,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2373,7 +2399,7 @@ pub fn withdraw() -> Attack {
         strength: 0,
         acc: 0,
         //ap: 40,
-        effect_1: Effect::None,//effect: defense up 1 stage,
+        effect_1: Effect::StatusChange1(StatChange1::Defense(1)),//effect: defense up 1 stage,
         effect_2: Effect::None,
         //mirror move: False,
     }

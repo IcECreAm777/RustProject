@@ -37,6 +37,7 @@ pub enum Status {
     //Bad_Poison,
     Sleep (u8),
 }
+
 // if let Foo::Bar(ref mut wrapped_value) = foo {
 //     *wrapped_value = 15;
 // }
@@ -84,6 +85,8 @@ pub enum Effect {
     StatusChange2 (StatChange2),
     Flinch10,
     Flinch33,
+    Absorb,
+    Recoil
     //Dot (Dot)
 }
 
@@ -109,7 +112,7 @@ pub fn absorb() -> Attack {
         strength: 20,
         acc: 100,
         //ap: 25,
-        effect_1: Effect::None,//effect: Heal dmg/2, außer substitute
+        effect_1: Effect::Absorb,
         effect_2: Effect::None,
         //mirror move: True
     }
@@ -252,7 +255,7 @@ pub fn bite() -> Attack {
         strength: 60,
         acc: 100,
         //ap: 25,
-        effect_1: Effect::Flinch10,//effect: 10% flinch chance,
+        effect_1: Effect::Flinch10,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -294,7 +297,7 @@ pub fn bone_club() -> Attack {
         strength: 65,
         acc: 85,
         //ap: 20,
-        effect_1: Effect::Flinch10,//effect: 10% flinch,
+        effect_1: Effect::Flinch10,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -463,7 +466,7 @@ pub fn cut() -> Attack {
         strength: 50,
         acc: 95,
         //ap: 30,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: 30,
     }
@@ -519,7 +522,7 @@ pub fn dizzy_punch() -> Attack {
         strength: 70,
         acc: 100,
         //ap: 10,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -575,7 +578,7 @@ pub fn double_edge() -> Attack {
         strength: 120, //100 in gen1
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: recoil: 1/4 of dmg done,
+        effect_1: Effect::Recoil,//1/4th
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -969,7 +972,8 @@ pub fn horn_drill() -> Attack {
         acc: 30,
         //ap: 5,
         effect_1: Effect::None,//effect: OHK again if init > oof,
-        effect_2: Effect::None,//mirror move: False,
+        effect_2: Effect::None,
+        //mirror move: False,
     }
 }
 
@@ -981,7 +985,7 @@ pub fn hydro_pump() -> Attack {
         strength: 110,
         acc: 80,
         //ap: 5,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1009,7 +1013,7 @@ pub fn hyper_fang() -> Attack {
         strength: 80,
         acc: 90,
         //ap: 15,
-        effect_1: Effect::Flinch10,//effect: 10% flinch,
+        effect_1: Effect::Flinch10,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1065,7 +1069,7 @@ pub fn jump_kick() -> Attack {
         strength: 100, //gen 1 70
         acc: 95,
         //ap: 10,
-        effect_1: Effect::None,//effect: ,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1107,7 +1111,7 @@ pub fn leech_life() -> Attack {
         strength: 80,
         acc: 100,
         //ap: 10,
-        effect_1: Effect::None,//effect: heal up to 50% of dealt,
+        effect_1: Effect::Absorb,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1220,7 +1224,7 @@ pub fn mega_drain() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: heal up to 50% of dealt,
+        effect_1: Effect::Absorb,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1234,7 +1238,7 @@ pub fn mega_kick() -> Attack {
         strength: 120,
         acc: 75,
         //ap: 5,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1248,7 +1252,7 @@ pub fn mega_punch() -> Attack {
         strength: 80,
         acc: 85,
         //ap: 20,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1347,7 +1351,7 @@ pub fn pay_day() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 20,
-        effect_1: Effect::None,//effect: none for battle,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1361,7 +1365,7 @@ pub fn peck() -> Attack {
         strength: 35,
         acc: 100,
         //ap: 35,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1445,7 +1449,7 @@ pub fn pound() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 35,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1614,7 +1618,7 @@ pub fn rock_slide() -> Attack {
         strength: 75,
         acc: 90,
         //ap: 10,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1628,7 +1632,7 @@ pub fn rock_throw() -> Attack {
         strength: 50,
         acc: 100, //gen 1 65
         //ap: 15,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1670,7 +1674,7 @@ pub fn scratch() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 35,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1782,7 +1786,7 @@ pub fn slam() -> Attack {
         strength: 80,
         acc: 75,
         //ap: 20,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1964,7 +1968,7 @@ pub fn strength() -> Attack {
         strength: 80,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: none,
+        effect_1: Effect::None,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1992,7 +1996,7 @@ pub fn struggle() -> Attack {
         strength: 50,
         acc: 100,
         //ap: 1,
-        effect_1: Effect::None,//effect: 1/2 of dmg recoil, automatisch wenn keine ap mehr aber move,
+        effect_1: Effect::None,//effect: 1/2 of dmg recoil, automatisch wenn keine ap mehr aber move, implement specially?
         effect_2: Effect::None,
         //mirror move: False,
     }
@@ -2020,7 +2024,7 @@ pub fn submission() -> Attack {
         strength: 80,
         acc: 80,
         //ap: 20,
-        effect_1: Effect::None,//effect: 25% recoil,
+        effect_1: Effect::Recoil,//effect: 25% recoil,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2146,7 +2150,7 @@ pub fn take_down() -> Attack {
         strength: 90,
         acc: 85,
         //ap: 20,
-        effect_1: Effect::None,//effect: 1/4 recoil,
+        effect_1: Effect::Recoil,//effect: 1/4 recoil,
         effect_2: Effect::None,
         //mirror move: True,
     }

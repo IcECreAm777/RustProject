@@ -1,4 +1,5 @@
 use crate::default_structures::{pokemon, attacks, Type, self};
+use rand::prelude::*;
 
 
 pub enum Action {
@@ -134,6 +135,7 @@ impl Battle {
                 if self.p2.flinch == true {self.p2.flinch = false}
                 else {
                     Battle::attacks(&to_atk2, &mut self.p2, &mut self.p1);
+                    self.p1.flinch = false;
                     //atk2 = false;
                     for i in self.own_team.iter() {         // again check if either team dead
                         if i.current_health == 0 {
@@ -175,6 +177,7 @@ impl Battle {
                 if self.p1.flinch == true {self.p1.flinch = false;}
                 else {
                     Battle::attacks(&to_atk1, &mut self.p1, &mut self.p2);
+                    self.p2.flinch = false;
                     //atk2 = false;
                     for i in self.own_team.iter() {         // again check if either team dead
                         if i.current_health == 0 {
@@ -199,9 +202,23 @@ impl Battle {
         //effects (burn, sleep, etc.)
         match self.p1.status {
             attacks::Status::Burn | attacks::Status::Poison => self.p1.current_health -= self.p1.pokemon.health/16,
+            attacks::Status::Sleep(value) => {if value <= 1 {self.p1.status = attacks::Status::Sleep(0);}
+                                            else {self.p1.status = attacks::Status::Sleep(value-1);}},
+            attacks::Status::Freeze(value) => {if value <=1 {self.p1.status = attacks::Status::Freeze(0);}
+                                            else {self.p1.status = attacks::Status::Freeze(value-1)}}, 
             _ => {},
         };  // Poison 1/8 in gen 2+
+
+        match self.p2.status {
+            attacks::Status::Burn | attacks::Status::Poison => self.p2.current_health -= self.p2.pokemon.health/16,
+            attacks::Status::Sleep(value) => {if value <= 1 {self.p2.status = attacks::Status::Sleep(0);}
+                                            else {self.p2.status = attacks::Status::Sleep(value-1);}},
+            attacks::Status::Freeze(value) => {if value <=1 {self.p2.status = attacks::Status::Freeze(0);}
+                                            else {self.p2.status = attacks::Status::Freeze(value-1)}}, 
+            _ => {},
+        };
         // TODO: again check if either team dead after effects
+        // actually not necessarily? Battle phase just exits
 
         self.a1 = Action::Picking;
         self.a2 = Action::Picking;
@@ -212,31 +229,38 @@ impl Battle {
     } //TODO implement
 
     pub fn attacks(attack: &attacks::Attack, user: &mut Battlemon, target: &mut Battlemon) {
-        // for now: just basic damage calculation
-        let mult = effective(&attack.etype, &target.pokemon.ftype)*effective(&attack.etype, &target.pokemon.stype);
-        let brt: u32 = if user.status == attacks::Status::Burn && attack.atype == attacks::AttackType::Physical {2} else {1};
+        if attack.atype != attacks::AttackType::Status {
+            let mult = effective(&attack.etype, &target.pokemon.ftype)*effective(&attack.etype, &target.pokemon.stype);
+            let brt: u32 = if user.status == attacks::Status::Burn && attack.atype == attacks::AttackType::Physical {2} else {1};
         // TODO effect checks like constant damage/status
-        // TODO differentiate physical/special, include status etc.
-        let basic: f32 = (42*attack.strength*(user.pokemon.atk/(50*target.pokemon.def))/(brt)+2) as f32;
-        let stab: f32 = stab(&attack.etype, &user.pokemon);
-        //let z: f32 = 100-random0bis15/100
-        let damage: u32 = (basic*mult*stab) as u32;
-        if damage >= target.current_health {target.current_health = 0; return}
-        target.current_health -= damage;  //TODO crit, Z
+            let basic: f32 = if attack.atype == attacks::AttackType::Physical {(42*attack.strength*(user.pokemon.atk/(50*target.pokemon.def))/(brt)+2) as f32}
+                             else {(42*attack.strength*(user.pokemon.sp_atk/(50*target.pokemon.sp_def))/(brt)+2) as f32};
+            let stab: f32 = stab(&attack.etype, &user.pokemon);
+            let z = rand::thread_rng().gen_range(84,101) as f32;
+            let damage: u32 = (basic*mult*stab*(z/100.0)) as u32; //TODO: Crit
+            let curr = target.current_health;
+            if damage >= target.current_health {target.current_health = 0;}
+            else {target.current_health -= damage;}
+            let done = curr - target.current_health;
 
-        match attack.effect_1 {
-            attacks::Effect::Flinch10 => if 5/(11) == 0 {target.flinch = true}, //randomness einbauen
-            attacks::Effect::Flinch33 => if 5/(34) == 0 {target.flinch = true},
-            _ => {},
-        };
+            match attack.effect_1 {
+                attacks::Effect::Flinch10 => if rand::thread_rng().gen_range(0,100) <= 10 {target.flinch = true}, //randomness einbauen
+                attacks::Effect::Flinch33 => if rand::thread_rng().gen_range(0,100) <= 33 {target.flinch = true},
+                attacks::Effect::Absorb => if user.current_health + done/2 >= user.pokemon.health {user.current_health = user.pokemon.health;}
+                                           else {user.current_health += done/2;},
+                attacks::Effect::Recoil => if user.current_health - done/4 <= 0 {user.current_health = 0;}
+                                           else {user.current_health -= done/4;},
+                _ => {},
+            };
+        }
 
         }
         // TODO check for effects after dmg calc
     }
 
-    pub fn effect() {
-        //TODO implement -> apply changes based on effect
-    } 
+pub fn effect() {
+    //TODO implement -> apply changes based on effect
+} 
 
 
 pub fn stab(atk_type: &Type, pok: &pokemon::Pokemon) -> f32 {

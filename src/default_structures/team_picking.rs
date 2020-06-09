@@ -1587,5 +1587,40 @@ impl Team {
             attacks::substitue(),
             attacks::surf()
         ]);
+        self.usable_moves_table.insert(pokemon::hypno(), vec![
+            attacks::pound(),
+            attacks::hypnosis(),
+            attacks::disable(),
+            attacks::confusion(),
+            attacks::headbutt(),
+            attacks::poison_gas(),
+            attacks::psychic(),
+            attacks::meditate(),
+            attacks::mega_punch(),
+            attacks::mega_kick(),
+            attacks::toxic(),
+            attacks::body_slam(),
+            attacks::take_down(),
+            attacks::double_edge(),
+            attacks::hyper_beam(),
+            attacks::submission(),
+            attacks::counter(),
+            attacks::seismic_toss(),
+            attacks::rage(),
+            attacks::teleport(),
+            attacks::mimic(),
+            attacks::double_team(),
+            attacks::reflect(),
+            attacks::bide(),
+            attacks::metronome(),
+            attacks::skull_bash(),
+            attacks::dream_eater(),
+            attacks::rest(),
+            attacks::thunder_wave(),
+            attacks::psywave(),
+            attacks::tri_attack(),
+            attacks::substitue(),
+            attacks::flash()
+        ]);
     }
 }

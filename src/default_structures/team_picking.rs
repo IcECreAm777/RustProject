@@ -1908,5 +1908,87 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
+            self.usable_moves_table.insert(pokemon::koffing(), vec![
+                attacks::tackle(),
+                attacks::smog(),
+                attacks::sludge(),
+                attacks::smokescreen(),
+                attacks::self_destruct(),
+                attacks::haze(),
+                attacks::explosion(),
+                attacks::toxic(),
+                attacks::rage(),
+                attacks::thunderbolt(),
+                attacks::thunder(),
+                attacks::mimic(),
+                attacks::double_team(),
+                attacks::bide(),
+                attacks::fire_blast(),
+                attacks::rest(),
+                attacks::substitue()
+            ]);
+            self.usable_moves_table.insert(pokemon::krabby(), vec![
+                attacks::bubble(),
+                attacks::leer(),
+                attacks::vise_grip(),
+                attacks::guillotine(),
+                attacks::stomp(),
+                attacks::crabhammer(),
+                attacks::harden(),
+                attacks::sword_dance(),
+                attacks::toxic(),
+                attacks::body_slam(),
+                attacks::take_down(),
+                attacks::double_edge(),
+                attacks::bubble_beam(),
+                attacks::water_gun(),
+                attacks::ice_beam(),
+                attacks::blizzard(),
+                attacks::rage(),
+                attacks::mimic(),
+                attacks::double_team(),
+                attacks::bide(),
+                attacks::rest(),
+                attacks::substitue(),
+                attacks::cut(),
+                attacks::surf(),
+                attacks::strength()
+            ]);
+            self.usable_moves_table.insert(pokemon::lapras(), vec![
+                attacks::water_gun(),
+                attacks::growl(),
+                attacks::sing(),
+                attacks::mist(),
+                attacks::body_slam(),
+                attacks::confuse_ray(),
+                attacks::ice_beam(),
+                attacks::hydro_pump(),
+                attacks::toxic(),
+                attacks::horn_drill(),
+                attacks::take_down(),
+                attacks::double_edge(),
+                attacks::bubble_beam(),
+                attacks::blizzard(),
+                attacks::hyper_beam(),
+                attacks::rage(),
+                attacks::solar_beam(),
+                attacks::dragon_rage(),
+                attacks::thunderbolt(),
+                attacks::thunder(),
+                attacks::psychic(),
+                attacks::mimic(),
+                attacks::double_team(),
+                attacks::reflect(),
+                attacks::bide(),
+                attacks::skull_bash(),
+                attacks::rest(),
+                attacks::psywave(),
+                attacks::substitue(),
+                attacks::surf(),
+                attacks::strength()
+            ]);
+            self.usable_moves_table.insert(pokemon::lickitung(), vec![
+                
+            ]);
     }
 }

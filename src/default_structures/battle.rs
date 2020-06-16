@@ -1,22 +1,23 @@
 use crate::default_structures::{pokemon, attacks, Type, self};
+use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
 
 
 pub enum Action {
-    Swap (Battlemon),//(pokemon::Pokemon), // change swap to index in array
+    Swap (usize),
     Attack (attacks::Attack),
     Picking
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Battlemon {
     pub pokemon: pokemon::Pokemon,
+    pub assets: PokemonAssets,
     pub current_health: u32,
     pub evasion: u32,
     pub accuracy: u32,
     pub status: attacks::Status,
-    pub flinch: bool,
-    //TODO add sprites, sounds, etc
+    pub flinch: bool
 }
 
 pub struct Battle {
@@ -61,14 +62,7 @@ impl Battle {
         //flags/other stuff cuz Rust is weird
         let mut swap1: bool = false;
         let mut swap2: bool = false;
-        let mut to_switch: Battlemon = Battlemon {
-                                            pokemon: pokemon::dummy_pokemon(),
-                                            current_health: 0,
-                                            evasion: 0,
-                                            accuracy: 0,
-                                            status: attacks::Status::None,
-                                            flinch: false,
-                                        };
+        let mut to_switch: usize = 0; 
         let mut atk1: bool = false;
         let mut atk2: bool = false;
         let mut to_atk1: attacks::Attack = attacks::dummy();
@@ -82,7 +76,7 @@ impl Battle {
             _ => {},
         };
         if swap1 == true {
-            Battle::swap_pokemon(&mut self.p1, &to_switch);
+            Battle::swap_pokemon(&mut self.p1, &self.own_team[to_switch]);
             //swap1 = false;
         }
 
@@ -92,7 +86,7 @@ impl Battle {
             _ => {},
         };
         if swap2 == true {
-            Battle::swap_pokemon(&mut self.p2, &to_switch);
+            Battle::swap_pokemon(&mut self.p2, &self.enemy_team[to_switch]);
             //swap2 = false;
         }
         if swap1 && swap2 {return}

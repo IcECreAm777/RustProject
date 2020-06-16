@@ -85,3 +85,25 @@ impl EventHandler for PokemonGame {
         graphics::present(ctx)
     }
 }
+
+// **********************************************************************
+// Pokemon Assets
+// **********************************************************************
+
+#[derive(Clone)]
+pub struct PokemonAssets {
+    battle_cry: audio::SoundData,
+    front_sprite: graphics::Image
+}
+
+impl PokemonAssets {
+    pub fn new(ctx: &mut Context, cry: &'static str, sprite: &'static str) -> GameResult<PokemonAssets> {
+        let battle_cry = audio::SoundData::new(ctx, cry)?;
+        let front_sprite = graphics::Image::new(ctx, sprite)?;
+
+        Ok(PokemonAssets {
+            battle_cry,
+            front_sprite
+        })
+    }
+}

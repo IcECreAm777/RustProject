@@ -1,10 +1,12 @@
 
 use crate::default_structures::{Type, attacks};
+use crate::game_assets::PokemonAssets;
 use std::fmt::{Display, Result, Formatter};
+use std::hash::{Hash, Hasher};
+use ggez::{Context, GameResult};
 
-#[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
+#[derive(Clone)]
 pub struct Pokemon {
-    //id: u32, //TODO maybe later
     pub name: &'static str,
     pub ftype: Type,
     pub stype: Type,
@@ -14,7 +16,9 @@ pub struct Pokemon {
     pub sp_atk: u32,
     pub sp_def: u32,
     pub init: u32,
-    pub moves: [attacks::Attack; 4]
+    pub moves: [attacks::Attack; 4], 
+    pub sprite_path: &'static str,
+    pub battle_cry_path: &'static str
 }
 
 impl Display for Pokemon {
@@ -25,8 +29,24 @@ impl Display for Pokemon {
     }
 }
 
+impl PartialEq for Pokemon {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+}
+
+impl Eq for Pokemon {}
+
+impl Hash for Pokemon {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
+    }
+}
+
 impl Pokemon {
-    //TODO add functions
+    pub fn load_assets(&self, ctx: &mut Context) -> GameResult<PokemonAssets> {
+        PokemonAssets::new(ctx, self.battle_cry_path, self.sprite_path)
+    }
 }
 
 pub fn dummy_pokemon() -> Pokemon {

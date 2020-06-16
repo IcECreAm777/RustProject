@@ -1,5 +1,4 @@
 use crate::default_structures::{pokemon, attacks};
-use std::collections::HashMap;
 use std::vec::Vec;
 use indexmap::map::*;
 use rand::prelude::*;

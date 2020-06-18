@@ -90,8 +90,29 @@ impl EventHandler for PokemonGame {
 
 impl EventHandler for battle::Battle {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
-        //TODO: Implement stuff from battle, all sorts of updates, basics first
-        Ok(())
+        if self.timer == 0 {
+            match self.state {
+
+                _ => {},
+            };
+            Ok(())
+        }
+        else {
+            if self.dmg == 0 {} else { 
+                if self.user {
+                    if self.own_team[self.p1].current_health == 0 {self.timer -= self.dmg; self.dmg = 1;}
+                    else {self.own_team[self.p1].current_health -= 1;}
+                    self.dmg -= 1;
+                }
+                else {
+                    if self.enemy_team[self.p2].current_health == 0 {self.timer -= self.dmg; self.dmg = 1;}
+                    else {self.enemy_team[self.p2].current_health -= 1;}
+                    self.dmg -= 1;
+                }
+                self.timer -= 1;
+            }
+            Ok(())
+        }
     }
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
@@ -107,10 +128,19 @@ impl EventHandler for battle::Battle {
         let boxxx = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::stroke(5.0), boxx, graphics::BLACK)?;
         graphics::draw(ctx, &boxxx, graphics::DrawParam::default())?;
 
-        let temp = graphics::Text::new("Pokemon info here");
-        let temp2 = graphics::Text::new("Pokemon info here");
-        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:80.0,y:50.0}).color(graphics::WHITE))?;
-        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:580.0,y:50.0}).color(graphics::WHITE))?;
+        let health1 = graphics::Rect::new(100.0,50.0,100.0*self.own_team[self.p1].hp_fract(),50.0);
+        let c1 = if self.own_team[self.p1].hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
+        let h1 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health1, c1)?;
+        let health2 = graphics::Rect::new(600.0,50.0,100.0*self.enemy_team[self.p2].hp_fract(),50.0);
+        let c2 = if self.enemy_team[self.p2].hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
+        let h2 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health2, c2)?;
+        graphics::draw(ctx, &h1, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &h2, graphics::DrawParam::default())?;
+
+        let temp = graphics::Text::new(self.own_team[self.p1].name());
+        let temp2 = graphics::Text::new(self.enemy_team[self.p2].name());
+        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:40.0,y:20.0}).color(graphics::WHITE))?;
+        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:20.0}).color(graphics::WHITE))?;
         let ball = graphics::Text::new("Icon here?");
         graphics::draw(ctx, &ball, graphics::DrawParam::default().dest(mint::Point2{x:365.0,y:50.0}).color(graphics::BLACK))?;
         let info = graphics::Text::new("Info regarding battle, attacks, status changes etc will be shown here");

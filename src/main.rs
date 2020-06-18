@@ -18,7 +18,7 @@ fn main() {
 
     //init game
     let mut my_game = PokemonGame::new(&mut ctx);
-    //let mut my_game = battle::Battle::new([battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy()], [battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy()]);
+    //let mut my_game = battle::Battle::new([battle::Battlemon::dummy();6], [battle::Battlemon::dummy();6]);
         // for testing Battle stuff seperated
     // Run!
     match event::run(&mut ctx, &mut event_loop, &mut my_game) {

@@ -34,12 +34,12 @@ pub fn dummy_pokemon() -> Pokemon {
         name: "Dummy",
         ftype: Type::None,
         stype: Type::None,
-        health: 0,
-        atk: 0,
-        def: 0,
-        sp_atk: 0,
-        sp_def: 0,
-        init: 0,
+        health: 100,
+        atk: 10,
+        def: 10,
+        sp_atk: 10,
+        sp_def: 10,
+        init: 10,
         moves: [attacks::dummy(); 4]
     }
 }

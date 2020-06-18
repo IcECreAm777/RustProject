@@ -9,7 +9,7 @@ pub enum Action {
     Picking
 }
 
-#[derive(Clone)]
+#[derive(Clone,Copy)]
 pub struct Battlemon {
     pub pokemon: pokemon::Pokemon,
     //pub assets: PokemonAssets,
@@ -24,23 +24,44 @@ impl Battlemon {
     pub fn dummy() -> Battlemon {
         Battlemon {
             pokemon: default_structures::pokemon::dummy_pokemon(),
-            current_health: 0,
+            current_health: pokemon::dummy_pokemon().health,
             evasion: 0,
             accuracy: 0,
             status: attacks::Status::None,
             flinch: false,
         }
     }
+
+    pub fn name(self) -> &'static str {
+        &self.pokemon.name
+    }
+
+    pub fn hp_fract(self) -> f32 {
+        (self.current_health as f32)/(self.pokemon.health as f32)
+    }
+}
+#[derive(Clone, PartialEq)]
+pub enum State {
+    Picking,
+    A1,
+    A2,
+    E1,
+    E2,
+    Swap,
 }
 
 pub struct Battle {
-    own_team: [Battlemon; 6],
-    enemy_team: [Battlemon; 6],
-    pub p1: u8,
-    pub p2: u8,
+    pub own_team: [Battlemon; 6],
+    pub enemy_team: [Battlemon; 6],
+    pub p1: usize,
+    pub p2: usize,
     pub a1: Action,
     pub a2: Action,
     pub text: &'static str,
+    pub state: State,
+    pub dmg: u32,
+    pub timer: u32,
+    pub user: bool,
 }
 
 impl Battle {
@@ -53,6 +74,10 @@ impl Battle {
             a1: Action::Picking,
             a2: Action::Picking,
             text: "",
+            state: State::Picking,
+            dmg: 0,
+            timer: 0,
+            user: true,
         }
     }
 

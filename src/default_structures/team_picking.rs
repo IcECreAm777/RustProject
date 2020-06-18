@@ -3493,7 +3493,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::seadra(), vec![
+            self.usable_moves_table.insert(pokemon::seaking(), vec![
                 attacks::peck(),
                 attacks::tail_whip(),
                 attacks::supersonic(),

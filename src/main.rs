@@ -13,14 +13,12 @@ fn main() {
     let (mut ctx, mut event_loop) =
     ContextBuilder::new("Pokemon Rust edition", "Niklas Rosseck _ Kilian Woick _ Henning Gütschow")
         .window_setup(WindowSetup::default().title("Pokemon Stadium - Rust Edition").icon("/ball.png"))
-        .window_mode(ggez::conf::WindowMode::default().dimensions(800.0, 600.0))
         .build()
         .unwrap();
 
     //init game
     let mut my_game = PokemonGame::new(&mut ctx);
-    //let mut my_game = battle::Battle::new([battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy()], [battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy(), battle::Battlemon::dummy()]);
-        // for testing Battle stuff seperated
+
     // Run!
     match event::run(&mut ctx, &mut event_loop, &mut my_game) {
         Ok(_) => println!("Exited cleanly."),

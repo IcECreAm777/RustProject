@@ -1,5 +1,7 @@
 use ggez::{Context, ContextBuilder, GameResult, graphics, filesystem, audio};
 use ggez::event::{self, EventHandler};
+use crate::default_structures::battle;
+use mint;
 
 // **********************************************************************
 // Assets used in every scene
@@ -83,6 +85,39 @@ impl EventHandler for PokemonGame {
         // Draw code here...
 
         graphics::present(ctx)
+    }
+}
+
+impl EventHandler for battle::Battle {
+    fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
+        //TODO: Implement stuff from battle, all sorts of updates, basics first
+        Ok(())
+    }
+
+    fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
+        graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
+
+        let bar1 = graphics::Rect::new(0.0,0.0,300.0,100.0);
+        let r1 = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), bar1, graphics::BLACK)?;
+        graphics::draw(ctx, &r1, graphics::DrawParam::default())?;
+        let bar2 = graphics::Rect::new(500.0,0.0,300.0,100.0);
+        let r2 = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), bar2, graphics::BLACK)?;
+        graphics::draw(ctx, &r2, graphics::DrawParam::default())?;
+        let boxx = graphics::Rect::new(0.0,500.0,800.0,100.0);
+        let boxxx = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::stroke(5.0), boxx, graphics::BLACK)?;
+        graphics::draw(ctx, &boxxx, graphics::DrawParam::default())?;
+
+        let temp = graphics::Text::new("Pokemon info here");
+        let temp2 = graphics::Text::new("Pokemon info here");
+        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:80.0,y:50.0}).color(graphics::WHITE))?;
+        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:580.0,y:50.0}).color(graphics::WHITE))?;
+        let ball = graphics::Text::new("Icon here?");
+        graphics::draw(ctx, &ball, graphics::DrawParam::default().dest(mint::Point2{x:365.0,y:50.0}).color(graphics::BLACK))?;
+        let info = graphics::Text::new("Info regarding battle, attacks, status changes etc will be shown here");
+        graphics::draw(ctx, &info, graphics::DrawParam::default().dest(mint::Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
+        graphics::present(ctx)?;
+
+        Ok(())
     }
 }
 

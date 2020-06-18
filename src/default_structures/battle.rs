@@ -36,10 +36,11 @@ impl Battlemon {
 pub struct Battle {
     own_team: [Battlemon; 6],
     enemy_team: [Battlemon; 6],
-    pub p1: Battlemon,
-    pub p2: Battlemon,
+    pub p1: u8,
+    pub p2: u8,
     pub a1: Action,
     pub a2: Action,
+    pub text: &'static str,
 }
 
 impl Battle {
@@ -47,14 +48,15 @@ impl Battle {
         Battle {
             own_team: own,
             enemy_team: enemy,
-            p1: Battlemon::dummy(),
-            p2: Battlemon::dummy(),
+            p1: 0,
+            p2: 0,
             a1: Action::Picking,
             a2: Action::Picking,
+            text: "",
         }
     }
 
-    pub fn pick_phase(&mut self) {
+    /*pub fn pick_phase(&mut self) {
         let own_picking = std::thread::spawn(|| {
            //TODO implement picking algorithm 
            Action::Attack(attacks::dummy())
@@ -264,7 +266,7 @@ impl Battle {
 
         }
         // TODO check for effects after dmg calc
-    }
+    */}
 
 pub fn effect() {
     //TODO implement -> apply changes based on effect

@@ -12,12 +12,25 @@ pub enum Action {
 #[derive(Clone)]
 pub struct Battlemon {
     pub pokemon: pokemon::Pokemon,
-    pub assets: PokemonAssets,
+    //pub assets: PokemonAssets,
     pub current_health: u32,
     pub evasion: u32,
     pub accuracy: u32,
     pub status: attacks::Status,
     pub flinch: bool
+}
+
+impl Battlemon {
+    pub fn dummy() -> Battlemon {
+        Battlemon {
+            pokemon: default_structures::pokemon::dummy_pokemon(),
+            current_health: 0,
+            evasion: 0,
+            accuracy: 0,
+            status: attacks::Status::None,
+            flinch: false,
+        }
+    }
 }
 
 pub struct Battle {
@@ -34,8 +47,8 @@ impl Battle {
         Battle {
             own_team: own,
             enemy_team: enemy,
-            p1: own[0],
-            p2: enemy[0],
+            p1: Battlemon::dummy(),
+            p2: Battlemon::dummy(),
             a1: Action::Picking,
             a2: Action::Picking,
         }
@@ -76,7 +89,7 @@ impl Battle {
             _ => {},
         };
         if swap1 == true {
-            Battle::swap_pokemon(&mut self.p1, &self.own_team[to_switch]);
+            Battle::swap_pokemon(&mut self.p1, &mut self.own_team[to_switch]);
             //swap1 = false;
         }
 
@@ -86,7 +99,7 @@ impl Battle {
             _ => {},
         };
         if swap2 == true {
-            Battle::swap_pokemon(&mut self.p2, &self.enemy_team[to_switch]);
+            Battle::swap_pokemon(&mut self.p2, &mut self.enemy_team[to_switch]);
             //swap2 = false;
         }
         if swap1 && swap2 {return}
@@ -218,8 +231,9 @@ impl Battle {
         self.a2 = Action::Picking;
     }
 
-    pub fn swap_pokemon(current: &mut Battlemon, pok: &Battlemon) {
-        *current = *pok;
+    pub fn swap_pokemon(current: &mut Battlemon, pok: &mut Battlemon) {
+        //current = &pok;
+        return
     } //TODO implement
 
     pub fn attacks(attack: &attacks::Attack, user: &mut Battlemon, target: &mut Battlemon) {

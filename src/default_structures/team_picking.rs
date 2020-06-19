@@ -12,7 +12,8 @@ impl Team {
     pub fn new() -> Team {
         let mut team = Team {
             usable_moves_table: IndexMap::with_capacity(151),
-            team: [pokemon::dummy_pokemon(); 6]
+            team: [pokemon::dummy_pokemon(), pokemon::dummy_pokemon(), pokemon::dummy_pokemon(),
+                    pokemon::dummy_pokemon(), pokemon::dummy_pokemon(), pokemon::dummy_pokemon()]
         };
         team.init_usable_moves();
         team
@@ -30,7 +31,7 @@ impl Team {
         let mut rng = rand::thread_rng();
         for i in 0..self.team.len() {
             let pokedex = rng.gen_range(0, self.usable_moves_table.len());
-            self.team[i] = *self.usable_moves_table.get_index(pokedex).unwrap().0;
+            self.team[i] = self.usable_moves_table.get_index(pokedex).unwrap().0.clone();
             //prevent duplicates
             while self.has_dup(&self.team[i].moves) {
                 for j in 0..self.team[i].moves.len() {

@@ -9,7 +9,7 @@ pub enum Action {
     Picking
 }
 
-#[derive(Clone,Copy)]
+#[derive(Clone)]
 pub struct Battlemon {
     pub pokemon: pokemon::Pokemon,
     //pub assets: PokemonAssets,

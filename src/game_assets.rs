@@ -1,7 +1,9 @@
-use ggez::{Context, ContextBuilder, GameResult, graphics, filesystem, audio};
+use ggez::{Context, ContextBuilder, GameResult, filesystem};
+use ggez::audio::{self, Source, SoundSource};
 use ggez::event::{self, EventHandler};
-use crate::default_structures::battle;
-use mint;
+use ggez::graphics::{self, Image, Color};
+use crate::default_structures::{battle, team_picking};
+use cgmath;
 
 // **********************************************************************
 // Assets used in every scene
@@ -15,7 +17,7 @@ struct GeneralGameAssets {
 
 impl GeneralGameAssets {
     fn new(ctx: &mut Context) -> GameResult<GeneralGameAssets> {
-        let title_font = graphics::Font::new(ctx, "/PokemonSolid.ttf")?;
+        let title_font = graphics::Font::new(ctx, "/Pokemon_Solid.ttf")?;
 
         Ok(GeneralGameAssets {
             title_font
@@ -24,15 +26,18 @@ impl GeneralGameAssets {
 }
 
 struct TeamPickingAssets {
-    music: audio::SoundData
+    music: audio::Source,
+    background: Image
 }
 
 impl TeamPickingAssets {
     fn new(ctx: &mut Context) -> GameResult<TeamPickingAssets> {
-        let music = audio::SoundData::new(ctx, "/sounds/team_picking.mp3")?;
+        let music = audio::Source::new(ctx, "/sounds/team_picking.mp3")?;
+        let background = Image::new(ctx, "/team_picking_background.png")?;
 
         Ok(TeamPickingAssets {
-            music
+            music,
+            background
         })
     }
 }
@@ -63,12 +68,17 @@ impl Default for InputState {
 /// Contains the necessary data to run the game
 pub struct PokemonGame {
     //TODO implement state - data for the game
+    inputs: InputState, 
+    assets: GeneralGameAssets
 }
 
 impl PokemonGame {
     pub fn new(_ctx: &mut Context) -> PokemonGame {
         // Load/create resources here: images, fonts, sounds, etc.
-        PokemonGame { }
+        PokemonGame { 
+            inputs: InputState::default(),
+            assets: GeneralGameAssets::new(_ctx).unwrap()
+        }
     }
 }
 
@@ -85,6 +95,42 @@ impl EventHandler for PokemonGame {
         // Draw code here...
 
         graphics::present(ctx)
+    }
+}
+
+pub struct TeamPickingGame {
+    assets: TeamPickingAssets,
+    teams: team_picking::Team,
+    general: PokemonGame
+}
+
+impl TeamPickingGame {
+    pub fn new (_ctx: &mut Context) -> TeamPickingGame {
+        let mut tpg = TeamPickingGame {
+            assets: TeamPickingAssets::new(_ctx).unwrap(),
+            teams: team_picking::Team::new(),
+            general: PokemonGame::new(_ctx)
+        };
+        let _ = tpg.assets.music.play_detached(); //TODO doesn't loop
+        tpg
+    }
+}
+
+impl EventHandler for TeamPickingGame {
+    fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
+        //TODO update code here
+
+        Ok(())
+    }
+
+    fn draw(&mut self, _ctx: &mut Context) -> GameResult<()> {
+        graphics::clear(_ctx, graphics::WHITE);
+
+        graphics::draw(_ctx, &self.assets.background, graphics::DrawParam::default())?;
+
+        //TODO draw code here
+
+        graphics::present(_ctx)
     }
 }
 
@@ -115,6 +161,7 @@ impl EventHandler for battle::Battle {
         }
     }
 
+    
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
 
@@ -128,17 +175,17 @@ impl EventHandler for battle::Battle {
         let boxxx = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::stroke(5.0), boxx, graphics::BLACK)?;
         graphics::draw(ctx, &boxxx, graphics::DrawParam::default())?;
 
-        let health1 = graphics::Rect::new(100.0,50.0,100.0*self.own_team[self.p1].hp_fract(),50.0);
-        let c1 = if self.own_team[self.p1].hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
+        let health1 = graphics::Rect::new(100.0,50.0,100.0 * self.own_team[self.p1].clone().hp_fract(),50.0);
+        let c1 = if self.own_team[self.p1].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h1 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health1, c1)?;
-        let health2 = graphics::Rect::new(600.0,50.0,100.0*self.enemy_team[self.p2].hp_fract(),50.0);
-        let c2 = if self.enemy_team[self.p2].hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
+        let health2 = graphics::Rect::new(600.0,50.0,100.0*self.enemy_team[self.p2].clone().hp_fract(),50.0);
+        let c2 = if self.enemy_team[self.p2].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h2 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health2, c2)?;
         graphics::draw(ctx, &h1, graphics::DrawParam::default())?;
         graphics::draw(ctx, &h2, graphics::DrawParam::default())?;
 
-        let temp = graphics::Text::new(self.own_team[self.p1].name());
-        let temp2 = graphics::Text::new(self.enemy_team[self.p2].name());
+        let temp = graphics::Text::new(self.own_team[self.p1].clone().name());
+        let temp2 = graphics::Text::new(self.enemy_team[self.p2].clone().name());
         graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:40.0,y:20.0}).color(graphics::WHITE))?;
         graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:20.0}).color(graphics::WHITE))?;
         let ball = graphics::Text::new("Icon here?");

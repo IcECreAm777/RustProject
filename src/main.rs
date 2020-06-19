@@ -2,22 +2,23 @@ mod default_structures;
 mod game_assets;
 
 use crate::default_structures::{pokemon, attacks, team_picking, battle};
-use crate::game_assets::{PokemonGame};
+use crate::game_assets::{PokemonGame, TeamPickingGame};
 
 use ggez::{Context, ContextBuilder, GameResult, graphics, filesystem};
 use ggez::event::{self, EventHandler};
-use ggez::conf::WindowSetup;
+use ggez::conf::{WindowSetup, WindowMode, FullscreenType};
 
 fn main() {
     // Make a Context and an EventLoop.
     let (mut ctx, mut event_loop) =
     ContextBuilder::new("Pokemon Rust edition", "Niklas Rosseck _ Kilian Woick _ Henning Gütschow")
         .window_setup(WindowSetup::default().title("Pokemon Stadium - Rust Edition").icon("/ball.png"))
+        .window_mode(WindowMode::default().fullscreen_type(FullscreenType::True))
         .build()
         .unwrap();
 
     //init game
-    let mut my_game = PokemonGame::new(&mut ctx);
+    let mut my_game = TeamPickingGame::new(&mut ctx);
     //let mut my_game = battle::Battle::new([battle::Battlemon::dummy();6], [battle::Battlemon::dummy();6]);
         // for testing Battle stuff seperated
     // Run!

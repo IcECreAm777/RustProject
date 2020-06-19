@@ -3,7 +3,7 @@ use ggez::audio::{self, Source, SoundSource};
 use ggez::event::{self, EventHandler};
 use ggez::graphics::{self, Image, Color};
 use crate::default_structures::{battle, team_picking};
-use cgmath;
+use mint;
 
 // **********************************************************************
 // Assets used in every scene
@@ -138,7 +138,33 @@ impl EventHandler for battle::Battle {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         if self.timer == 0 {
             match self.state {
-
+                battle::State::Picking => {if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
+                        self.state = self.prio();
+                        self.timer = 5;
+                    }
+                },
+                battle::State::Between => {
+                    self.state = self.between();
+                    self.timer = 5;
+                },
+                battle::State::A1 => {
+                    match self.a1 {
+                        battle::Action::Swap(slot) => self.swap(slot, true),
+                        battle::Action::Attack(atk) => self.attack(atk),
+                        _ => {},
+                    };
+                    self.a1 = battle::Action::Picking;
+                    self.state = battle::State::Between;
+                },
+                battle::State::A2 => {
+                    match self.a2 {
+                        battle::Action::Swap(slot) => self.swap(slot, false),
+                        battle::Action::Attack(atk) => self.attack(atk),
+                        _ => {},
+                    };
+                    self.a2 = battle::Action::Picking;
+                    self.state = battle::State::Between;
+                },
                 _ => {},
             };
             Ok(())
@@ -190,7 +216,7 @@ impl EventHandler for battle::Battle {
         graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:20.0}).color(graphics::WHITE))?;
         let ball = graphics::Text::new("Icon here?");
         graphics::draw(ctx, &ball, graphics::DrawParam::default().dest(mint::Point2{x:365.0,y:50.0}).color(graphics::BLACK))?;
-        let info = graphics::Text::new("Info regarding battle, attacks, status changes etc will be shown here");
+        let info = graphics::Text::new(self.text.as_str());
         graphics::draw(ctx, &info, graphics::DrawParam::default().dest(mint::Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
         graphics::present(ctx)?;
 

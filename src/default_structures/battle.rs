@@ -2,7 +2,7 @@ use crate::default_structures::{pokemon, attacks, Type, self};
 use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
 
-
+#[derive(PartialEq)]
 pub enum Action {
     Swap (usize),
     Attack (attacks::Attack),
@@ -32,22 +32,23 @@ impl Battlemon {
         }
     }
 
-    pub fn name(self) -> &'static str {
-        &self.pokemon.name
+    pub fn name(&self) -> &'static str {
+        self.pokemon.name
     }
 
-    pub fn hp_fract(self) -> f32 {
+    pub fn hp_fract(&self) -> f32 {
         (self.current_health as f32)/(self.pokemon.health as f32)
     }
 }
 #[derive(Clone, PartialEq)]
 pub enum State {
     Picking,
+    Between,
     A1,
     A2,
+    After,
     E1,
     E2,
-    Swap,
 }
 
 pub struct Battle {
@@ -57,7 +58,7 @@ pub struct Battle {
     pub p2: usize,
     pub a1: Action,
     pub a2: Action,
-    pub text: &'static str,
+    pub text: String,
     pub state: State,
     pub dmg: u32,
     pub timer: u32,
@@ -73,7 +74,7 @@ impl Battle {
             p2: 0,
             a1: Action::Picking,
             a2: Action::Picking,
-            text: "",
+            text: "Shit gonna stand here depending on what is happening".to_string(),
             state: State::Picking,
             dmg: 0,
             timer: 0,
@@ -81,6 +82,68 @@ impl Battle {
         }
     }
 
+    // check if the current chosen attack (true for own, false for enemy) has the Prio(rity) effect
+    pub fn has_prio(&self, place: bool) -> bool {    // true for own_team, false for enemy_team
+        if place {
+            match self.a1 {
+                Action::Attack(attack) => (attack.effect_1 == attacks::Effect::Prio),
+                _ => false,
+            };
+        }
+        else {
+            match self.a2 {
+                Action::Attack(attack) => (attack.effect_1 == attacks::Effect::Prio),
+                _ => false,
+            };
+        }
+        false
+    }
+
+    // determine upon picking of both actions, which to perform first
+    pub fn prio(&self) -> State {
+        match self.a1 {
+            Action::Swap(_) => return State::A1,
+            _ => {},
+        };
+        match self.a2 {
+            Action::Swap(_) => return State::A2,
+            _ => {},
+        };
+        let bool1 = self.has_prio(true);
+        let bool2 = self.has_prio(false);
+        let state = if bool1 == bool2 {if self.speed_test() {State::A1} else {State::A2}}
+                    else {if bool1 {State::A1}
+                            else {State::A2}};
+        state
+    }
+
+    // function to compare the speed values of two Battlemon
+    pub fn speed_test(&self) -> bool {
+        self.own_team[self.p1].pokemon.init >= self.enemy_team[self.p2].pokemon.init
+    }
+
+    // function to find out what action needs to be performed next
+    pub fn between(&self) -> State {
+        if self.a1 == Action::Picking {State::A2} 
+        else {if self.a2 == Action::Picking {State::A1}
+                else {State::After}
+        }
+    }
+
+    pub fn swap(&mut self, slot: usize, which: bool) {
+        if which {self.p1 = slot;}
+        else {self.p2 = slot;}
+        self.timer = 60;
+        self.text = String::new();
+        if which {self.text.push_str("You sent out ");
+                    self.text.push_str(self.own_team[slot].pokemon.name);}
+        else {self.text.push_str("Opponent sent out ");
+                self.text.push_str(self.enemy_team[slot].pokemon.name);}
+    }
+
+    pub fn attack(&mut self, atk: attacks::Attack) {
+        // TODO implement atk stuff
+    }
     /*pub fn pick_phase(&mut self) {
         let own_picking = std::thread::spawn(|| {
            //TODO implement picking algorithm 
@@ -132,19 +195,7 @@ impl Battle {
         if swap1 && swap2 {return}
 
         //attack
-        //decide who moves first
-        let prio: bool;
-        if to_atk1.effect_1 == attacks::Effect::Prio || to_atk1.effect_2 == attacks::Effect::Prio {
-            if to_atk2.effect_2 == attacks::Effect::Prio || to_atk2.effect_2 == attacks::Effect::Prio {
-                prio = self.p1.pokemon.init >= self.p2.pokemon.init;
-            }
-            else {prio = true;}
-        }
-        else {
-            if to_atk2.effect_2 == attacks::Effect::Prio || to_atk2.effect_2 == attacks::Effect::Prio {prio = false;}
-            else {prio = self.p1.pokemon.init >= self.p2.pokemon.init;}
-        }
-
+        
         if prio {       // TODO: Add freeze/paralysis/sleep check
             if atk1 == true {
                 Battle::attacks(&to_atk1, &mut self.p1, &mut self.p2);

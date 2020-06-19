@@ -60,7 +60,9 @@ pub fn dummy_pokemon() -> Pokemon {
         sp_atk: 0,
         sp_def: 0,
         init: 0,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "",
+        sprite_path: ""
     }
 }
 
@@ -75,7 +77,9 @@ pub fn abra() -> Pokemon {
         sp_atk: 193,
         sp_def: 103,
         init: 166,
-        moves: [attacks::dummy(); 4]  
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/063 - Abra.wav",
+        sprite_path: "/sprites/63.png"  
     }
 }
 
@@ -90,7 +94,9 @@ pub fn aerodactyl() -> Pokemon {
         sp_atk: 112,
         sp_def: 139,
         init: 238,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/142 - Aerodactyl.wav",
+        sprite_path: "/sprites/142.png" 
     }
 }
 
@@ -105,7 +111,9 @@ pub fn alakazam() -> Pokemon {
         sp_atk: 247,
         sp_def: 157,
         init: 220,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/065 - Alakazam.wav",
+        sprite_path: "/sprites/65.png" 
     }
 }
 
@@ -120,7 +128,9 @@ pub fn arbok() -> Pokemon {
         sp_atk: 121,
         sp_def: 146,
         init: 148,
-        moves: [attacks::dummy(); 4]  
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/024 - Arbok.wav",
+        sprite_path: "/sprites/24.png" 
     }
 }
 
@@ -135,7 +145,9 @@ pub fn arcanine() -> Pokemon {
         sp_atk: 184,
         sp_def: 148,
         init: 175,
-        moves: [attacks::dummy(); 4]  
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/059 - Arcanine.wav",
+        sprite_path: "/sprites/59.png" 
     }
 }
 
@@ -150,7 +162,9 @@ pub fn articuno() -> Pokemon {
         sp_atk: 175,
         sp_def: 229,
         init: 157,
-        moves: [attacks::dummy(); 4]   
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/144 - Articuno.wav",
+        sprite_path: "/sprites/144.png" 
     }
 }
 
@@ -165,7 +179,9 @@ pub fn beedrill() -> Pokemon {
         sp_atk: 85,
         sp_def: 148,
         init: 139,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/015 - Beedrill.wav",
+        sprite_path: "/sprites/15.png" 
     }
 }
 
@@ -180,7 +196,9 @@ pub fn bellsprout() -> Pokemon {
         sp_atk: 130,
         sp_def: 58,
         init: 76,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/069 - Bellsprout.wav",
+        sprite_path: "/sprites/69.png" 
     }
 }
 
@@ -195,7 +213,9 @@ pub fn blastoise() -> Pokemon {
         sp_atk: 157,
         sp_def: 193,
         init: 144,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/009 - Blastoise.wav",
+        sprite_path: "/sprites/9.png" 
     }
 }
 
@@ -210,7 +230,9 @@ pub fn bulbasur() -> Pokemon {
         sp_atk: 121,
         sp_def: 121,
         init: 85,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/001 - bulbasaur.wav",
+        sprite_path: "/sprites/1.png" 
     }
 }
 
@@ -225,7 +247,9 @@ pub fn butterfree() -> Pokemon {
         sp_atk: 148,
         sp_def: 148,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/012 - Butterfree.wav",
+        sprite_path: "/sprites/12.png" 
     }
 }
 
@@ -240,7 +264,9 @@ pub fn caterpie() -> Pokemon {
         sp_atk: 40,
         sp_def: 40,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/010 - Caterpie.wav",
+        sprite_path: "/sprites/10.png" 
     }
 }
 
@@ -255,7 +281,9 @@ pub fn chansey() -> Pokemon {
         sp_atk: 67,
         sp_def: 193,
         init: 94,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/113 - Chansey.wav",
+        sprite_path: "/sprites/113.png" 
     }
 }
 
@@ -270,7 +298,9 @@ pub fn charizard() -> Pokemon {
         sp_atk: 200,
         sp_def: 157,
         init: 184,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/006 - Charizard.wav",
+        sprite_path: "/sprites/6.png" 
     }
 }
 
@@ -285,7 +315,9 @@ pub fn charmander() -> Pokemon {
         sp_atk: 112,
         sp_def: 94,
         init: 121,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/004 - Charmander.wav",
+        sprite_path: "/sprites/4.png" 
     }
 }
 
@@ -300,7 +332,9 @@ pub fn charmaleon() -> Pokemon {
         sp_atk: 148,
         sp_def: 121,
         init: 148,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/005 - Charmaleon.wav",
+        sprite_path: "/sprites/5.png" 
     }
 }
 
@@ -315,7 +349,9 @@ pub fn clefable() -> Pokemon {
         sp_atk: 157,
         sp_def: 166,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/036 - Clefable.wav",
+        sprite_path: "/sprites/36.png" 
     }
 }
 
@@ -330,7 +366,9 @@ pub fn clefairy() -> Pokemon {
         sp_atk: 112,
         sp_def: 121,
         init: 67,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/035 - Clefairy.wav",
+        sprite_path: "/sprites/35.png" 
     }
 }
 
@@ -345,7 +383,9 @@ pub fn cloyster() -> Pokemon {
         sp_atk: 157,
         sp_def: 85,
         init: 130,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/091 - Cloyster.wav",
+        sprite_path: "/sprites/91.png" 
     }
 }
 
@@ -360,7 +400,9 @@ pub fn cubone() -> Pokemon {
         sp_atk: 76,
         sp_def: 94,
         init: 67,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/104 - Cubone.wav",
+        sprite_path: "/sprites/104.png" 
     }
 }
 
@@ -375,7 +417,9 @@ pub fn dewgong() -> Pokemon {
         sp_atk: 130,
         sp_def: 175,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/087 - Dewgong.wav",
+        sprite_path: "/sprites/87.png" 
     }
 }
 pub fn diglett() -> Pokemon {
@@ -389,7 +433,9 @@ pub fn diglett() -> Pokemon {
         sp_atk: 67,
         sp_def: 85,
         init: 175,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/050 - Diglett.wav",
+        sprite_path: "/sprites/50.png" 
     }
 }
 
@@ -404,7 +450,9 @@ pub fn ditto() -> Pokemon {
         sp_atk: 90,
         sp_def: 90,
         init: 90,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/132 - Ditto.wav",
+        sprite_path: "/sprites/132.png" 
     }
 }
 
@@ -419,7 +467,9 @@ pub fn dodrio() -> Pokemon {
         sp_atk: 112,
         sp_def: 112,
         init: 184,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/085 - Dodrio.wav",
+        sprite_path: "/sprites/85.png" 
     }
 }
 
@@ -434,7 +484,9 @@ pub fn doduo() -> Pokemon {
         sp_atk: 67,
         sp_def: 67,
         init: 139,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/084 - Doduo.wav",
+        sprite_path: "/sprites/84.png" 
     }
 }
 
@@ -449,7 +501,9 @@ pub fn dragonair() -> Pokemon {
         sp_atk: 130,
         sp_def: 130,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/148 - Dragonair.wav",
+        sprite_path: "/sprites/148.png" 
     }
 }
 
@@ -464,7 +518,9 @@ pub fn dragonite() -> Pokemon {
         sp_atk: 184,
         sp_def: 184,
         init: 148,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/149 - Dragonite.wav",
+        sprite_path: "/sprites/149.png" 
     }
 }
 
@@ -479,7 +535,9 @@ pub fn dratini() -> Pokemon {
         sp_atk: 94,
         sp_def: 94,
         init: 94,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/147 - Dratini.wav",
+        sprite_path: "/sprites/147.png" 
     }
 }
 
@@ -494,7 +552,9 @@ pub fn drowzee() -> Pokemon {
         sp_atk: 81,
         sp_def: 166,
         init: 80,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/096 - Drowzee.wav",
+        sprite_path: "/sprites/96.png" 
     }
 }
 
@@ -509,7 +569,9 @@ pub fn dugtrio() -> Pokemon {
         sp_atk: 94,
         sp_def: 130,
         init: 220,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/051 - Dugtrio.wav",
+        sprite_path: "/sprites/51.png" 
     }
 }
 
@@ -524,7 +586,9 @@ pub fn eevee() -> Pokemon {
         sp_atk: 85,
         sp_def: 121,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/133 - Eevee.wav",
+        sprite_path: "/sprites/133.png"
     }
 }
 
@@ -539,7 +603,9 @@ pub fn ekans() -> Pokemon {
         sp_atk: 76,
         sp_def: 101,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/023 - Ekans.wav",
+        sprite_path: "/sprites/23.png"
     }
 }
 
@@ -554,7 +620,9 @@ pub fn electabuzz() -> Pokemon {
         sp_atk: 175,
         sp_def: 157,
         init: 193,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/125 - Electabuzz.wav",
+        sprite_path: "/sprites/125.png"
     }
 }
 
@@ -569,7 +637,9 @@ pub fn electrode() -> Pokemon {
         sp_atk: 148,
         sp_def: 148,
         init:256 ,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/101 - Electrode.wav",
+        sprite_path: "/sprites/101.png"
     }
 }
 
@@ -584,7 +654,9 @@ pub fn exeggcute() -> Pokemon {
         sp_atk: 112,
         sp_def: 85,
         init: 76,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/102 - Exeggcute.wav",
+        sprite_path: "/sprites/102.png"
     }
 }
 
@@ -599,7 +671,9 @@ pub fn exeggcutor() -> Pokemon {
         sp_atk: 229,
         sp_def: 121,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/103 - Exeggcutor.wav",
+        sprite_path: "/sprites/103.png"
     }
 }
 
@@ -614,7 +688,9 @@ pub fn farfetch() -> Pokemon {
         sp_atk: 108,
         sp_def: 116,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/083 - Farfetch'd.wav",
+        sprite_path: "/sprites/83.png"
     }
 }
 
@@ -629,7 +705,9 @@ pub fn fearow() -> Pokemon {
         sp_atk: 114,
         sp_def: 114,
         init: 184,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/022 - Fearow.wav",
+        sprite_path: "/sprites/22.png"
     }
 }
 
@@ -644,7 +722,9 @@ pub fn flareon() -> Pokemon {
         sp_atk: 175,
         sp_def: 202,
         init: 121,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/136 - Flareon.wav",
+        sprite_path: "/sprites/136.png"
     }
 }
 
@@ -659,7 +739,9 @@ pub fn gastly() -> Pokemon {
         sp_atk: 184,
         sp_def: 67,
         init: 148,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/092 - Gastly.wav",
+        sprite_path: "/sprites/92.png"
     }
 }
 
@@ -674,7 +756,9 @@ pub fn gengar() -> Pokemon {
         sp_atk: 238,
         sp_def: 139,
         init: 202,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/094 - Gengar.wav",
+        sprite_path: "/sprites/94.png"
     }
 }
 
@@ -689,7 +773,9 @@ pub fn geodude() -> Pokemon {
         sp_atk: 58,
         sp_def: 58,
         init: 40,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/074 - Geodude.wav",
+        sprite_path: "/sprites/74.png"
     }
 }
 
@@ -704,7 +790,9 @@ pub fn gloom() -> Pokemon {
         sp_atk: 157,
         sp_def: 139,
         init: 76,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/044 - Gloom.wav",
+        sprite_path: "/sprites/44.png"
     }
 }
 
@@ -719,7 +807,9 @@ pub fn golbat() -> Pokemon {
         sp_atk: 121,
         sp_def: 139,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/042 - Golbat.wav",
+        sprite_path: "/sprites/42.png"
     }
 }
 
@@ -734,7 +824,9 @@ pub fn goldeen() -> Pokemon {
         sp_atk: 67,
         sp_def: 94,
         init: 117,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/118 - Goldeen.wav",
+        sprite_path: "/sprites/118.png"
     }
 }
 
@@ -749,7 +841,9 @@ pub fn golduck() -> Pokemon {
         sp_atk: 175,
         sp_def: 148,
         init: 157,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/055 - Golduck.wav",
+        sprite_path: "/sprites/55.png"
     }
 }
 
@@ -764,7 +858,9 @@ pub fn golem() -> Pokemon {
         sp_atk: 103,
         sp_def: 121,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/076 - Golem.wav",
+        sprite_path: "/sprites/76.png"
     }
 }
 
@@ -779,7 +875,9 @@ pub fn graveler() -> Pokemon {
         sp_atk: 85,
         sp_def: 85,
         init: 67,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/075 - Graveler.wav",
+        sprite_path: "/sprites/75.png"
     }
 }
 
@@ -794,7 +892,9 @@ pub fn grimer() -> Pokemon {
         sp_atk: 76,
         sp_def: 94,
         init: 49,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/088 - Grimer.wav",
+        sprite_path: "/sprites/88.png"
     }
 }
 
@@ -809,7 +909,9 @@ pub fn growlithe() -> Pokemon {
         sp_atk: 130,
         sp_def: 94,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/058 - Growlithe.wav",
+        sprite_path: "/sprites/58.png"
     }
 }
 
@@ -824,7 +926,9 @@ pub fn gyarados() -> Pokemon {
         sp_atk: 112,
         sp_def: 184,
         init: 150,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/130 - Gyarados.wav",
+        sprite_path: "/sprites/130.png"
     }
 }
 
@@ -839,7 +943,9 @@ pub fn haunter() -> Pokemon {
         sp_atk: 211,
         sp_def: 103,
         init: 175,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/093 - Haunter.wav",
+        sprite_path: "/sprites/93.png"
     }
 }
 
@@ -854,7 +960,9 @@ pub fn hitmonchan() -> Pokemon {
         sp_atk: 67,
         sp_def: 202,
         init: 141,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/107 - Hitmonchan.wav",
+        sprite_path: "/sprites/107.png"
     }
 }
 
@@ -869,7 +977,9 @@ pub fn hitmonlee() -> Pokemon {
         sp_atk: 67,
         sp_def: 202,
         init: 161,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/106 - Hitmonlee.wav",
+        sprite_path: "/sprites/106.png"
     }
 }
 
@@ -884,7 +994,9 @@ pub fn horsea() -> Pokemon {
         sp_atk: 130,
         sp_def: 49,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/116 - Horsea.wav",
+        sprite_path: "/sprites/116.png"
     }
 }
 
@@ -899,7 +1011,9 @@ pub fn hypno() -> Pokemon {
         sp_atk: 135,
         sp_def: 211,
         init: 125,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/097 - Hypno.wav",
+        sprite_path: "/sprites/97.png"
     }
 }
 
@@ -914,7 +1028,9 @@ pub fn ivysaur() -> Pokemon {
         sp_atk: 148,
         sp_def: 148,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/002 - Ivysaur.wav",
+        sprite_path: "/sprites/2.png"
     }
 }
 
@@ -929,7 +1045,9 @@ pub fn jigglypuff() -> Pokemon {
         sp_atk: 85,
         sp_def: 49,
         init: 40,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/039 - Jigglypuff.wav",
+        sprite_path: "/sprites/39.png"
     }
 }
 
@@ -944,7 +1062,9 @@ pub fn jolteon() -> Pokemon {
         sp_atk: 202,
         sp_def: 175,
         init: 238,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/135 - Jolteon.wav",
+        sprite_path: "/sprites/135.png"
     }
 }
 
@@ -959,7 +1079,9 @@ pub fn jynx() -> Pokemon {
         sp_atk: 211,
         sp_def: 175,
         init: 175,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/124 - Jynx.wav",
+        sprite_path: "/sprites/124.png"
     }
 }
 
@@ -974,7 +1096,9 @@ pub fn kabuto() -> Pokemon {
         sp_atk: 103,
         sp_def: 85,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/140 - Kabuto.wav",
+        sprite_path: "/sprites/140.png"
     }
 }
 
@@ -989,7 +1113,9 @@ pub fn kabutops() -> Pokemon {
         sp_atk: 121,
         sp_def: 130,
         init: 148,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/141 - Kabutops.wav",
+        sprite_path: "/sprites/141.png"
     }
 }
 
@@ -1004,7 +1130,9 @@ pub fn kadabra() -> Pokemon {
         sp_atk: 220,
         sp_def: 130,
         init: 193,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/064 - Kadabra.wav",
+        sprite_path: "/sprites/64.png"
     }
 }
 
@@ -1019,7 +1147,9 @@ pub fn kakuna() -> Pokemon {
         sp_atk: 49,
         sp_def: 49,
         init: 67,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/014 - Kakuna.wav",
+        sprite_path: "/sprites/14.png"
     }
 }
 
@@ -1034,7 +1164,9 @@ pub fn kangaskhan() -> Pokemon {
         sp_atk: 76,
         sp_def: 148,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/115 - Kangaskhan.wav",
+        sprite_path: "/sprites/115.png"
     }
 }
 
@@ -1049,7 +1181,9 @@ pub fn kingler() -> Pokemon {
         sp_atk: 94,
         sp_def: 94,
         init: 139,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/099 - Kingler.wav",
+        sprite_path: "/sprites/99.png"
     }
 }
 
@@ -1064,7 +1198,9 @@ pub fn koffing() -> Pokemon {
         sp_atk: 112,
         sp_def: 85,
         init: 67,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/109 - Koffing.wav",
+        sprite_path: "/sprites/109.png"
     }
 }
 
@@ -1079,7 +1215,9 @@ pub fn krabby() -> Pokemon {
         sp_atk: 49,
         sp_def: 49,
         init: 94,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/098 - Krabby.wav",
+        sprite_path: "/sprites/98.png"
     }
 }
 
@@ -1094,7 +1232,9 @@ pub fn lapras() -> Pokemon {
         sp_atk: 157,
         sp_def: 175,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/131 - Lapras.wav",
+        sprite_path: "/sprites/131.png"
     }
 }
 
@@ -1109,7 +1249,9 @@ pub fn lickitung() -> Pokemon {
         sp_atk: 112,
         sp_def: 139,
         init: 58,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/108 - Lickitung.wav",
+        sprite_path: "/sprites/108.png"
     }
 }
 
@@ -1124,7 +1266,9 @@ pub fn machamp() -> Pokemon {
         sp_atk: 121,
         sp_def: 157,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/068 - Machamp.wav",
+        sprite_path: "/sprites/68.png"
     }
 }
 
@@ -1139,7 +1283,9 @@ pub fn machoke() -> Pokemon {
         sp_atk: 94,
         sp_def: 112,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/067 - Machoke.wav",
+        sprite_path: "/sprites/67.png"
     }
 }
 
@@ -1154,10 +1300,9 @@ pub fn machop() -> Pokemon {
         sp_atk: 67,
         sp_def: 67,
         init: 67,
-        moves: [attacks::dummy(); 4]
-        
-        
-        
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/066 - Machop.wav",
+        sprite_path: "/sprites/66.png"
     }
 }
 
@@ -1172,7 +1317,9 @@ pub fn magikarp() -> Pokemon {
         sp_atk: 31,
         sp_def: 40,
         init: 148,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/129 - Magikarp.wav",
+        sprite_path: "/sprites/129.png"
     }
 }
 
@@ -1187,7 +1334,9 @@ pub fn magmar() -> Pokemon {
         sp_atk: 184,
         sp_def: 157,
         init: 171,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/126 - Magmar.wav",
+        sprite_path: "/sprites/126.png"
     }
 }
 
@@ -1202,7 +1351,9 @@ pub fn magnemite() -> Pokemon {
         sp_atk: 175,
         sp_def: 103,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/081 - Magnemite.wav",
+        sprite_path: "/sprites/81.png"
     }
 }
 
@@ -1217,7 +1368,9 @@ pub fn magneton() -> Pokemon {
         sp_atk: 220,
         sp_def: 130,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/082 - Magneton.wav",
+        sprite_path: "/sprites/82.png"
     }
 }
 
@@ -1232,7 +1385,9 @@ pub fn mankey() -> Pokemon {
         sp_atk: 67,
         sp_def: 85,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/056 - Mankey.wav",
+        sprite_path: "/sprites/56.png"
     }
 }
 
@@ -1247,7 +1402,9 @@ pub fn marowak() -> Pokemon {
         sp_atk: 94,
         sp_def: 148,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/105 - Marowak.wav",
+        sprite_path: "/sprites/105.png"
     }
 }
 
@@ -1262,7 +1419,9 @@ pub fn meowth() -> Pokemon {
         sp_atk: 76,
         sp_def: 76,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/052 - Meowth.wav",
+        sprite_path: "/sprites/52.png"
     }
 }
 
@@ -1277,7 +1436,9 @@ pub fn metapod() -> Pokemon {
         sp_atk: 49,
         sp_def: 49,
         init: 58,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/011 - Metapod.wav",
+        sprite_path: "/sprites/11.png"
     }
 }
 
@@ -1292,7 +1453,9 @@ pub fn mew() -> Pokemon {
         sp_atk: 184,
         sp_def: 184,
         init: 184,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/151 - Mew.wav",
+        sprite_path: "/sprites/151.png"
     }
 }
 
@@ -1307,7 +1470,9 @@ pub fn mewtwo() -> Pokemon {
         sp_atk: 281,
         sp_def: 166,
         init: 238,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/150 - Mewtwo.wav",
+        sprite_path: "/sprites/150.png"
     }
 }
 
@@ -1322,7 +1487,9 @@ pub fn moltres() -> Pokemon {
         sp_atk: 229,
         sp_def: 157,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/146 - Moltres.wav",
+        sprite_path: "/sprites/146.png"
     }
 }
 
@@ -1337,7 +1504,9 @@ pub fn mrmime() -> Pokemon {
         sp_atk: 184,
         sp_def: 220,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/122 - Mr. Mime.wav",
+        sprite_path: "/sprites/122.png"
     }
 }
 
@@ -1352,7 +1521,9 @@ pub fn muk() -> Pokemon {
         sp_atk: 121,
         sp_def: 184,
         init: 94,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/089 - Muk.wav",
+        sprite_path: "/sprites/89.png"
     }
 }
 
@@ -1367,7 +1538,9 @@ pub fn nidoking() -> Pokemon {
         sp_atk: 157,
         sp_def: 139,
         init: 157,
-        moves: [attacks::dummy(); 4]  
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/034 - Nidoking.wav",
+        sprite_path: "/sprites/34.png"
     }
 }
 
@@ -1382,7 +1555,9 @@ pub fn nidoqueen() -> Pokemon {
         sp_atk: 139,
         sp_def: 157,
         init: 141,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/031 - Nidoqueen.wav",
+        sprite_path: "/sprites/31.png"
     }
 }
 
@@ -1397,7 +1572,9 @@ pub fn nidoranf() -> Pokemon {
         sp_atk: 76,
         sp_def: 76,
         init: 78,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/029 - Nidoran (Female).wav",
+        sprite_path: "/sprites/29.png"
     }
 }
 
@@ -1412,7 +1589,9 @@ pub fn nidoranm() -> Pokemon {
         sp_atk: 76,
         sp_def: 76,
         init: 94,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/032 - Nidoran (Male).wav",
+        sprite_path: "/sprites/32.png"
     }
 }
 
@@ -1427,7 +1606,9 @@ pub fn nidorina() -> Pokemon {
         sp_atk: 103,
         sp_def: 103,
         init: 105,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/030 - Nidorina.wav",
+        sprite_path: "/sprites/30.png"
     }
 }
 
@@ -1442,7 +1623,9 @@ pub fn nidorino() -> Pokemon {
         sp_atk: 103,
         sp_def: 103,
         init: 121,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/033 - Nidorino.wav",
+        sprite_path: "/sprites/33.png"
     }
 }
 
@@ -1457,7 +1640,9 @@ pub fn ninetales() -> Pokemon {
         sp_atk: 150,
         sp_def: 184,
         init: 184,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/038 - Ninetales.wav",
+        sprite_path: "/sprites/38.png"
     }
 }
 
@@ -1472,7 +1657,9 @@ pub fn oddish() -> Pokemon {
         sp_atk: 139,
         sp_def: 121,
         init: 58,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/043 - Oddish.wav",
+        sprite_path: "/sprites/43.png"
     }
 }
 
@@ -1487,7 +1674,9 @@ pub fn omanyte() -> Pokemon {
         sp_atk: 166,
         sp_def: 103,
         init: 67,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/138 - Omanyte.wav",
+        sprite_path: "/sprites/138.png"
     }
 }
 
@@ -1502,7 +1691,9 @@ pub fn omastar() -> Pokemon {
         sp_atk: 211,
         sp_def: 130,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/139 - Amoroso.wav",
+        sprite_path: "/sprites/139.png"
     }
 }
 
@@ -1517,7 +1708,9 @@ pub fn onix() -> Pokemon {
         sp_atk: 58,
         sp_def: 85,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/095 - Onix.wav",
+        sprite_path: "/sprites/95.png"
     }
 }
 
@@ -1532,7 +1725,9 @@ pub fn paras() -> Pokemon {
         sp_atk: 85,
         sp_def: 103,
         init: 49,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/046 - Paras.wav",
+        sprite_path: "/sprites/46.png"
     }
 }
 
@@ -1547,7 +1742,9 @@ pub fn parasect() -> Pokemon {
         sp_atk: 112,
         sp_def: 148,
         init: 58,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/047 - Parasect.wav",
+        sprite_path: "/sprites/47.png"
     }
 }
 
@@ -1562,7 +1759,9 @@ pub fn persian() -> Pokemon {
         sp_atk: 121,
         sp_def: 121,
         init: 211,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/053 - Persian.wav",
+        sprite_path: "/sprites/53.png"
     }
 }
 
@@ -1577,7 +1776,9 @@ pub fn pidgeot() -> Pokemon {
         sp_atk: 130,
         sp_def: 130,
         init: 168,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/018 - Pidgeot.wav",
+        sprite_path: "/sprites/18.png"
     }
 }
 
@@ -1592,7 +1793,9 @@ pub fn pidgeotto() -> Pokemon {
         sp_atk: 94,
         sp_def: 94,
         init: 132,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/017 - Pidgeotto.wav",
+        sprite_path: "/sprites/17.png"
     }
 }
 
@@ -1607,7 +1810,9 @@ pub fn pidgey() -> Pokemon {
         sp_atk: 67,
         sp_def: 67,
         init: 105,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/016 - Pidgey.wav",
+        sprite_path: "/sprites/16.png"
     }
 }
 
@@ -1622,7 +1827,9 @@ pub fn pikachu() -> Pokemon {
         sp_atk: 94,
         sp_def: 76,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/025 - Pikachu.wav",
+        sprite_path: "/sprites/25.png"
     }
 }
 
@@ -1637,7 +1844,9 @@ pub fn pinsir() -> Pokemon {
         sp_atk: 103,
         sp_def: 130,
         init: 157,
-        moves: [attacks::dummy(); 4] 
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/127 - Pinsir.wav",
+        sprite_path: "/sprites/127.png"
     }
 }
 
@@ -1652,7 +1861,9 @@ pub fn poliwag() -> Pokemon {
         sp_atk: 76,
         sp_def: 76,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/060 - Poliwag.wav",
+        sprite_path: "/sprites/60.png"
     }
 }
 
@@ -1667,7 +1878,9 @@ pub fn poliwhirl() -> Pokemon {
         sp_atk: 94,
         sp_def: 94,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/061 - Poliwhirl.wav",
+        sprite_path: "/sprites/61.png"
     }
 }
 
@@ -1682,7 +1895,9 @@ pub fn poliwrath() -> Pokemon {
         sp_atk: 130,
         sp_def: 166,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/062 - Poliwrath.wav",
+        sprite_path: "/sprites/62.png"
     }
 }
 
@@ -1697,7 +1912,9 @@ pub fn ponyta() -> Pokemon {
         sp_atk: 121,
         sp_def: 121,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/077 - Ponita.wav",
+        sprite_path: "/sprites/77.png"
     }
 }
 
@@ -1712,7 +1929,9 @@ pub fn porygon() -> Pokemon {
         sp_atk: 157,
         sp_def: 139,
         init: 76,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/137 - Porygon.wav",
+        sprite_path: "/sprites/137.png"
     }
 }
 
@@ -1727,7 +1946,9 @@ pub fn primeape() -> Pokemon {
         sp_atk: 112,
         sp_def: 130,
         init: 175,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/057 - Rasaff.wav",
+        sprite_path: "/sprites/57.png"
     }
 }
 
@@ -1742,7 +1963,9 @@ pub fn psyduck() -> Pokemon {
         sp_atk: 121,
         sp_def: 94,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/054 - Psyduck.wav",
+        sprite_path: "/sprites/54.png"
     }
 }
 
@@ -1757,7 +1980,9 @@ pub fn raichu() -> Pokemon {
         sp_atk: 166,
         sp_def: 148,
         init: 184,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/026 - Raichu.wav",
+        sprite_path: "/sprites/26.png"
     }
 }
 
@@ -1772,7 +1997,9 @@ pub fn rapidash() -> Pokemon {
         sp_atk: 148,
         sp_def: 148,
         init: 193,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/078 - Rapidash.wav",
+        sprite_path: "/sprites/78.png"
     }
 }
 
@@ -1787,7 +2014,9 @@ pub fn raticate() -> Pokemon {
         sp_atk: 94,
         sp_def: 130,
         init: 179,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/020 - raticate.wav",
+        sprite_path: "/sprites/20.png"
     }
 }
 
@@ -1802,7 +2031,9 @@ pub fn rattata() -> Pokemon {
         sp_atk: 49,
         sp_def: 67,
         init: 134,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/019 - Rattata.wav",
+        sprite_path: "/sprites/19.png"
     }
 }
 
@@ -1817,7 +2048,9 @@ pub fn rhydon() -> Pokemon {
         sp_atk: 85,
         sp_def: 85,
         init: 76,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/112 - Rhydon.wav",
+        sprite_path: "/sprites/112.png"
     }
 }
 
@@ -1832,7 +2065,9 @@ pub fn rhyhorn() -> Pokemon {
         sp_atk: 58,
         sp_def: 58,
         init: 49,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/111 - Rhyhorn.wav",
+        sprite_path: "/sprites/111.png"
     }
 }
 
@@ -1847,7 +2082,9 @@ pub fn sandshrew() -> Pokemon {
         sp_atk: 40,
         sp_def: 58,
         init: 76,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/027 - Sandshrew.wav",
+        sprite_path: "/sprites/27.png"
     }
 }
 
@@ -1862,7 +2099,9 @@ pub fn sandslash() -> Pokemon {
         sp_atk: 85,
         sp_def: 103,
         init: 121,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/028 - Sandslash.wav",
+        sprite_path: "/sprites/28.png"
     }
 }
 
@@ -1877,7 +2116,9 @@ pub fn scyther() -> Pokemon {
         sp_atk: 103,
         sp_def: 148,
         init: 193,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/122 - Scyther.wav",
+        sprite_path: "/sprites/122.png"
     }
 }
 
@@ -1892,7 +2133,9 @@ pub fn seadra() -> Pokemon {
         sp_atk: 175,
         sp_def: 85,
         init: 157,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/117 - Seadra.wav",
+        sprite_path: "/sprites/117.png"
     }
 }
 
@@ -1907,7 +2150,9 @@ pub fn seaking() -> Pokemon {
         sp_atk: 121,
         sp_def: 148,
         init: 126,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/119 - Golking.wav",
+        sprite_path: "/sprites/119.png"
     }
 }
 
@@ -1922,7 +2167,9 @@ pub fn seel() -> Pokemon {
         sp_atk: 85,
         sp_def: 130,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/086 - Seel.wav",
+        sprite_path: "/sprites/86.png"
     }
 }
 
@@ -1937,7 +2184,9 @@ pub fn shellder() -> Pokemon {
         sp_atk: 85,
         sp_def: 49,
         init: 76,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/090 - Shellder.wav",
+        sprite_path: "/sprites/90.png"
     }
 }
 
@@ -1952,7 +2201,9 @@ pub fn slowbro() -> Pokemon {
         sp_atk: 184,
         sp_def: 148,
         init: 58,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/080 - Slowbro.wav",
+        sprite_path: "/sprites/80.png"
     }
 }
 
@@ -1967,7 +2218,9 @@ pub fn slowpoke() -> Pokemon {
         sp_atk: 76,
         sp_def: 76,
         init: 31,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/079 - Slowpoke.wav",
+        sprite_path: "/sprites/79.png"
     }
 }
 
@@ -1982,7 +2235,9 @@ pub fn snorlax() -> Pokemon {
         sp_atk: 121,
         sp_def: 202,
         init: 58,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/143 - Snorlax.wav",
+        sprite_path: "/sprites/143.png"
     }
 }
 
@@ -1997,7 +2252,9 @@ pub fn spearow() -> Pokemon {
         sp_atk: 60,
         sp_def: 60,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/021 - Spearow.wav",
+        sprite_path: "/sprites/21.png"
     }
 }
 
@@ -2012,7 +2269,9 @@ pub fn squirtle() -> Pokemon {
         sp_atk: 94,
         sp_def: 119,
         init: 81,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/007 - Squirtle.wav",
+        sprite_path: "/sprites/7.png"
     }
 }
 
@@ -2027,7 +2286,9 @@ pub fn starmie() -> Pokemon {
         sp_atk: 184,
         sp_def: 157,
         init: 211,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/121 - Starmie.wav",
+        sprite_path: "/sprites/121.png"
     }
 }
 
@@ -2042,7 +2303,9 @@ pub fn staryu() -> Pokemon {
         sp_atk: 130,
         sp_def: 103,
         init: 157,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/120 - Staryu.wav",
+        sprite_path: "/sprites/120.png"
     }
 }
 
@@ -2057,7 +2320,9 @@ pub fn tangela() -> Pokemon {
         sp_atk: 184,
         sp_def: 76,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/114 - Tangela.wav",
+        sprite_path: "/sprites/114.png"
     }
 }
 
@@ -2072,7 +2337,9 @@ pub fn tauros() -> Pokemon {
         sp_atk: 76,
         sp_def: 130,
         init: 202,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/128 - Tauros.wav",
+        sprite_path: "/sprites/128.png"
     }
 }
 
@@ -2087,7 +2354,9 @@ pub fn tentacool() -> Pokemon {
         sp_atk: 94,
         sp_def: 184,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/072 - Tentacool.wav",
+        sprite_path: "/sprites/72.png"
     }
 }
 
@@ -2102,7 +2371,9 @@ pub fn tentacruel() -> Pokemon {
         sp_atk: 148,
         sp_def: 220,
         init: 184,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/073 - Tentacruel.wav",
+        sprite_path: "/sprites/73.png"
     }
 }
 
@@ -2117,7 +2388,9 @@ pub fn vaporeon() -> Pokemon {
         sp_atk: 202,
         sp_def: 175,
         init: 121,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/134 - Vaporeon.wav",
+        sprite_path: "/sprites/134.png"
     }
 }
 
@@ -2132,7 +2405,9 @@ pub fn venomoth() -> Pokemon {
         sp_atk: 166,
         sp_def: 139,
         init: 166,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/049 - Venomoth.wav",
+        sprite_path: "/sprites/49.png"
     }
 }
 
@@ -2147,7 +2422,9 @@ pub fn venonat() -> Pokemon {
         sp_atk: 76,
         sp_def: 103,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/048 - Venonat.wav",
+        sprite_path: "/sprites/48.png"
     }
 }
 
@@ -2162,7 +2439,9 @@ pub fn venusaur() -> Pokemon {
         sp_atk: 184,
         sp_def: 184,
         init: 148,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/003 - Venusaur.wav",
+        sprite_path: "/sprites/3.png"
     }
 }
 
@@ -2177,7 +2456,9 @@ pub fn victreebel() -> Pokemon {
         sp_atk: 184,
         sp_def: 112,
         init: 130,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/071 - Victreebel.wav",
+        sprite_path: "/sprites/71.png"
     }
 }
 
@@ -2192,7 +2473,9 @@ pub fn vileplume() -> Pokemon {
         sp_atk: 184,
         sp_def: 166,
         init: 94,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/045 - Vileplume.wav",
+        sprite_path: "/sprites/45.png"
     }
 }
 
@@ -2207,7 +2490,9 @@ pub fn voltorb() -> Pokemon {
         sp_atk: 103,
         sp_def: 103,
         init: 184,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/100 - Voltorb.wav",
+        sprite_path: "/sprites/100.png"
     }
 }
 
@@ -2222,7 +2507,9 @@ pub fn vulpix() -> Pokemon {
         sp_atk: 94,
         sp_def: 121,
         init: 121,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/037 - Vilpix.wav",
+        sprite_path: "/sprites/37.png"
     }
 }
 
@@ -2237,7 +2524,9 @@ pub fn wartortle() -> Pokemon {
         sp_atk: 121,
         sp_def: 148,
         init: 108,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/008 - Wartorle.wav",
+        sprite_path: "/sprites/8.png"
     }
 }
 
@@ -2252,7 +2541,9 @@ pub fn weedle() -> Pokemon {
         sp_atk: 40,
         sp_def: 40,
         init: 94,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/013 - Weedle.wav",
+        sprite_path: "/sprites/13.png"
     }
 }
 
@@ -2267,7 +2558,9 @@ pub fn weepinbell() -> Pokemon {
         sp_atk: 157,
         sp_def: 85,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/070 - Weepinbell.wav",
+        sprite_path: "/sprites/70.png"
     }
 }
 
@@ -2282,13 +2575,15 @@ pub fn weezing() -> Pokemon {
         sp_atk: 157,
         sp_def: 130,
         init: 112,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/110 - Weezing.wav",
+        sprite_path: "/sprites/110.png"
     }
 }
 
-pub fn wigglystuff() -> Pokemon {
+pub fn wigglytuff() -> Pokemon {
     Pokemon {
-        name: "Wigglystuff",
+        name: "Wigglytuff",
         ftype: Type::Normal,
         stype: Type::None,
         health: 390,
@@ -2297,7 +2592,9 @@ pub fn wigglystuff() -> Pokemon {
         sp_atk: 139,
         sp_def: 94,
         init: 85,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/040 - Wigglytuff.wav",
+        sprite_path: "/sprites/40.png"
     }
 }
 
@@ -2312,7 +2609,9 @@ pub fn zaptos() -> Pokemon {
         sp_atk: 229,
         sp_def: 166,
         init: 184,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/145 - Zaptos.wav",
+        sprite_path: "/sprites/145.png"
     }
 }
 
@@ -2327,6 +2626,8 @@ pub fn zubat() -> Pokemon {
         sp_atk: 58,
         sp_def: 76,
         init: 103,
-        moves: [attacks::dummy(); 4]
+        moves: [attacks::dummy(); 4],
+        battle_cry_path: "/battle_cries/041 - Zubat.wav",
+        sprite_path: "/sprites/41.png"
     }
 }

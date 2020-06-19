@@ -2598,7 +2598,7 @@ pub fn wigglytuff() -> Pokemon {
     }
 }
 
-pub fn zaptos() -> Pokemon {
+pub fn zapdos() -> Pokemon {
     Pokemon {
         name: "Zaptos",
         ftype: Type::Electric,
@@ -2610,7 +2610,7 @@ pub fn zaptos() -> Pokemon {
         sp_def: 166,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/145 - Zaptos.wav",
+        battle_cry_path: "/battle_cries/145 - Zapdos.wav",
         sprite_path: "/sprites/145.png"
     }
 }

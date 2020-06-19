@@ -9,10 +9,10 @@ pub enum Action {
     Picking
 }
 
-#[derive(Clone)]
+#[derive(Clone,Copy)]
 pub struct Battlemon {
     pub pokemon: pokemon::Pokemon,
-    pub assets: PokemonAssets,
+    //pub assets: PokemonAssets,
     pub current_health: u32,
     pub evasion: u32,
     pub accuracy: u32,
@@ -20,13 +20,48 @@ pub struct Battlemon {
     pub flinch: bool
 }
 
+impl Battlemon {
+    pub fn dummy() -> Battlemon {
+        Battlemon {
+            pokemon: default_structures::pokemon::dummy_pokemon(),
+            current_health: pokemon::dummy_pokemon().health,
+            evasion: 0,
+            accuracy: 0,
+            status: attacks::Status::None,
+            flinch: false,
+        }
+    }
+
+    pub fn name(self) -> &'static str {
+        &self.pokemon.name
+    }
+
+    pub fn hp_fract(self) -> f32 {
+        (self.current_health as f32)/(self.pokemon.health as f32)
+    }
+}
+#[derive(Clone, PartialEq)]
+pub enum State {
+    Picking,
+    A1,
+    A2,
+    E1,
+    E2,
+    Swap,
+}
+
 pub struct Battle {
-    own_team: [Battlemon; 6],
-    enemy_team: [Battlemon; 6],
-    pub p1: Battlemon,
-    pub p2: Battlemon,
+    pub own_team: [Battlemon; 6],
+    pub enemy_team: [Battlemon; 6],
+    pub p1: usize,
+    pub p2: usize,
     pub a1: Action,
     pub a2: Action,
+    pub text: &'static str,
+    pub state: State,
+    pub dmg: u32,
+    pub timer: u32,
+    pub user: bool,
 }
 
 impl Battle {
@@ -34,14 +69,19 @@ impl Battle {
         Battle {
             own_team: own,
             enemy_team: enemy,
-            p1: own[0],
-            p2: enemy[0],
+            p1: 0,
+            p2: 0,
             a1: Action::Picking,
             a2: Action::Picking,
+            text: "",
+            state: State::Picking,
+            dmg: 0,
+            timer: 0,
+            user: true,
         }
     }
 
-    pub fn pick_phase(&mut self) {
+    /*pub fn pick_phase(&mut self) {
         let own_picking = std::thread::spawn(|| {
            //TODO implement picking algorithm 
            Action::Attack(attacks::dummy())
@@ -76,7 +116,7 @@ impl Battle {
             _ => {},
         };
         if swap1 == true {
-            Battle::swap_pokemon(&mut self.p1, &self.own_team[to_switch]);
+            Battle::swap_pokemon(&mut self.p1, &mut self.own_team[to_switch]);
             //swap1 = false;
         }
 
@@ -86,7 +126,7 @@ impl Battle {
             _ => {},
         };
         if swap2 == true {
-            Battle::swap_pokemon(&mut self.p2, &self.enemy_team[to_switch]);
+            Battle::swap_pokemon(&mut self.p2, &mut self.enemy_team[to_switch]);
             //swap2 = false;
         }
         if swap1 && swap2 {return}
@@ -218,8 +258,9 @@ impl Battle {
         self.a2 = Action::Picking;
     }
 
-    pub fn swap_pokemon(current: &mut Battlemon, pok: &Battlemon) {
-        *current = *pok;
+    pub fn swap_pokemon(current: &mut Battlemon, pok: &mut Battlemon) {
+        //current = &pok;
+        return
     } //TODO implement
 
     pub fn attacks(attack: &attacks::Attack, user: &mut Battlemon, target: &mut Battlemon) {
@@ -250,7 +291,7 @@ impl Battle {
 
         }
         // TODO check for effects after dmg calc
-    }
+    */}
 
 pub fn effect() {
     //TODO implement -> apply changes based on effect

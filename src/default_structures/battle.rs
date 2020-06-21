@@ -6,7 +6,8 @@ use rand::prelude::*;
 pub enum Action {
     Swap (usize),
     Attack (attacks::Attack),
-    Picking
+    Picking,
+    None, //temporary?
 }
 
 #[derive(Clone)]
@@ -43,6 +44,8 @@ impl Battlemon {
 #[derive(Clone, PartialEq)]
 pub enum State {
     Picking,
+    PickAtk,
+    PickSlot,
     Between,
     A1,
     A2,
@@ -73,8 +76,8 @@ impl Battle {
             p1: 0,
             p2: 0,
             a1: Action::Picking,
-            a2: Action::Picking,
-            text: "Shit gonna stand here depending on what is happening".to_string(),
+            a2: Action::Swap(2),
+            text: "What will you do?".to_string(),
             state: State::Picking,
             dmg: 0,
             timer: 0,

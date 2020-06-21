@@ -18,10 +18,10 @@ fn main() {
         .unwrap();
 
     //init game
-    let mut my_game = TeamPickingGame::new(&mut ctx);
-    //let mut my_game = battle::Battle::new(
-        //[battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),], 
-        //[battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),]);
+    //let mut my_game = TeamPickingGame::new(&mut ctx);
+    let mut my_game = battle::Battle::new(
+        [battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),], 
+        [battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),]);
         // for testing Battle stuff seperated
     // Run!
     match event::run(&mut ctx, &mut event_loop, &mut my_game) {

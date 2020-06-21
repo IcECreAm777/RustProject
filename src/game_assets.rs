@@ -1,6 +1,6 @@
 use ggez::{Context, ContextBuilder, GameResult, filesystem};
 use ggez::audio::{self, Source, SoundSource};
-use ggez::event::{self, EventHandler};
+use ggez::event::{self, EventHandler, KeyCode, KeyMods};
 use ggez::graphics::{self, Image, Color};
 use crate::default_structures::{battle, team_picking};
 use mint;
@@ -143,6 +143,9 @@ impl EventHandler for battle::Battle {
                         self.timer = 5;
                     }
                 },
+                battle::State::PickAtk => {if self.a1 != battle::Action::Picking {self.state = battle::State::Picking; self.text = "".to_string();}},
+                battle::State::PickSlot => {if self.a1 != battle::Action::Picking {self.state = battle::State::Picking; self.text = "".to_string();}},
+
                 battle::State::Between => {
                     self.state = self.between();
                     self.timer = 5;
@@ -155,6 +158,7 @@ impl EventHandler for battle::Battle {
                     };
                     self.a1 = battle::Action::Picking;
                     self.state = battle::State::Between;
+                    self.timer = 60;
                 },
                 battle::State::A2 => {
                     match self.a2 {
@@ -164,6 +168,7 @@ impl EventHandler for battle::Battle {
                     };
                     self.a2 = battle::Action::Picking;
                     self.state = battle::State::Between;
+                    self.timer = 60;
                 },
                 _ => {},
             };
@@ -181,10 +186,12 @@ impl EventHandler for battle::Battle {
                     else {self.enemy_team[self.p2].current_health -= 1;}
                     self.dmg -= 1;
                 }
-                self.timer -= 1;
             }
+            self.timer -= 1;
             Ok(())
         }
+    
+    
     }
 
     
@@ -221,6 +228,40 @@ impl EventHandler for battle::Battle {
         graphics::present(ctx)?;
 
         Ok(())
+    }
+
+    fn key_down_event(&mut self, ctx: &mut Context, key: KeyCode, _keymods: KeyMods, _: bool) {
+        match self.state {
+            battle::State::Picking => {match key {
+                    KeyCode::Key1 => {self.state = battle::State::PickAtk; self.text = "Choose an attack".to_string();},
+                    KeyCode::Key2 => {self.state = battle::State::PickSlot; self.text = "Choose a Pokemon".to_string();},
+                    KeyCode::Key0 => event::quit(ctx),
+                    _ => (),
+                };
+            },
+            battle::State::PickAtk => {match key {
+                KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
+                KeyCode::Key1 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[0]),
+                KeyCode::Key2 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[1]),
+                KeyCode::Key3 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[2]),
+                KeyCode::Key4 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[3]),
+                _ => (),
+                };
+            },
+            battle::State::PickSlot => {match key {
+                KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
+                KeyCode::Key1 => self.a1 = battle::Action::Swap(0),
+                KeyCode::Key2 => self.a1 = battle::Action::Swap(1),
+                KeyCode::Key3 => self.a1 = battle::Action::Swap(2),
+                KeyCode::Key4 => self.a1 = battle::Action::Swap(3),
+                KeyCode::Key5 => self.a1 = battle::Action::Swap(4),
+                KeyCode::Key6 => self.a1 = battle::Action::Swap(5),
+                _ => (),
+                };
+            },
+            _ => if key == KeyCode::Key0 {event::quit(ctx)},
+        };
+        ()
     }
 }
 

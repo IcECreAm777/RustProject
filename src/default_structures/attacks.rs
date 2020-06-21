@@ -93,9 +93,9 @@ pub enum Effect {
 pub fn dummy() -> Attack {
     Attack {
         name: "None",
-        etype: Type::None,
+        etype: Type::Normal,
         atype: AttackType::Physical,
-        strength: 0,
+        strength: 25,
         acc: 0,
         //ap: 0,
         effect_1: Effect::None,

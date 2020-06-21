@@ -52,11 +52,11 @@ impl Pokemon {
 pub fn dummy_pokemon() -> Pokemon {
     Pokemon {
         name: "Dummy",
-        ftype: Type::None,
+        ftype: Type::Normal,
         stype: Type::None,
         health: 100,
-        atk: 10,
-        def: 10,
+        atk: 50,
+        def: 50,
         sp_atk: 10,
         sp_def: 10,
         init: 10,

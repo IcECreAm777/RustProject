@@ -138,10 +138,12 @@ impl EventHandler for battle::Battle {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         if self.timer == 0 {
             match self.state {
-                battle::State::Picking => {if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
+                battle::State::Picking => {
+                    if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
                         self.state = self.prio();
                         self.timer = 5;
                     }
+                    self.a2 = battle::Action::Attack(self.enemy_team[self.p2].pokemon.moves[1]);
                 },
                 battle::State::PickAtk => {if self.a1 != battle::Action::Picking {self.state = battle::State::Picking; self.text = "".to_string();}},
                 battle::State::PickSlot => {if self.a1 != battle::Action::Picking {self.state = battle::State::Picking; self.text = "".to_string();}},
@@ -153,23 +155,25 @@ impl EventHandler for battle::Battle {
                 battle::State::A1 => {
                     match self.a1 {
                         battle::Action::Swap(slot) => self.swap(slot, true),
-                        battle::Action::Attack(atk) => self.attack(atk),
+                        battle::Action::Attack(atk) => self.attack(atk, false),
                         _ => {},
                     };
                     self.a1 = battle::Action::Picking;
                     self.state = battle::State::Between;
-                    self.timer = 60;
                 },
                 battle::State::A2 => {
                     match self.a2 {
                         battle::Action::Swap(slot) => self.swap(slot, false),
-                        battle::Action::Attack(atk) => self.attack(atk),
+                        battle::Action::Attack(atk) => self.attack(atk, true),
                         _ => {},
                     };
                     self.a2 = battle::Action::Picking;
                     self.state = battle::State::Between;
-                    self.timer = 60;
                 },
+                battle::State::After => {
+                    self.state = battle::State::Picking;
+                    self.text = "What will you do?".to_string();
+                }
                 _ => {},
             };
             Ok(())
@@ -225,6 +229,16 @@ impl EventHandler for battle::Battle {
         graphics::draw(ctx, &ball, graphics::DrawParam::default().dest(mint::Point2{x:365.0,y:50.0}).color(graphics::BLACK))?;
         let info = graphics::Text::new(self.text.as_str());
         graphics::draw(ctx, &info, graphics::DrawParam::default().dest(mint::Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
+        let mut healthh1 = self.own_team[self.p1].current_health.to_string();
+        healthh1.push_str("/");
+        healthh1.push_str(self.own_team[self.p1].pokemon.health.to_string().as_str());
+        let hn1 = graphics::Text::new(healthh1);
+        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(mint::Point2{x:100.0,y:25.0}).color(graphics::WHITE))?;
+        let mut healthh2 = self.enemy_team[self.p2].current_health.to_string();
+        healthh2.push_str("/");
+        healthh2.push_str(self.enemy_team[self.p2].pokemon.health.to_string().as_str());
+        let hn2 = graphics::Text::new(healthh2);
+        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(mint::Point2{x:600.0,y:25.0}).color(graphics::WHITE))?;
         graphics::present(ctx)?;
 
         Ok(())

@@ -40,6 +40,10 @@ impl Battlemon {
     pub fn hp_fract(&self) -> f32 {
         (self.current_health as f32)/(self.pokemon.health as f32)
     }
+
+    pub fn dead(&self) -> bool {
+        self.current_health == 0
+    }
 }
 #[derive(Clone, PartialEq)]
 pub enum State {
@@ -52,6 +56,8 @@ pub enum State {
     After,
     E1,
     E2,
+    SelfReplace,
+    EnemyReplace,
 }
 
 pub struct Battle {
@@ -127,12 +133,13 @@ impl Battle {
 
     // function to find out what action needs to be performed next
     pub fn between(&self) -> State {
-        if self.a1 == Action::Picking {State::A2} 
+        if self.a1 == Action::Picking && self.a2 == Action::Picking {State::After} 
         else {if self.a2 == Action::Picking {State::A1}
-                else {State::After}
+                else {State::A2}
         }
     }
 
+    // basic swap
     pub fn swap(&mut self, slot: usize, which: bool) {
         if which {self.p1 = slot;}
         else {self.p2 = slot;}
@@ -144,8 +151,37 @@ impl Battle {
                 self.text.push_str(self.enemy_team[slot].pokemon.name);}
     }
 
-    pub fn attack(&mut self, atk: attacks::Attack) {
-        // TODO implement atk stuff
+    // basic normal atk calc
+    pub fn attack(&mut self, atk: attacks::Attack, target: bool) {
+        let user = !(target);
+        if user {
+            let mult = effective(&atk.etype, &self.enemy_team[self.p2].pokemon.ftype)*effective(&atk.etype, &self.enemy_team[self.p2].pokemon.stype);
+            let brt: f32= if self.own_team[self.p1].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
+        
+            let basic: f32 = if atk.atype == attacks::AttackType::Physical 
+                                    {(((42*atk.strength*(self.own_team[self.p1].pokemon.atk))as f32)/((50*self.enemy_team[self.p2].pokemon.def)as f32))/(brt as f32)+2.0}
+                             else {((42*atk.strength*(self.own_team[self.p1].pokemon.sp_atk))as f32)/((50*self.enemy_team[self.p2].pokemon.sp_def)as f32)/(brt)+2.0};
+            let stab: f32 = stab(&atk.etype, &self.own_team[self.p1].pokemon);
+            let z = rand::thread_rng().gen_range(84,101) as f32;
+            let damage: f32 = basic*mult*stab*(z/100.0); //TODO: Crit
+            self.dmg = damage as u32;
+            self.timer = damage as u32 + 30;
+            self.user = false;
+            }
+        else {
+            let mult = effective(&atk.etype, &self.own_team[self.p1].pokemon.ftype)*effective(&atk.etype, &self.own_team[self.p1].pokemon.stype);
+            let brt: f32 = if self.enemy_team[self.p2].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
+        
+            let basic: f32 = if atk.atype == attacks::AttackType::Physical
+                                    {(((42*atk.strength*(self.enemy_team[self.p2].pokemon.atk))as f32)/((50*self.own_team[self.p1].pokemon.def)as f32))/(brt)+2.0}
+                            else {((42*atk.strength*(self.enemy_team[self.p2].pokemon.sp_atk))as f32)/((50*self.own_team[self.p1].pokemon.sp_def)as f32)/(brt)+2.0};
+            let stab: f32 = stab(&atk.etype, &self.enemy_team[self.p2].pokemon);
+            let z = rand::thread_rng().gen_range(84,101) as f32;
+            let damage: f32 = basic*mult*stab*(z/100.0); //TODO: Crit
+            self.dmg = damage as u32;
+            self.timer = damage as u32 + 30;
+            self.user = true;
+        }
     }
     /*pub fn pick_phase(&mut self) {
         let own_picking = std::thread::spawn(|| {
@@ -362,64 +398,64 @@ pub fn stab(atk_type: &Type, pok: &pokemon::Pokemon) -> f32 {
 
 pub fn effective(type1: &Type, type2: &Type) -> f32 {
     match type1 {
-        Type::Normal => {if default_structures::normap().contains_key(type2) {
-                    return *default_structures::normap().get(type2).unwrap();}
+        Type::Normal => {if default_structures::normap().contains_key(&type2) {
+                    return default_structures::normap().get(&type2).unwrap().clone();}
                     else {return 1.0;}
             },
-        Type::Fire => {if default_structures::fimap().contains_key(type2) {
-                    return *default_structures::fimap().get(type2).unwrap();}
+        Type::Fire => {if default_structures::fimap().contains_key(&type2) {
+                    return *default_structures::fimap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Water => {if default_structures::wamap().contains_key(type2) {
-                    return *default_structures::wamap().get(type2).unwrap();}
+        Type::Water => {if default_structures::wamap().contains_key(&type2) {
+                    return *default_structures::wamap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Electric => {if default_structures::elmap().contains_key(type2) {
-                    return *default_structures::elmap().get(type2).unwrap();}
+        Type::Electric => {if default_structures::elmap().contains_key(&type2) {
+                    return *default_structures::elmap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Grass => {if default_structures::gramap().contains_key(type2) {
-                    return *default_structures::gramap().get(type2).unwrap();}
+        Type::Grass => {if default_structures::gramap().contains_key(&type2) {
+                    return *default_structures::gramap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Ice => {if default_structures::icemap().contains_key(type2) {
-                    return *default_structures::icemap().get(type2).unwrap();}
+        Type::Ice => {if default_structures::icemap().contains_key(&type2) {
+                    return *default_structures::icemap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Fighting => {if default_structures::figmap().contains_key(type2) {
-                    return *default_structures::figmap().get(type2).unwrap();}
+        Type::Fighting => {if default_structures::figmap().contains_key(&type2) {
+                    return *default_structures::figmap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Poison => {if default_structures::poimap().contains_key(type2) {
-                    return *default_structures::poimap().get(type2).unwrap();}
+        Type::Poison => {if default_structures::poimap().contains_key(&type2) {
+                    return *default_structures::poimap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Ground => {if default_structures::gromap().contains_key(type2) {
-                    return *default_structures::gromap().get(type2).unwrap();}
+        Type::Ground => {if default_structures::gromap().contains_key(&type2) {
+                    return *default_structures::gromap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Flying => {if default_structures::flymap().contains_key(type2) {
-                    return *default_structures::flymap().get(type2).unwrap();}
+        Type::Flying => {if default_structures::flymap().contains_key(&type2) {
+                    return *default_structures::flymap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Psychic => {if default_structures::psymap().contains_key(type2) {
-                    return *default_structures::psymap().get(type2).unwrap();}
+        Type::Psychic => {if default_structures::psymap().contains_key(&type2) {
+                    return *default_structures::psymap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Bug => {if default_structures::bugmap().contains_key(type2) {
-                    return *default_structures::bugmap().get(type2).unwrap();}
+        Type::Bug => {if default_structures::bugmap().contains_key(&type2) {
+                    return *default_structures::bugmap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Rock => {if default_structures::rockmap().contains_key(type2) {
-                    return *default_structures::rockmap().get(type2).unwrap();}
+        Type::Rock => {if default_structures::rockmap().contains_key(&type2) {
+                    return *default_structures::rockmap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Ghost => {if default_structures::ghomap().contains_key(type2) {
-                    return *default_structures::ghomap().get(type2).unwrap();}
+        Type::Ghost => {if default_structures::ghomap().contains_key(&type2) {
+                    return *default_structures::ghomap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
-        Type::Dragon => {if default_structures::dramap().contains_key(type2) {
-                    return *default_structures::dramap().get(type2).unwrap();}
+        Type::Dragon => {if default_structures::dramap().contains_key(&type2) {
+                    return *default_structures::dramap().get(&type2).unwrap();}
                     else {return 1.0;}
             },
         Type::None => return 1.0,

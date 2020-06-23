@@ -58,7 +58,7 @@ pub fn dummy_pokemon(ctx: &mut Context) -> Pokemon {
     }
 }
 
-pub fn abra() -> Pokemon {
+pub fn abra(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Abra",
         ftype: Type::Psychic,
@@ -70,8 +70,7 @@ pub fn abra() -> Pokemon {
         sp_def: 103,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/063 - Abra.wav",
-        sprite_path: "/sprites/63.png"  
+        assets: PokemonAssets::new(ctx, "/battle_cries/063 - Abra.wav", "/sprites/63.png").unwrap()
     }
 }
 

@@ -17,8 +17,7 @@ pub struct Pokemon {
     pub sp_def: u32,
     pub init: u32,
     pub moves: [attacks::Attack; 4], 
-    pub sprite_path: &'static str,
-    pub battle_cry_path: &'static str
+    pub assets: PokemonAssets
 }
 
 impl Display for Pokemon {
@@ -43,13 +42,7 @@ impl Hash for Pokemon {
     }
 }
 
-impl Pokemon {
-    pub fn load_assets(&self, ctx: &mut Context) -> GameResult<PokemonAssets> {
-        PokemonAssets::new(ctx, self.battle_cry_path, self.sprite_path)
-    }
-}
-
-pub fn dummy_pokemon() -> Pokemon {
+pub fn dummy_pokemon(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Dummy",
         ftype: Type::Normal,
@@ -61,8 +54,7 @@ pub fn dummy_pokemon() -> Pokemon {
         sp_def: 10,
         init: 10,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "",
-        sprite_path: ""
+        assets: PokemonAssets::new(ctx, "", "").unwrap()
     }
 }
 

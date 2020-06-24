@@ -44,6 +44,14 @@ impl Battlemon {
     pub fn dead(&self) -> bool {
         self.current_health == 0
     }
+
+    pub fn ftype(&self) -> default_structures::Type {
+        self.pokemon.ftype
+    }
+
+    pub fn stype(&self) -> default_structures::Type {
+        self.pokemon.stype
+    }
 }
 #[derive(Clone, PartialEq)]
 pub enum State {
@@ -58,6 +66,7 @@ pub enum State {
     E2,
     SelfReplace,
     EnemyReplace,
+    Fin,
 }
 
 pub struct Battle {
@@ -146,9 +155,9 @@ impl Battle {
         self.timer = 60;
         self.text = String::new();
         if which {self.text.push_str("You sent out ");
-                    self.text.push_str(self.own_team[slot].pokemon.name);}
+                    self.text.push_str(self.own_team[slot].name());}
         else {self.text.push_str("Opponent sent out ");
-                self.text.push_str(self.enemy_team[slot].pokemon.name);}
+                self.text.push_str(self.enemy_team[slot].name());}
     }
 
     // basic normal atk calc
@@ -179,8 +188,82 @@ impl Battle {
             let z = rand::thread_rng().gen_range(84,101) as f32;
             let damage: f32 = basic*mult*stab*(z/100.0); //TODO: Crit
             self.dmg = damage as u32;
+            self.text = String::new();
+            if user {self.text.push_str(self.own_team[self.p1].name()); self.text.push_str(" used "); self.text.push_str(atk.name); self.text.push_str("!");}
+            else {self.text.push_str(self.enemy_team[self.p2].name()); self.text.push_str(" used "); self.text.push_str(atk.name); self.text.push_str("!");}
             self.timer = damage as u32 + 30;
             self.user = true;
+        }
+
+
+    }
+
+    pub fn enemy_swap(&mut self) {
+        let mut slot: usize = 6;
+        for i in 0..6 {
+            if self.enemy_team[i as usize].current_health == 0 {continue;}
+            if slot == 6 {slot = i as usize; continue;}
+            if 
+                effective(&self.enemy_team[i as usize].ftype(), &self.own_team[self.p1].ftype())
+                *effective(&self.enemy_team[i as usize].ftype(), &self.own_team[self.p1].stype())
+                *effective(&self.enemy_team[i as usize].stype(), &self.own_team[self.p1].ftype())
+                *effective(&self.enemy_team[i as usize].stype(), &self.own_team[self.p1].stype())
+                >effective(&self.enemy_team[slot].ftype(), &self.own_team[self.p1].ftype())
+                *effective(&self.enemy_team[slot].ftype(), &self.own_team[self.p1].stype())
+                *effective(&self.enemy_team[slot].stype(), &self.own_team[self.p1].ftype())
+                *effective(&self.enemy_team[slot].stype(), &self.own_team[self.p1].stype())
+                {
+                    slot = i as usize;
+                }
+        }
+        self.swap(slot, false);
+    }
+
+    pub fn check_swap(&mut self, slot: usize) {
+        if self.own_team[slot].dead() {
+            self.text = String::new();
+            self.text.push_str(self.own_team[slot].name());
+            self.text.push_str(" has already fainted");
+        } 
+        else {self.swap(slot, true)}
+    }
+
+    pub fn stat_eff(&mut self, who: bool) {
+        if who {
+            match self.own_team[self.p1].status {
+                attacks::Status::Burn | attacks::Status::Poison => {
+                    self.user = true;
+                    self.dmg = self.own_team[self.p1].pokemon.health/16;
+                    self.text = String::new();
+                    self.text.push_str(self.own_team[self.p1].name());
+                    self.text.push_str(" took ");
+                    self.text.push_str(self.own_team[self.p1].status.name());
+                    self.text.push_str(" damage");
+                    self.timer = self.dmg + 30;
+                },
+                _ => {},
+            };
+        }
+        else {
+            match self.enemy_team[self.p2].status {
+                attacks::Status::Burn | attacks::Status::Poison => {
+                    self.user = false;
+                    self.dmg = self.enemy_team[self.p2].pokemon.health/16;
+                    self.text = String::new();
+                    self.text.push_str(self.enemy_team[self.p2].name());
+                    self.text.push_str(" took ");
+                    self.text.push_str(self.enemy_team[self.p2].status.name());
+                    self.text.push_str(" damage");
+                    self.timer = self.dmg + 30;
+                },
+                attacks::Status::Sleep(val) => {
+                    self.enemy_team[self.p2].status = attacks::Status::Sleep(if val == 0 {0} else {val-1});
+                }
+                attacks::Status::Freeze(val) => {
+                    self.enemy_team[self.p2].status = attacks::Status::Freeze(if val == 0 {0} else {val-1});
+                }
+                _ => {},
+            };
         }
     }
     /*pub fn pick_phase(&mut self) {

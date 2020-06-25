@@ -108,7 +108,7 @@ impl TeamPickingGame {
     pub fn new (_ctx: &mut Context) -> TeamPickingGame {
         let mut tpg = TeamPickingGame {
             assets: TeamPickingAssets::new(_ctx).unwrap(),
-            teams: team_picking::Team::new(),
+            teams: team_picking::Team::new(_ctx),
             general: PokemonGame::new(_ctx)
         };
         let _ = tpg.assets.music.play_detached(); //TODO doesn't loop

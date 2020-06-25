@@ -2,6 +2,7 @@ use crate::default_structures::{pokemon, attacks};
 use std::vec::Vec;
 use indexmap::map::*;
 use rand::prelude::*;
+use ggez::Context;
 
 pub struct Team {
     pub usable_moves_table: IndexMap<pokemon::Pokemon, Vec<attacks::Attack>>,
@@ -9,13 +10,13 @@ pub struct Team {
 }
 
 impl Team {
-    pub fn new() -> Team {
+    pub fn new(ctx: &mut Context) -> Team {
         let mut team = Team {
             usable_moves_table: IndexMap::with_capacity(151),
-            team: [pokemon::dummy_pokemon(), pokemon::dummy_pokemon(), pokemon::dummy_pokemon(),
-                    pokemon::dummy_pokemon(), pokemon::dummy_pokemon(), pokemon::dummy_pokemon()]
+            team: [pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx),
+                    pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx)]
         };
-        team.init_usable_moves();
+        team.init_usable_moves(ctx);
         team
     }
 
@@ -51,11 +52,11 @@ impl Team {
         false
     }
 
-    fn init_usable_moves(&mut self) {
+    fn init_usable_moves(&mut self, ctx: &mut Context) {
         self.usable_moves_table = IndexMap::with_capacity(151);
 
         //abra 
-        self.usable_moves_table.insert(pokemon::abra(), vec![
+        self.usable_moves_table.insert(pokemon::abra(ctx), vec![
             attacks::teleport(),
             attacks::mega_punch(),
             attacks::mega_kick(),
@@ -83,7 +84,7 @@ impl Team {
         ]);
 
         //aerodacty
-        self.usable_moves_table.insert(pokemon::aerodactyl(), vec![
+        self.usable_moves_table.insert(pokemon::aerodactyl(ctx), vec![
             attacks::wing_attack(),
             attacks::agility(),
             attacks::supersonic(),
@@ -111,7 +112,7 @@ impl Team {
         ]);
 
         //alakazam
-        self.usable_moves_table.insert(pokemon::alakazam(), vec![
+        self.usable_moves_table.insert(pokemon::alakazam(ctx), vec![
             attacks::teleport(),
             attacks::kinesis(),
             attacks::confusion(),
@@ -147,7 +148,7 @@ impl Team {
         ]);
 
         //arbok
-        self.usable_moves_table.insert(pokemon::arbok(), vec![
+        self.usable_moves_table.insert(pokemon::arbok(ctx), vec![
             attacks::wrap(),
             attacks::leer(),
             attacks::poison_sting(),
@@ -174,7 +175,7 @@ impl Team {
         ]);
 
         //arcanine
-        self.usable_moves_table.insert(pokemon::arcanine(), vec![
+        self.usable_moves_table.insert(pokemon::arcanine(ctx), vec![
             attacks::roar(),
             attacks::ember(),
             attacks::leer(),
@@ -202,7 +203,7 @@ impl Team {
         ]);
 
         //articuno
-        self.usable_moves_table.insert(pokemon::articuno(), vec![
+        self.usable_moves_table.insert(pokemon::articuno(ctx), vec![
             attacks::peck(),
             attacks::ice_beam(),
             attacks::blizzard(),
@@ -229,7 +230,7 @@ impl Team {
         ]);
 
         //beedrill
-        self.usable_moves_table.insert(pokemon::beedrill(), vec![
+        self.usable_moves_table.insert(pokemon::beedrill(ctx), vec![
             attacks::fury_attack(),
             attacks::focus_energy(),
             attacks::twineedle(),
@@ -258,7 +259,7 @@ impl Team {
         ]);
 
         //bellsprout
-        self.usable_moves_table.insert(pokemon::bellsprout(), vec![
+        self.usable_moves_table.insert(pokemon::bellsprout(ctx), vec![
             attacks::vine_whip(),
             attacks::growth(),
             attacks::wrap(),
@@ -285,7 +286,7 @@ impl Team {
         ]);
 
         //blastoise
-        self.usable_moves_table.insert(pokemon::blastoise(), vec![
+        self.usable_moves_table.insert(pokemon::blastoise(ctx), vec![
             attacks::tackle(),
             attacks::tail_whip(),
             attacks::bubble(),
@@ -323,7 +324,7 @@ impl Team {
         ]);
 
         //bulbasaur
-        self.usable_moves_table.insert(pokemon::bulbasur(), vec![
+        self.usable_moves_table.insert(pokemon::bulbasur(ctx), vec![
             attacks::tackle(), 
             attacks::growl(),
             attacks::leech_seed(),
@@ -351,7 +352,7 @@ impl Team {
         ]);
 
         //butterfree
-        self.usable_moves_table.insert(pokemon::butterfree(), vec![
+        self.usable_moves_table.insert(pokemon::butterfree(ctx), vec![
             attacks::confusion(),
             attacks::poison_powder(),
             attacks::stun_spore(),
@@ -382,13 +383,13 @@ impl Team {
         ]);
 
         //caterpie
-        self.usable_moves_table.insert(pokemon::caterpie(), vec![
+        self.usable_moves_table.insert(pokemon::caterpie(ctx), vec![
             attacks::tackle(),
             attacks::string_shot()
         ]);
 
         //chansey
-        self.usable_moves_table.insert(pokemon::chansey(), vec![
+        self.usable_moves_table.insert(pokemon::chansey(ctx), vec![
             attacks::pound(),
             attacks::tail_whip(),
             attacks::double_slap(),
@@ -437,7 +438,7 @@ impl Team {
         ]);
 
         //charizard
-        self.usable_moves_table.insert(pokemon::charizard(), vec![
+        self.usable_moves_table.insert(pokemon::charizard(ctx), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::ember(),
@@ -477,7 +478,7 @@ impl Team {
         ]);
 
         //charmaleon
-        self.usable_moves_table.insert(pokemon::charmaleon(), vec![
+        self.usable_moves_table.insert(pokemon::charmaleon(ctx), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::ember(),
@@ -513,7 +514,7 @@ impl Team {
         ]);
 
         //charmander
-        self.usable_moves_table.insert(pokemon::charmander(), vec![
+        self.usable_moves_table.insert(pokemon::charmander(ctx), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::ember(),
@@ -549,7 +550,7 @@ impl Team {
         ]);
 
         //clefable
-        self.usable_moves_table.insert(pokemon::clefable(), vec![
+        self.usable_moves_table.insert(pokemon::clefable(ctx), vec![
             attacks::sing(),
             attacks::double_slap(),
             attacks::minimize(),
@@ -595,7 +596,7 @@ impl Team {
         ]);
 
         //clefairy
-        self.usable_moves_table.insert(pokemon::clefairy(), vec![
+        self.usable_moves_table.insert(pokemon::clefairy(ctx), vec![
             attacks::pound(),
             attacks::growl(),
             attacks::sing(),
@@ -640,7 +641,7 @@ impl Team {
         ]);
 
         //cloyster
-        self.usable_moves_table.insert(pokemon::cloyster(), vec![
+        self.usable_moves_table.insert(pokemon::cloyster(ctx), vec![
             attacks::withdraw(),
             attacks::supersonic(),
             attacks::clamp(),
@@ -672,7 +673,7 @@ impl Team {
         ]);
 
         //cubone
-        self.usable_moves_table.insert(pokemon::cubone(), vec![
+        self.usable_moves_table.insert(pokemon::cubone(ctx), vec![
             attacks::growl(),
             attacks::bone_club(),
             attacks::tail_whip(),
@@ -709,7 +710,7 @@ impl Team {
             attacks::strength()
         ]);
 
-        self.usable_moves_table.insert(pokemon::dewgong(), vec![
+        self.usable_moves_table.insert(pokemon::dewgong(ctx), vec![
             attacks::headbutt(),
             attacks::growl(),
             attacks::aurora_beam(),
@@ -735,7 +736,7 @@ impl Team {
             attacks::strength()
             ]);
         
-        self.usable_moves_table.insert(pokemon::diglett(), vec![
+        self.usable_moves_table.insert(pokemon::diglett(ctx), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::dig(),
@@ -757,11 +758,11 @@ impl Team {
             attacks::cut()
         ]);
 
-        self.usable_moves_table.insert(pokemon::ditto(), vec![
+        self.usable_moves_table.insert(pokemon::ditto(ctx), vec![
             attacks::transform()
         ]);
 
-        self.usable_moves_table.insert(pokemon::dodrio(), vec![
+        self.usable_moves_table.insert(pokemon::dodrio(ctx), vec![
             attacks::peck(),
             attacks::growl(),
             attacks::fury_attack(),
@@ -785,7 +786,7 @@ impl Team {
             attacks::substitue(),
             attacks::fly()
         ]);
-        self.usable_moves_table.insert(pokemon::doduo(), vec![
+        self.usable_moves_table.insert(pokemon::doduo(ctx), vec![
             attacks::peck(),
             attacks::growl(),
             attacks::fury_attack(),
@@ -808,7 +809,7 @@ impl Team {
             attacks::substitue(),
             attacks::fly()
         ]);
-        self.usable_moves_table.insert(pokemon::dragonair(), vec![
+        self.usable_moves_table.insert(pokemon::dragonair(ctx), vec![
             attacks::wrap(),
             attacks::leer(),
             attacks::thunder_wave(),
@@ -839,7 +840,7 @@ impl Team {
             attacks::substitue(),
             attacks::surf(),
         ]);
-        self.usable_moves_table.insert(pokemon::dratini(), vec![
+        self.usable_moves_table.insert(pokemon::dratini(ctx), vec![
             attacks::wrap(),
             attacks::leer(),
             attacks::thunder_wave(),
@@ -869,7 +870,7 @@ impl Team {
             attacks::substitue(),
             attacks::surf()
         ]);
-        self.usable_moves_table.insert(pokemon::drowzee(), vec![
+        self.usable_moves_table.insert(pokemon::drowzee(ctx), vec![
             attacks::pound(),
             attacks::hypnosis(),
             attacks::disable(),
@@ -903,7 +904,7 @@ impl Team {
             attacks::substitue(),
             attacks::flash()
         ]);
-        self.usable_moves_table.insert(pokemon::dugtrio(), vec![
+        self.usable_moves_table.insert(pokemon::dugtrio(ctx), vec![
             attacks::scratch(),
             attacks::growl(),
             attacks::dig(),
@@ -925,7 +926,7 @@ impl Team {
             attacks::substitue(),
             attacks::cut()
         ]);
-        self.usable_moves_table.insert(pokemon::eevee(), vec![
+        self.usable_moves_table.insert(pokemon::eevee(ctx), vec![
             attacks::tackle(),
             attacks::tail_whip(),
             attacks::sand_attack(),
@@ -946,7 +947,7 @@ impl Team {
             attacks::rest(),
             attacks::substitue()
         ]);
-        self.usable_moves_table.insert(pokemon::ekans(), vec![
+        self.usable_moves_table.insert(pokemon::ekans(ctx), vec![
             attacks::wrap(),
             attacks::leer(),
             attacks::poison_sting(),
@@ -972,7 +973,7 @@ impl Team {
             attacks::substitue(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::electabuzz(), vec![
+        self.usable_moves_table.insert(pokemon::electabuzz(ctx), vec![
             attacks::quick_attack(),
             attacks::leer(),
             attacks::thunder_shock(),
@@ -1007,7 +1008,7 @@ impl Team {
             attacks::strength(),
             attacks::flash()
         ]);
-        self.usable_moves_table.insert(pokemon::electrode(), vec![
+        self.usable_moves_table.insert(pokemon::electrode(ctx), vec![
             attacks::tackle(),
             attacks::screech(),
             attacks::sonic_boom(),
@@ -1033,7 +1034,7 @@ impl Team {
             attacks::substitue(),
             attacks::flash()
         ]);
-        self.usable_moves_table.insert(pokemon::exeggcute(), vec![
+        self.usable_moves_table.insert(pokemon::exeggcute(ctx), vec![
             attacks::barrage(),
             attacks::hypnosis(),
             attacks::reflect(),
@@ -1058,7 +1059,7 @@ impl Team {
             attacks::explosion(),
             attacks::substitue()
         ]);
-        self.usable_moves_table.insert(pokemon::exeggcutor(), vec![
+        self.usable_moves_table.insert(pokemon::exeggcutor(ctx), vec![
             attacks::barrage(),
             attacks::hypnosis(),
             attacks::stomp(),
@@ -1086,7 +1087,7 @@ impl Team {
             attacks::poison_powder(),
             attacks::sleep_powder()
         ]);
-        self.usable_moves_table.insert(pokemon::farfetch(), vec![
+        self.usable_moves_table.insert(pokemon::farfetch(ctx), vec![
             attacks::peck(),
             attacks::sand_attack(),
             attacks::leer(),
@@ -1112,7 +1113,7 @@ impl Team {
             attacks::cut(),
             attacks::fly()
         ]);
-        self.usable_moves_table.insert(pokemon::fearow(), vec![
+        self.usable_moves_table.insert(pokemon::fearow(ctx), vec![
             attacks::peck(),
             attacks::growl(),
             attacks::leer(),
@@ -1136,7 +1137,7 @@ impl Team {
             attacks::substitue(),
             attacks::fly() 
         ]);
-        self.usable_moves_table.insert(pokemon::flareon(), vec![
+        self.usable_moves_table.insert(pokemon::flareon(ctx), vec![
             attacks::tackle(),
             attacks::tail_whip(),
             attacks::quick_attack(),
@@ -1165,7 +1166,7 @@ impl Team {
             attacks::focus_energy(),
             attacks::growl()
         ]);
-        self.usable_moves_table.insert(pokemon::gastly(), vec![
+        self.usable_moves_table.insert(pokemon::gastly(ctx), vec![
             attacks::lick(),
             attacks::confuse_ray(),
             attacks::night_shade(),
@@ -1186,7 +1187,7 @@ impl Team {
             attacks::explosion(),
             attacks::substitue()
         ]);
-        self.usable_moves_table.insert(pokemon::gengar(), vec![
+        self.usable_moves_table.insert(pokemon::gengar(ctx), vec![
             attacks::lick(),
             attacks::confuse_ray(),
             attacks::night_shade(),
@@ -1219,7 +1220,7 @@ impl Team {
             attacks::skull_bash(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::geodude(), vec![
+        self.usable_moves_table.insert(pokemon::geodude(ctx), vec![
             attacks::tackle(),
             attacks::defense_curl(),
             attacks::rock_throw(),
@@ -1248,7 +1249,7 @@ impl Team {
             attacks::substitue(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::gloom(), vec![
+        self.usable_moves_table.insert(pokemon::gloom(ctx), vec![
             attacks::absorb(),
             attacks::poison_powder(),
             attacks::stun_spore(),
@@ -1270,7 +1271,7 @@ impl Team {
             attacks::substitue(),
             attacks::cut()
         ]);
-        self.usable_moves_table.insert(pokemon::golbat(), vec![
+        self.usable_moves_table.insert(pokemon::golbat(ctx), vec![
             attacks::leech_life(),
             attacks::screech(),
             attacks::bite(),
@@ -1293,7 +1294,7 @@ impl Team {
             attacks::rest(),
             attacks::substitue()
         ]);
-        self.usable_moves_table.insert(pokemon::goldeen(), vec![
+        self.usable_moves_table.insert(pokemon::goldeen(ctx), vec![
             attacks::peck(),
             attacks::tail_whip(),
             attacks::supersonic(),
@@ -1319,7 +1320,7 @@ impl Team {
             attacks::substitue(),
             attacks::surf()
         ]);
-        self.usable_moves_table.insert(pokemon::golduck(), vec![
+        self.usable_moves_table.insert(pokemon::golduck(ctx), vec![
             attacks::scratch(),
             attacks::tail_whip(),
             attacks::disable(),
@@ -1353,7 +1354,7 @@ impl Team {
             attacks::surf(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::golem(), vec![
+        self.usable_moves_table.insert(pokemon::golem(ctx), vec![
             attacks::tackle(),
             attacks::defense_curl(),
             attacks::rock_throw(),
@@ -1384,7 +1385,7 @@ impl Team {
             attacks::substitue(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::graveler(), vec![
+        self.usable_moves_table.insert(pokemon::graveler(ctx), vec![
             attacks::tackle(),
             attacks::defense_curl(),
             attacks::rock_throw(),
@@ -1412,7 +1413,7 @@ impl Team {
             attacks::substitue(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::grimer(), vec![
+        self.usable_moves_table.insert(pokemon::grimer(ctx), vec![
             attacks::pound(),
             attacks::disable(),
             attacks::poison_gas(),
@@ -1436,7 +1437,7 @@ impl Team {
             attacks::explosion(),
             attacks::substitue()
         ]);
-        self.usable_moves_table.insert(pokemon::growlithe(), vec![
+        self.usable_moves_table.insert(pokemon::growlithe(ctx), vec![
             attacks::bite(),
             attacks::roar(),
             attacks::ember(),
@@ -1460,7 +1461,7 @@ impl Team {
             attacks::rest(),
             attacks::substitue()
         ]);
-        self.usable_moves_table.insert(pokemon::gyarados(), vec![
+        self.usable_moves_table.insert(pokemon::gyarados(ctx), vec![
             attacks::tackle(),
             attacks::bite(),
             attacks::dragon_rage(),
@@ -1490,7 +1491,7 @@ impl Team {
             attacks::strength(),
             attacks::splash()
         ]);
-        self.usable_moves_table.insert(pokemon::haunter(), vec![
+        self.usable_moves_table.insert(pokemon::haunter(ctx), vec![
             attacks::lick(),
             attacks::confuse_ray(),
             attacks::night_shade(),
@@ -1511,7 +1512,7 @@ impl Team {
             attacks::explosion(),
             attacks::substitue()
         ]);
-        self.usable_moves_table.insert(pokemon::hitmonchan(), vec![
+        self.usable_moves_table.insert(pokemon::hitmonchan(ctx), vec![
             attacks::comet_punch(),
             attacks::agility(),
             attacks::fire_punch(),
@@ -1537,7 +1538,7 @@ impl Team {
             attacks::substitue(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::hitmonlee(), vec![
+        self.usable_moves_table.insert(pokemon::hitmonlee(ctx), vec![
             attacks::double_kick(),
             attacks::meditate(),
             attacks::rolling_kick(),
@@ -1564,7 +1565,7 @@ impl Team {
             attacks::substitue(),
             attacks::strength()
         ]);
-        self.usable_moves_table.insert(pokemon::horsea(), vec![
+        self.usable_moves_table.insert(pokemon::horsea(ctx), vec![
             attacks::bubble(),
             attacks::smokescreen(),
             attacks::leer(),
@@ -1587,7 +1588,7 @@ impl Team {
             attacks::substitue(),
             attacks::surf()
         ]);
-        self.usable_moves_table.insert(pokemon::hypno(), vec![
+        self.usable_moves_table.insert(pokemon::hypno(ctx), vec![
             attacks::pound(),
             attacks::hypnosis(),
             attacks::disable(),
@@ -1622,7 +1623,7 @@ impl Team {
             attacks::substitue(),
             attacks::flash()
         ]);
-        self.usable_moves_table.insert(pokemon::ivysaur(), vec![
+        self.usable_moves_table.insert(pokemon::ivysaur(ctx), vec![
             attacks::tackle(),
             attacks::growl(),
             attacks::leech_seed(),
@@ -1647,7 +1648,7 @@ impl Team {
             attacks::substitue(),
             attacks::cut()
         ]);
-        self.usable_moves_table.insert(pokemon::jigglypuff(), vec![
+        self.usable_moves_table.insert(pokemon::jigglypuff(ctx), vec![
             attacks::sing(),
             attacks::pound(),
             attacks::disable(),
@@ -1686,7 +1687,7 @@ impl Team {
             attacks::strength(),
             attacks::flash()        
             ]);
-            self.usable_moves_table.insert(pokemon::jolteon(), vec![
+            self.usable_moves_table.insert(pokemon::jolteon(ctx), vec![
                 attacks::tackle(),
                 attacks::tail_whip(),
                 attacks::quick_attack(),
@@ -1717,7 +1718,7 @@ impl Team {
                 attacks::focus_energy(),
                 attacks::growl()
             ]);
-            self.usable_moves_table.insert(pokemon::jynx(), vec![
+            self.usable_moves_table.insert(pokemon::jynx(ctx), vec![
                 attacks::pound(),
                 attacks::lovely_kiss(),
                 attacks::lick(),
@@ -1751,7 +1752,7 @@ impl Team {
                 attacks::psywave(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::kabuto(), vec![
+            self.usable_moves_table.insert(pokemon::kabuto(ctx), vec![
                 attacks::scratch(),
                 attacks::harden(),
                 attacks::absorb(),
@@ -1775,7 +1776,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::kabutops(), vec![
+            self.usable_moves_table.insert(pokemon::kabutops(ctx), vec![
                 attacks::scratch(),
                 attacks::harden(),
                 attacks::absorb(),
@@ -1807,7 +1808,7 @@ impl Team {
                 attacks::cut(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::kadabra(), vec![
+            self.usable_moves_table.insert(pokemon::kadabra(ctx), vec![
                 attacks::teleport(),
                 attacks::kinesis(),
                 attacks::confusion(),
@@ -1839,12 +1840,12 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::kakuna(), vec![
+            self.usable_moves_table.insert(pokemon::kakuna(ctx), vec![
                 attacks::harden(),
                 attacks::poison_sting(),
                 attacks::string_shot()
             ]);
-            self.usable_moves_table.insert(pokemon::kangaskhan(), vec![
+            self.usable_moves_table.insert(pokemon::kangaskhan(ctx), vec![
                 attacks::comet_punch(),
                 attacks::rage(),
                 attacks::bite(),
@@ -1880,7 +1881,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::kingler(), vec![
+            self.usable_moves_table.insert(pokemon::kingler(ctx), vec![
                 attacks::bubble(),
                 attacks::leer(),
                 attacks::vise_grip(),
@@ -1908,7 +1909,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::koffing(), vec![
+            self.usable_moves_table.insert(pokemon::koffing(ctx), vec![
                 attacks::tackle(),
                 attacks::smog(),
                 attacks::sludge(),
@@ -1927,7 +1928,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::krabby(), vec![
+            self.usable_moves_table.insert(pokemon::krabby(ctx), vec![
                 attacks::bubble(),
                 attacks::leer(),
                 attacks::vise_grip(),
@@ -1954,7 +1955,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::lapras(), vec![
+            self.usable_moves_table.insert(pokemon::lapras(ctx), vec![
                 attacks::water_gun(),
                 attacks::growl(),
                 attacks::sing(),
@@ -1987,7 +1988,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::lickitung(), vec![
+            self.usable_moves_table.insert(pokemon::lickitung(ctx), vec![
                 attacks::wrap(),
                 attacks::supersonic(),
                 attacks::stomp(),
@@ -2026,7 +2027,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::machamp(), vec![
+            self.usable_moves_table.insert(pokemon::machamp(ctx), vec![
                 attacks::karate_chop(),
                 attacks::low_kick(),
                 attacks::leer(),
@@ -2056,7 +2057,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::machoke(), vec![
+            self.usable_moves_table.insert(pokemon::machoke(ctx), vec![
                 attacks::karate_chop(),
                 attacks::low_kick(),
                 attacks::leer(),
@@ -2085,7 +2086,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::machop(), vec![
+            self.usable_moves_table.insert(pokemon::machop(ctx), vec![
                 attacks::karate_chop(),
                 attacks::low_kick(),
                 attacks::leer(),
@@ -2114,11 +2115,11 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::magikarp(), vec![
+            self.usable_moves_table.insert(pokemon::magikarp(ctx), vec![
                 attacks::splash(),
                 attacks::tackle()
             ]);
-            self.usable_moves_table.insert(pokemon::magmar(), vec![
+            self.usable_moves_table.insert(pokemon::magmar(ctx), vec![
                 attacks::ember(),
                 attacks::leer(),
                 attacks::confuse_ray(),
@@ -2150,7 +2151,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::magnemite(), vec![
+            self.usable_moves_table.insert(pokemon::magnemite(ctx), vec![
                 attacks::tackle(),
                 attacks::sonic_boom(),
                 attacks::thunder_shock(),
@@ -2173,7 +2174,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::magneton(), vec![
+            self.usable_moves_table.insert(pokemon::magneton(ctx), vec![
                 attacks::tackle(),
                 attacks::sonic_boom(),
                 attacks::thunder_shock(),
@@ -2197,7 +2198,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::mankey(), vec![
+            self.usable_moves_table.insert(pokemon::mankey(ctx), vec![
                 attacks::scratch(),
                 attacks::leer(),
                 attacks::low_kick(),
@@ -2231,7 +2232,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::marowak(), vec![
+            self.usable_moves_table.insert(pokemon::marowak(ctx), vec![
                 attacks::bone_club(),
                 attacks::tail_whip(),
                 attacks::headbutt(),
@@ -2267,7 +2268,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::meowth(), vec![
+            self.usable_moves_table.insert(pokemon::meowth(ctx), vec![
                 attacks::scratch(),
                 attacks::growl(),
                 attacks::bite(),
@@ -2292,12 +2293,12 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::metapod(), vec![
+            self.usable_moves_table.insert(pokemon::metapod(ctx), vec![
                 attacks::harden(),
                 attacks::string_shot(),
                 attacks::tackle()
             ]);
-            self.usable_moves_table.insert(pokemon::mew(), vec![
+            self.usable_moves_table.insert(pokemon::mew(ctx), vec![
                 attacks::pound(),
                 attacks::transform(),
                 attacks::mega_punch(),
@@ -2356,7 +2357,7 @@ impl Team {
                 attacks::strength(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::mewtwo(), vec![
+            self.usable_moves_table.insert(pokemon::mewtwo(ctx), vec![
                 attacks::confusion(),
                 attacks::disable(),
                 attacks::barrier(),
@@ -2402,7 +2403,7 @@ impl Team {
                 attacks::strength(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::moltres(), vec![
+            self.usable_moves_table.insert(pokemon::moltres(ctx), vec![
                 attacks::peck(),
                 attacks::fire_spin(),
                 attacks::leer(),
@@ -2425,7 +2426,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::fly()
             ]);
-            self.usable_moves_table.insert(pokemon::mrmime(), vec![
+            self.usable_moves_table.insert(pokemon::mrmime(ctx), vec![
                 attacks::confusion(),
                 attacks::barrier(),
                 attacks::light_screen(),
@@ -2455,7 +2456,7 @@ impl Team {
                 attacks::psywave(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::muk(), vec![
+            self.usable_moves_table.insert(pokemon::muk(ctx), vec![
                 attacks::pound(),
                 attacks::disable(),
                 attacks::poison_gas(),
@@ -2480,7 +2481,7 @@ impl Team {
                 attacks::explosion(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::nidoking(), vec![
+            self.usable_moves_table.insert(pokemon::nidoking(ctx), vec![
                 attacks::tackle(),
                 attacks::horn_attack(),
                 attacks::poison_sting(),
@@ -2522,7 +2523,7 @@ impl Team {
                 attacks::fury_attack(),
                 attacks::leer()
             ]);
-            self.usable_moves_table.insert(pokemon::nidoqueen(), vec![
+            self.usable_moves_table.insert(pokemon::nidoqueen(ctx), vec![
                 attacks::tackle(),
                 attacks::scratch(),
                 attacks::tail_whip(),
@@ -2564,7 +2565,7 @@ impl Team {
                 attacks::fury_swipes(),
                 attacks::growl()
             ]);
-            self.usable_moves_table.insert(pokemon::nidoranf(), vec![
+            self.usable_moves_table.insert(pokemon::nidoranf(ctx), vec![
                 attacks::tackle(),
                 attacks::scratch(),
                 attacks::tail_whip(),
@@ -2589,7 +2590,7 @@ impl Team {
                 attacks::fury_swipes(),
                 attacks::growl()
             ]);
-            self.usable_moves_table.insert(pokemon::nidoranm(), vec![
+            self.usable_moves_table.insert(pokemon::nidoranm(ctx), vec![
                 attacks::tackle(),
                 attacks::horn_attack(),
                 attacks::poison_sting(),
@@ -2614,7 +2615,7 @@ impl Team {
                 attacks::fury_attack(),
                 attacks::leer()
             ]);
-            self.usable_moves_table.insert(pokemon::nidorina(), vec![
+            self.usable_moves_table.insert(pokemon::nidorina(ctx), vec![
                 attacks::tackle(),
                 attacks::scratch(),
                 attacks::tail_whip(),
@@ -2643,7 +2644,7 @@ impl Team {
                 attacks::fury_swipes(),
                 attacks::growl()
             ]);
-            self.usable_moves_table.insert(pokemon::nidorino(), vec![
+            self.usable_moves_table.insert(pokemon::nidorino(ctx), vec![
                 attacks::tackle(),
                 attacks::leer(),
                 attacks::horn_attack(),
@@ -2672,7 +2673,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::ninetales(), vec![
+            self.usable_moves_table.insert(pokemon::ninetales(ctx), vec![
                 attacks::ember(),
                 attacks::tail_whip(),
                 attacks::quick_attack(),
@@ -2697,7 +2698,7 @@ impl Team {
                 attacks::fire_spin(),
                 attacks::flamethrower()
             ]);
-            self.usable_moves_table.insert(pokemon::oddish(), vec![
+            self.usable_moves_table.insert(pokemon::oddish(ctx), vec![
                 attacks::absorb(),
                 attacks::poison_powder(),
                 attacks::stun_spore(),
@@ -2719,7 +2720,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::cut()
             ]);
-            self.usable_moves_table.insert(pokemon::omanyte(), vec![
+            self.usable_moves_table.insert(pokemon::omanyte(ctx), vec![
                 attacks::water_gun(),
                 attacks::withdraw(),
                 attacks::horn_attack(),
@@ -2742,7 +2743,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::omastar(), vec![
+            self.usable_moves_table.insert(pokemon::omastar(ctx), vec![
                 attacks::water_gun(),
                 attacks::withdraw(),
                 attacks::horn_attack(),
@@ -2770,7 +2771,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::onix(), vec![
+            self.usable_moves_table.insert(pokemon::onix(ctx), vec![
                 attacks::tackle(),
                 attacks::screech(),
                 attacks::bind(),
@@ -2796,7 +2797,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::paras(), vec![
+            self.usable_moves_table.insert(pokemon::paras(ctx), vec![
                 attacks::scratch(),
                 attacks::stun_spore(),
                 attacks::leech_life(),
@@ -2821,7 +2822,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::cut()
             ]);
-            self.usable_moves_table.insert(pokemon::parasect(), vec![
+            self.usable_moves_table.insert(pokemon::parasect(ctx), vec![
                 attacks::scratch(),
                 attacks::stun_spore(),
                 attacks::leech_life(),
@@ -2847,7 +2848,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::cut()
             ]);
-            self.usable_moves_table.insert(pokemon::persian(), vec![
+            self.usable_moves_table.insert(pokemon::persian(ctx), vec![
                 attacks::scratch(),
                 attacks::growl(),
                 attacks::bite(),
@@ -2873,7 +2874,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::pidgeot(), vec![
+            self.usable_moves_table.insert(pokemon::pidgeot(ctx), vec![
                 attacks::gust(),
                 attacks::sand_attack(),
                 attacks::quick_attack(),
@@ -2897,7 +2898,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::fly(),
             ]);
-            self.usable_moves_table.insert(pokemon::pidgeotto(), vec![
+            self.usable_moves_table.insert(pokemon::pidgeotto(ctx), vec![
                 attacks::gust(),
                 attacks::sand_attack(),
                 attacks::quick_attack(),
@@ -2920,7 +2921,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::fly(),
             ]);
-            self.usable_moves_table.insert(pokemon::pidgey(), vec![
+            self.usable_moves_table.insert(pokemon::pidgey(ctx), vec![
                 attacks::gust(),
                 attacks::sand_attack(),
                 attacks::quick_attack(),
@@ -2943,7 +2944,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::fly(),
             ]);
-            self.usable_moves_table.insert(pokemon::pikachu(), vec![
+            self.usable_moves_table.insert(pokemon::pikachu(ctx), vec![
                 attacks::thunder_shock(),
                 attacks::growl(),
                 attacks::tail_whip(),
@@ -2975,7 +2976,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::pinsir(), vec![
+            self.usable_moves_table.insert(pokemon::pinsir(ctx), vec![
                 attacks::vise_grip(),
                 attacks::bind(),
                 attacks::seismic_toss(),
@@ -2999,7 +3000,7 @@ impl Team {
                 attacks::cut(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::poliwag(), vec![
+            self.usable_moves_table.insert(pokemon::poliwag(ctx), vec![
                 attacks::bubble(),
                 attacks::hypnosis(),
                 attacks::water_gun(),
@@ -3024,7 +3025,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::poliwhirl(), vec![
+            self.usable_moves_table.insert(pokemon::poliwhirl(ctx), vec![
                 attacks::bubble(),
                 attacks::hypnosis(),
                 attacks::water_gun(),
@@ -3058,7 +3059,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::poliwrath(), vec![
+            self.usable_moves_table.insert(pokemon::poliwrath(ctx), vec![
                 attacks::hypnosis(),
                 attacks::water_gun(),
                 attacks::double_slap(),
@@ -3093,7 +3094,7 @@ impl Team {
                 attacks::bubble(),
                 attacks::hydro_pump()
             ]);
-            self.usable_moves_table.insert(pokemon::ponyta(), vec![
+            self.usable_moves_table.insert(pokemon::ponyta(ctx), vec![
                 attacks::ember(),
                 attacks::tail_whip(),
                 attacks::stomp(),
@@ -3116,7 +3117,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::porygon(), vec![
+            self.usable_moves_table.insert(pokemon::porygon(ctx), vec![
                 attacks::tackle(),
                 attacks::sharpen(),
                 attacks::conversion(),
@@ -3147,7 +3148,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::primeape(), vec![
+            self.usable_moves_table.insert(pokemon::primeape(ctx), vec![
                 attacks::scratch(),
                 attacks::leer(),
                 attacks::low_kick(),
@@ -3182,7 +3183,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::psyduck(), vec![
+            self.usable_moves_table.insert(pokemon::psyduck(ctx), vec![
                 attacks::scratch(),
                 attacks::tail_whip(),
                 attacks::disable(),
@@ -3215,7 +3216,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::raichu(), vec![
+            self.usable_moves_table.insert(pokemon::raichu(ctx), vec![
                 attacks::thunder_shock(),
                 attacks::growl(),
                 attacks::thunder_wave(),
@@ -3247,7 +3248,7 @@ impl Team {
                 attacks::slam(),
                 attacks::tail_whip()
             ]);
-            self.usable_moves_table.insert(pokemon::rapidash(), vec![
+            self.usable_moves_table.insert(pokemon::rapidash(ctx), vec![
                 attacks::ember(),
                 attacks::tail_whip(),
                 attacks::stomp(),
@@ -3271,7 +3272,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::raticate(), vec![
+            self.usable_moves_table.insert(pokemon::raticate(ctx), vec![
                 attacks::tackle(),
                 attacks::tail_whip(),
                 attacks::quick_attack(),
@@ -3299,7 +3300,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::rattata(), vec![
+            self.usable_moves_table.insert(pokemon::rattata(ctx), vec![
                 attacks::tackle(),
                 attacks::tail_whip(),
                 attacks::quick_attack(),
@@ -3325,7 +3326,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::rhydon(), vec![
+            self.usable_moves_table.insert(pokemon::rhydon(ctx), vec![
                 attacks::horn_attack(),
                 attacks::stomp(),
                 attacks::tail_whip(),
@@ -3364,7 +3365,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::rhyhorn(), vec![
+            self.usable_moves_table.insert(pokemon::rhyhorn(ctx), vec![
                 attacks::horn_attack(),
                 attacks::stomp(),
                 attacks::tail_whip(),
@@ -3391,7 +3392,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::sandshrew(), vec![
+            self.usable_moves_table.insert(pokemon::sandshrew(ctx), vec![
                 attacks::scratch(),
                 attacks::sand_attack(),
                 attacks::slash(),
@@ -3419,7 +3420,7 @@ impl Team {
                 attacks::cut(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::sandslash(), vec![
+            self.usable_moves_table.insert(pokemon::sandslash(ctx), vec![
                 attacks::scratch(),
                 attacks::sand_attack(),
                 attacks::slash(),
@@ -3448,7 +3449,7 @@ impl Team {
                 attacks::cut(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::scyther(), vec![
+            self.usable_moves_table.insert(pokemon::scyther(ctx), vec![
                 attacks::quick_attack(),
                 attacks::leer(),
                 attacks::focus_energy(),
@@ -3470,7 +3471,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::cut()
             ]);
-            self.usable_moves_table.insert(pokemon::seadra(), vec![
+            self.usable_moves_table.insert(pokemon::seadra(ctx), vec![
                 attacks::bubble(),
                 attacks::smokescreen(),
                 attacks::leer(),
@@ -3494,7 +3495,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::seaking(), vec![
+            self.usable_moves_table.insert(pokemon::seaking(ctx), vec![
                 attacks::peck(),
                 attacks::tail_whip(),
                 attacks::supersonic(),
@@ -3521,7 +3522,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::seel(), vec![
+            self.usable_moves_table.insert(pokemon::seel(ctx), vec![
                 attacks::headbutt(),
                 attacks::growl(),
                 attacks::aurora_beam(),
@@ -3546,7 +3547,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::shellder(), vec![
+            self.usable_moves_table.insert(pokemon::shellder(ctx), vec![
                 attacks::tackle(),
                 attacks::withdraw(),
                 attacks::supersonic(),
@@ -3574,7 +3575,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::slowbro(), vec![
+            self.usable_moves_table.insert(pokemon::slowbro(ctx), vec![
                 attacks::confusion(),
                 attacks::disable(),
                 attacks::headbutt(),
@@ -3618,7 +3619,7 @@ impl Team {
                 attacks::strength(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::slowpoke(), vec![
+            self.usable_moves_table.insert(pokemon::slowpoke(ctx), vec![
                 attacks::confusion(),
                 attacks::disable(),
                 attacks::headbutt(),
@@ -3655,7 +3656,7 @@ impl Team {
                 attacks::strength(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::snorlax(), vec![
+            self.usable_moves_table.insert(pokemon::snorlax(ctx), vec![
                 attacks::harden(),
                 attacks::headbutt(),
                 attacks::water_gun(),
@@ -3696,7 +3697,7 @@ impl Team {
                 attacks::strength(),
                 attacks::rock_slide()
             ]);
-            self.usable_moves_table.insert(pokemon::spearow(), vec![
+            self.usable_moves_table.insert(pokemon::spearow(ctx), vec![
                 attacks::peck(),
                 attacks::growl(),
                 attacks::leer(),
@@ -3719,7 +3720,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::fly()
             ]);
-            self.usable_moves_table.insert(pokemon::squirtle(), vec![
+            self.usable_moves_table.insert(pokemon::squirtle(ctx), vec![
                 attacks::tackle(),
                 attacks::tail_whip(),
                 attacks::bubble(),
@@ -3752,7 +3753,7 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::starmie(), vec![
+            self.usable_moves_table.insert(pokemon::starmie(ctx), vec![
                 attacks::tackle(),
                 attacks::water_gun(),
                 attacks::harden(),
@@ -3785,7 +3786,7 @@ impl Team {
                 attacks::minimize(),
                 attacks::recover()
             ]);
-            self.usable_moves_table.insert(pokemon::staryu(), vec![
+            self.usable_moves_table.insert(pokemon::staryu(ctx), vec![
                 attacks::tackle(),
                 attacks::water_gun(),
                 attacks::harden(),
@@ -3816,7 +3817,7 @@ impl Team {
                 attacks::light_screen(),
                 attacks::minimize()
             ]);
-            self.usable_moves_table.insert(pokemon::tangela(), vec![
+            self.usable_moves_table.insert(pokemon::tangela(ctx), vec![
                 attacks::constrict(),
                 attacks::bind(),
                 attacks::absorb(),
@@ -3843,7 +3844,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::cut()
             ]);
-            self.usable_moves_table.insert(pokemon::tauros(), vec![
+            self.usable_moves_table.insert(pokemon::tauros(ctx), vec![
                 attacks::tackle(),
                 attacks::stomp(),
                 attacks::tail_whip(),
@@ -3870,7 +3871,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::tentacool(), vec![
+            self.usable_moves_table.insert(pokemon::tentacool(ctx), vec![
                 attacks::acid(),
                 attacks::supersonic(),
                 attacks::wrap(),
@@ -3899,7 +3900,7 @@ impl Team {
                 attacks::cut(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::tentacruel(), vec![
+            self.usable_moves_table.insert(pokemon::tentacruel(ctx), vec![
                 attacks::acid(),
                 attacks::supersonic(),
                 attacks::wrap(),
@@ -3929,7 +3930,7 @@ impl Team {
                 attacks::cut(),
                 attacks::surf()
             ]);
-            self.usable_moves_table.insert(pokemon::vaporeon(), vec![
+            self.usable_moves_table.insert(pokemon::vaporeon(ctx), vec![
                 attacks::tackle(),
                 attacks::tail_whip(),
                 attacks::quick_attack(),
@@ -3962,7 +3963,7 @@ impl Team {
                 attacks::focus_energy(),
                 attacks::growl()
             ]);
-            self.usable_moves_table.insert(pokemon::venomoth(), vec![
+            self.usable_moves_table.insert(pokemon::venomoth(ctx), vec![
                 attacks::tackle(),
                 attacks::disable(),
                 attacks::supersonic(),
@@ -3993,7 +3994,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::venonat(), vec![
+            self.usable_moves_table.insert(pokemon::venonat(ctx), vec![
                 attacks::tackle(),
                 attacks::disable(),
                 attacks::supersonic(),
@@ -4019,7 +4020,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::venusaur(), vec![
+            self.usable_moves_table.insert(pokemon::venusaur(ctx), vec![
                 attacks::growl(),
                 attacks::tackle(),
                 attacks::leech_seed(),
@@ -4045,7 +4046,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::cut()
             ]);
-            self.usable_moves_table.insert(pokemon::victreebel(), vec![
+            self.usable_moves_table.insert(pokemon::victreebel(ctx), vec![
                 attacks::sleep_powder(),
                 attacks::stun_spore(),
                 attacks::acid(),
@@ -4072,7 +4073,7 @@ impl Team {
                 attacks::slam(),
                 attacks::vine_whip()
             ]);
-            self.usable_moves_table.insert(pokemon::vileplume(), vec![
+            self.usable_moves_table.insert(pokemon::vileplume(ctx), vec![
                 attacks::sleep_powder(),
                 attacks::stun_spore(),
                 attacks::acid(),
@@ -4096,7 +4097,7 @@ impl Team {
                 attacks::cut(),
                 attacks::absorb()
             ]);
-            self.usable_moves_table.insert(pokemon::voltorb(), vec![
+            self.usable_moves_table.insert(pokemon::voltorb(ctx), vec![
                 attacks::tackle(),
                 attacks::screech(),
                 attacks::sonic_boom(),
@@ -4119,7 +4120,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::vulpix(), vec![
+            self.usable_moves_table.insert(pokemon::vulpix(ctx), vec![
                 attacks::ember(),
                 attacks::tail_whip(),
                 attacks::quick_attack(),
@@ -4143,7 +4144,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::wartortle(), vec![
+            self.usable_moves_table.insert(pokemon::wartortle(ctx), vec![
                 attacks::tackle(),
                 attacks::tail_whip(),
                 attacks::bubble(),
@@ -4175,11 +4176,11 @@ impl Team {
                 attacks::surf(),
                 attacks::strength()
             ]);
-            self.usable_moves_table.insert(pokemon::weedle(), vec![
+            self.usable_moves_table.insert(pokemon::weedle(ctx), vec![
                 attacks::poison_sting(),
                 attacks::string_shot()
             ]);
-            self.usable_moves_table.insert(pokemon::weepinbell(), vec![
+            self.usable_moves_table.insert(pokemon::weepinbell(ctx), vec![
                 attacks::vine_whip(),
                 attacks::growth(),
                 attacks::wrap(),
@@ -4204,7 +4205,7 @@ impl Team {
                 attacks::substitue(),
                 attacks::cut()
             ]);
-            self.usable_moves_table.insert(pokemon::weezing(), vec![
+            self.usable_moves_table.insert(pokemon::weezing(ctx), vec![
                 attacks::tackle(),
                 attacks::smog(),
                 attacks::sludge(),
@@ -4224,7 +4225,7 @@ impl Team {
                 attacks::rest(),
                 attacks::substitue()
             ]);
-            self.usable_moves_table.insert(pokemon::wigglytuff(), vec![
+            self.usable_moves_table.insert(pokemon::wigglytuff(ctx), vec![
                 attacks::sing(),
                 attacks::disable(),
                 attacks::defense_curl(),
@@ -4264,7 +4265,7 @@ impl Team {
                 attacks::flash(),
                 attacks::pound()
             ]);
-            self.usable_moves_table.insert(pokemon::zapdos(), vec![
+            self.usable_moves_table.insert(pokemon::zapdos(ctx), vec![
                 attacks::thunder_shock(),
                 attacks::drill_peck(),
                 attacks::thunder(),
@@ -4290,7 +4291,7 @@ impl Team {
                 attacks::fly(),
                 attacks::flash()
             ]);
-            self.usable_moves_table.insert(pokemon::zubat(), vec![
+            self.usable_moves_table.insert(pokemon::zubat(ctx), vec![
                 attacks::leech_life(),
                 attacks::supersonic(),
                 attacks::bite(),

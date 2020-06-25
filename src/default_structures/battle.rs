@@ -1,6 +1,7 @@
 use crate::default_structures::{pokemon, attacks, Type, self};
 use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
+use ggez::Context;
 
 #[derive(PartialEq)]
 pub enum Action {
@@ -22,10 +23,11 @@ pub struct Battlemon {
 }
 
 impl Battlemon {
-    pub fn dummy() -> Battlemon {
+    //TODO delete later
+    pub fn dummy(ctx: &mut Context) -> Battlemon {
         Battlemon {
-            pokemon: default_structures::pokemon::dummy_pokemon(),
-            current_health: pokemon::dummy_pokemon().health,
+            pokemon: default_structures::pokemon::dummy_pokemon(ctx),
+            current_health: pokemon::dummy_pokemon(ctx).health,
             evasion: 0,
             accuracy: 0,
             status: attacks::Status::None,

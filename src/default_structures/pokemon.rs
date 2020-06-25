@@ -74,7 +74,7 @@ pub fn abra(ctx: &mut Context) -> Pokemon {
     }
 }
 
-pub fn aerodactyl() -> Pokemon {
+pub fn aerodactyl(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Aerodactyl",
         ftype: Type::Rock,
@@ -86,12 +86,11 @@ pub fn aerodactyl() -> Pokemon {
         sp_def: 139,
         init: 238,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/142 - Aerodactyl.wav",
-        sprite_path: "/sprites/142.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/142 - Aerodactyl.wav", "/sprites/142.png").unwrap() 
     }
 }
 
-pub fn alakazam() -> Pokemon {
+pub fn alakazam(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Alakazam",
         ftype: Type::Psychic,
@@ -103,12 +102,11 @@ pub fn alakazam() -> Pokemon {
         sp_def: 157,
         init: 220,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/065 - Alakazam.wav",
-        sprite_path: "/sprites/65.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/065 - Alakazam.wav", "/sprites/65.png").unwrap()
     }
 }
 
-pub fn arbok() -> Pokemon {
+pub fn arbok(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Arbok",
         ftype: Type::Poison,
@@ -120,12 +118,11 @@ pub fn arbok() -> Pokemon {
         sp_def: 146,
         init: 148,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/024 - Arbok.wav",
-        sprite_path: "/sprites/24.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/024 - Arbok.wav", "/sprites/24.png").unwrap()
     }
 }
 
-pub fn arcanine() -> Pokemon {
+pub fn arcanine(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Arcanine",
         ftype: Type::Fire,
@@ -137,12 +134,11 @@ pub fn arcanine() -> Pokemon {
         sp_def: 148,
         init: 175,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/059 - Arcanine.wav",
-        sprite_path: "/sprites/59.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/059 - Arcanine.wav", "/sprites/59.png").unwrap() 
     }
 }
 
-pub fn articuno() -> Pokemon {
+pub fn articuno(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Articuno",
         ftype: Type::Ice,
@@ -154,12 +150,11 @@ pub fn articuno() -> Pokemon {
         sp_def: 229,
         init: 157,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/144 - Articuno.wav",
-        sprite_path: "/sprites/144.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/144 - Articuno.wav", "/sprites/144.png").unwrap()
     }
 }
 
-pub fn beedrill() -> Pokemon {
+pub fn beedrill(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Beedrill",
         ftype: Type::Bug,
@@ -171,12 +166,11 @@ pub fn beedrill() -> Pokemon {
         sp_def: 148,
         init: 139,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/015 - Beedrill.wav",
-        sprite_path: "/sprites/15.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/015 - Beedrill.wav", "/sprites/15.png").unwrap()
     }
 }
 
-pub fn bellsprout() -> Pokemon {
+pub fn bellsprout(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Bellsprout",
         ftype: Type::Grass,
@@ -188,12 +182,11 @@ pub fn bellsprout() -> Pokemon {
         sp_def: 58,
         init: 76,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/069 - Bellsprout.wav",
-        sprite_path: "/sprites/69.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/069 - Bellsprout.wav", "/sprites/69.png").unwrap()
     }
 }
 
-pub fn blastoise() -> Pokemon {
+pub fn blastoise(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Blastoise",
         ftype: Type::Water,
@@ -205,12 +198,11 @@ pub fn blastoise() -> Pokemon {
         sp_def: 193,
         init: 144,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/009 - Blastoise.wav",
-        sprite_path: "/sprites/9.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/009 - Blastoise.wav", "/sprites/9.png").unwrap()
     }
 }
 
-pub fn bulbasur() -> Pokemon {
+pub fn bulbasur(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Bulbasur",
         ftype: Type::Grass,
@@ -222,12 +214,11 @@ pub fn bulbasur() -> Pokemon {
         sp_def: 121,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/001 - bulbasaur.wav",
-        sprite_path: "/sprites/1.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/001 - bulbasaur.wav", "/sprites/1.png").unwrap()
     }
 }
 
-pub fn butterfree() -> Pokemon {
+pub fn butterfree(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Butterfree",
         ftype: Type::Bug,
@@ -239,12 +230,11 @@ pub fn butterfree() -> Pokemon {
         sp_def: 148,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/012 - Butterfree.wav",
-        sprite_path: "/sprites/12.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/012 - Butterfree.wav", "/sprites/12.png").unwrap()
     }
 }
 
-pub fn caterpie() -> Pokemon {
+pub fn caterpie(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Caterpie",
         ftype: Type::Bug,
@@ -256,12 +246,11 @@ pub fn caterpie() -> Pokemon {
         sp_def: 40,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/010 - Caterpie.wav",
-        sprite_path: "/sprites/10.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/010 - Caterpie.wav", "/sprites/10.png").unwrap()
     }
 }
 
-pub fn chansey() -> Pokemon {
+pub fn chansey(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Chansey",
         ftype: Type::Normal,
@@ -273,12 +262,11 @@ pub fn chansey() -> Pokemon {
         sp_def: 193,
         init: 94,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/113 - Chansey.wav",
-        sprite_path: "/sprites/113.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/113 - Chansey.wav", "/sprites/113.png").unwrap()
     }
 }
 
-pub fn charizard() -> Pokemon {
+pub fn charizard(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Charizard",
         ftype: Type::Fire,
@@ -290,12 +278,11 @@ pub fn charizard() -> Pokemon {
         sp_def: 157,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/006 - Charizard.wav",
-        sprite_path: "/sprites/6.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/006 - Charizard.wav", "/sprites/6.png").unwrap() 
     }
 }
 
-pub fn charmander() -> Pokemon {
+pub fn charmander(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Charmander",
         ftype: Type::Fire,
@@ -307,12 +294,11 @@ pub fn charmander() -> Pokemon {
         sp_def: 94,
         init: 121,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/004 - Charmander.wav",
-        sprite_path: "/sprites/4.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/004 - Charmander.wav", "/sprites/4.png").unwrap()
     }
 }
 
-pub fn charmaleon() -> Pokemon {
+pub fn charmaleon(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Charmaleon",
         ftype: Type::Fire,
@@ -324,12 +310,11 @@ pub fn charmaleon() -> Pokemon {
         sp_def: 121,
         init: 148,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/005 - Charmaleon.wav",
-        sprite_path: "/sprites/5.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/005 - Charmaleon.wav", "/sprites/5.png").unwrap()
     }
 }
 
-pub fn clefable() -> Pokemon {
+pub fn clefable(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Clefable",
         ftype: Type::Normal,
@@ -341,12 +326,11 @@ pub fn clefable() -> Pokemon {
         sp_def: 166,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/036 - Clefable.wav",
-        sprite_path: "/sprites/36.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/036 - Clefable.wav", "/sprites/36.png").unwrap()
     }
 }
 
-pub fn clefairy() -> Pokemon {
+pub fn clefairy(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Clefairy",
         ftype: Type::Normal,
@@ -358,12 +342,11 @@ pub fn clefairy() -> Pokemon {
         sp_def: 121,
         init: 67,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/035 - Clefairy.wav",
-        sprite_path: "/sprites/35.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/035 - Clefairy.wav", "/sprites/35.png").unwrap()
     }
 }
 
-pub fn cloyster() -> Pokemon {
+pub fn cloyster(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Cloyster",
         ftype: Type::Water,
@@ -375,12 +358,11 @@ pub fn cloyster() -> Pokemon {
         sp_def: 85,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/091 - Cloyster.wav",
-        sprite_path: "/sprites/91.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/091 - Cloyster.wav", "/sprites/91.png").unwrap()
     }
 }
 
-pub fn cubone() -> Pokemon {
+pub fn cubone(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Cubone",
         ftype: Type::Ground,
@@ -392,12 +374,11 @@ pub fn cubone() -> Pokemon {
         sp_def: 94,
         init: 67,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/104 - Cubone.wav",
-        sprite_path: "/sprites/104.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/104 - Cubone.wav", "/sprites/104.png").unwrap()
     }
 }
 
-pub fn dewgong() -> Pokemon {
+pub fn dewgong(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Dewgong",
         ftype: Type::Water,
@@ -409,11 +390,10 @@ pub fn dewgong() -> Pokemon {
         sp_def: 175,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/087 - Dewgong.wav",
-        sprite_path: "/sprites/87.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/087 - Dewgong.wav", "/sprites/87.png").unwrap()
     }
 }
-pub fn diglett() -> Pokemon {
+pub fn diglett(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Diglett",
         ftype: Type::Ground,
@@ -425,12 +405,11 @@ pub fn diglett() -> Pokemon {
         sp_def: 85,
         init: 175,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/050 - Diglett.wav",
-        sprite_path: "/sprites/50.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/050 - Diglett.wav", "/sprites/50.png").unwrap()
     }
 }
 
-pub fn ditto() -> Pokemon {
+pub fn ditto(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Ditto",
         ftype: Type::Normal,
@@ -442,12 +421,11 @@ pub fn ditto() -> Pokemon {
         sp_def: 90,
         init: 90,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/132 - Ditto.wav",
-        sprite_path: "/sprites/132.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/132 - Ditto.wav", "/sprites/132.png").unwrap() 
     }
 }
 
-pub fn dodrio() -> Pokemon {
+pub fn dodrio(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Dodrio",
         ftype: Type::Normal,
@@ -459,12 +437,11 @@ pub fn dodrio() -> Pokemon {
         sp_def: 112,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/085 - Dodrio.wav",
-        sprite_path: "/sprites/85.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/085 - Dodrio.wav", "/sprites/85.png").unwrap()
     }
 }
 
-pub fn doduo() -> Pokemon {
+pub fn doduo(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Doduo",
         ftype: Type::Normal,
@@ -476,12 +453,11 @@ pub fn doduo() -> Pokemon {
         sp_def: 67,
         init: 139,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/084 - Doduo.wav",
-        sprite_path: "/sprites/84.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/084 - Doduo.wav", "/sprites/84.png").unwrap()
     }
 }
 
-pub fn dragonair() -> Pokemon {
+pub fn dragonair(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Dragonair",
         ftype: Type::Dragon,
@@ -493,12 +469,11 @@ pub fn dragonair() -> Pokemon {
         sp_def: 130,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/148 - Dragonair.wav",
-        sprite_path: "/sprites/148.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/148 - Dragonair.wav", "/sprites/148.png").unwrap()
     }
 }
 
-pub fn dragonite() -> Pokemon {
+pub fn dragonite(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Dragonite",
         ftype: Type::Dragon,
@@ -510,12 +485,11 @@ pub fn dragonite() -> Pokemon {
         sp_def: 184,
         init: 148,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/149 - Dragonite.wav",
-        sprite_path: "/sprites/149.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/149 - Dragonite.wav", "/sprites/149.png").unwrap()
     }
 }
 
-pub fn dratini() -> Pokemon {
+pub fn dratini(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Dratini",
         ftype: Type::Dragon,
@@ -527,12 +501,11 @@ pub fn dratini() -> Pokemon {
         sp_def: 94,
         init: 94,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/147 - Dratini.wav",
-        sprite_path: "/sprites/147.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/147 - Dratini.wav", "/sprites/147.png").unwrap()
     }
 }
 
-pub fn drowzee() -> Pokemon {
+pub fn drowzee(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Drowzee",
         ftype: Type::Psychic,
@@ -544,12 +517,11 @@ pub fn drowzee() -> Pokemon {
         sp_def: 166,
         init: 80,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/096 - Drowzee.wav",
-        sprite_path: "/sprites/96.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/096 - Drowzee.wav", "/sprites/96.png").unwrap()
     }
 }
 
-pub fn dugtrio() -> Pokemon {
+pub fn dugtrio(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Dugtrio",
         ftype: Type::Ground,
@@ -561,12 +533,11 @@ pub fn dugtrio() -> Pokemon {
         sp_def: 130,
         init: 220,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/051 - Dugtrio.wav",
-        sprite_path: "/sprites/51.png" 
+        assets: PokemonAssets::new(ctx, "/battle_cries/051 - Dugtrio.wav", "/sprites/51.png").unwrap()
     }
 }
 
-pub fn eevee() -> Pokemon {
+pub fn eevee(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Eevee",
         ftype: Type::Normal,
@@ -578,12 +549,11 @@ pub fn eevee() -> Pokemon {
         sp_def: 121,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/133 - Eevee.wav",
-        sprite_path: "/sprites/133.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/133 - Eevee.wav", "/sprites/133.png").unwrap()
     }
 }
 
-pub fn ekans() -> Pokemon {
+pub fn ekans(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Ekans",
         ftype: Type::Poison,
@@ -595,12 +565,11 @@ pub fn ekans() -> Pokemon {
         sp_def: 101,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/023 - Ekans.wav",
-        sprite_path: "/sprites/23.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/023 - Ekans.wav", "/sprites/23.png").unwrap()
     }
 }
 
-pub fn electabuzz() -> Pokemon {
+pub fn electabuzz(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Electabuzz",
         ftype: Type::Electric,
@@ -612,12 +581,11 @@ pub fn electabuzz() -> Pokemon {
         sp_def: 157,
         init: 193,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/125 - Electabuzz.wav",
-        sprite_path: "/sprites/125.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/125 - Electabuzz.wav", "/sprites/125.png").unwrap()
     }
 }
 
-pub fn electrode() -> Pokemon {
+pub fn electrode(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Electrode",
         ftype: Type::Electric,
@@ -629,12 +597,11 @@ pub fn electrode() -> Pokemon {
         sp_def: 148,
         init:256 ,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/101 - Electrode.wav",
-        sprite_path: "/sprites/101.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/101 - Electrode.wav", "/sprites/101.png").unwrap()
     }
 }
 
-pub fn exeggcute() -> Pokemon {
+pub fn exeggcute(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Exeggcute",
         ftype: Type::Grass,
@@ -646,12 +613,11 @@ pub fn exeggcute() -> Pokemon {
         sp_def: 85,
         init: 76,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/102 - Exeggcute.wav",
-        sprite_path: "/sprites/102.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/102 - Exeggcute.wav", "/sprites/102.png").unwrap()
     }
 }
 
-pub fn exeggcutor() -> Pokemon {
+pub fn exeggcutor(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Exeggcutor",
         ftype: Type::Grass,
@@ -663,12 +629,11 @@ pub fn exeggcutor() -> Pokemon {
         sp_def: 121,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/103 - Exeggcutor.wav",
-        sprite_path: "/sprites/103.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/103 - Exeggcutor.wav", "/sprites/103.png").unwrap()
     }
 }
 
-pub fn farfetch() -> Pokemon {
+pub fn farfetch(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Farfetch",
         ftype: Type::Normal,
@@ -680,12 +645,11 @@ pub fn farfetch() -> Pokemon {
         sp_def: 116,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/083 - Farfetch'd.wav",
-        sprite_path: "/sprites/83.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/083 - Farfetch'd.wav", "/sprites/83.png").unwrap()
     }
 }
 
-pub fn fearow() -> Pokemon {
+pub fn fearow(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Fearow",
         ftype: Type::Normal,
@@ -697,12 +661,11 @@ pub fn fearow() -> Pokemon {
         sp_def: 114,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/022 - Fearow.wav",
-        sprite_path: "/sprites/22.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/022 - Fearow.wav", "/sprites/22.png").unwrap()
     }
 }
 
-pub fn flareon() -> Pokemon {
+pub fn flareon(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Flareon",
         ftype: Type::Fire,
@@ -714,12 +677,11 @@ pub fn flareon() -> Pokemon {
         sp_def: 202,
         init: 121,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/136 - Flareon.wav",
-        sprite_path: "/sprites/136.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/136 - Flareon.wav", "/sprites/136.png").unwrap()
     }
 }
 
-pub fn gastly() -> Pokemon {
+pub fn gastly(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Gastly",
         ftype: Type::Ghost,
@@ -731,12 +693,11 @@ pub fn gastly() -> Pokemon {
         sp_def: 67,
         init: 148,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/092 - Gastly.wav",
-        sprite_path: "/sprites/92.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/092 - Gastly.wav", "/sprites/92.png").unwrap()
     }
 }
 
-pub fn gengar() -> Pokemon {
+pub fn gengar(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Gengar",
         ftype: Type::Ghost,
@@ -748,12 +709,11 @@ pub fn gengar() -> Pokemon {
         sp_def: 139,
         init: 202,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/094 - Gengar.wav",
-        sprite_path: "/sprites/94.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/094 - Gengar.wav", "/sprites/94.png").unwrap()
     }
 }
 
-pub fn geodude() -> Pokemon {
+pub fn geodude(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Geodude",
         ftype: Type::Rock,
@@ -765,12 +725,11 @@ pub fn geodude() -> Pokemon {
         sp_def: 58,
         init: 40,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/074 - Geodude.wav",
-        sprite_path: "/sprites/74.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/074 - Geodude.wav", "/sprites/74.png").unwrap()
     }
 }
 
-pub fn gloom() -> Pokemon {
+pub fn gloom(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Gloom",
         ftype: Type::Grass,
@@ -782,12 +741,11 @@ pub fn gloom() -> Pokemon {
         sp_def: 139,
         init: 76,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/044 - Gloom.wav",
-        sprite_path: "/sprites/44.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/044 - Gloom.wav", "/sprites/44.png").unwrap()
     }
 }
 
-pub fn golbat() -> Pokemon {
+pub fn golbat(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Golbat",
         ftype: Type::Poison,
@@ -799,12 +757,11 @@ pub fn golbat() -> Pokemon {
         sp_def: 139,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/042 - Golbat.wav",
-        sprite_path: "/sprites/42.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/042 - Golbat.wav", "/sprites/42.png").unwrap()
     }
 }
 
-pub fn goldeen() -> Pokemon {
+pub fn goldeen(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Goldeen",
         ftype: Type::Water,
@@ -816,12 +773,11 @@ pub fn goldeen() -> Pokemon {
         sp_def: 94,
         init: 117,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/118 - Goldeen.wav",
-        sprite_path: "/sprites/118.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/118 - Goldeen.wav", "/sprites/118.png").unwrap()
     }
 }
 
-pub fn golduck() -> Pokemon {
+pub fn golduck(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Golduck",
         ftype: Type::Water,
@@ -833,12 +789,11 @@ pub fn golduck() -> Pokemon {
         sp_def: 148,
         init: 157,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/055 - Golduck.wav",
-        sprite_path: "/sprites/55.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/055 - Golduck.wav", "/sprites/55.png").unwrap()
     }
 }
 
-pub fn golem() -> Pokemon {
+pub fn golem(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Golem",
         ftype: Type::Rock,
@@ -850,12 +805,11 @@ pub fn golem() -> Pokemon {
         sp_def: 121,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/076 - Golem.wav",
-        sprite_path: "/sprites/76.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/076 - Golem.wav", "/sprites/76.png").unwrap()
     }
 }
 
-pub fn graveler() -> Pokemon {
+pub fn graveler(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Graveler",
         ftype: Type::Rock,
@@ -867,12 +821,11 @@ pub fn graveler() -> Pokemon {
         sp_def: 85,
         init: 67,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/075 - Graveler.wav",
-        sprite_path: "/sprites/75.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/075 - Graveler.wav", "/sprites/75.png").unwrap()
     }
 }
 
-pub fn grimer() -> Pokemon {
+pub fn grimer(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Grimer",
         ftype: Type::Poison,
@@ -884,12 +837,11 @@ pub fn grimer() -> Pokemon {
         sp_def: 94,
         init: 49,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/088 - Grimer.wav",
-        sprite_path: "/sprites/88.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/088 - Grimer.wav", "/sprites/88.png").unwrap()
     }
 }
 
-pub fn growlithe() -> Pokemon {
+pub fn growlithe(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Growlithe",
         ftype: Type::Fire,
@@ -901,12 +853,11 @@ pub fn growlithe() -> Pokemon {
         sp_def: 94,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/058 - Growlithe.wav",
-        sprite_path: "/sprites/58.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/058 - Growlithe.wav", "/sprites/58.png").unwrap()
     }
 }
 
-pub fn gyarados() -> Pokemon {
+pub fn gyarados(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Gyarados",
         ftype: Type::Water,
@@ -918,12 +869,11 @@ pub fn gyarados() -> Pokemon {
         sp_def: 184,
         init: 150,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/130 - Gyarados.wav",
-        sprite_path: "/sprites/130.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/130 - Gyarados.wav", "/sprites/130.png").unwrap()
     }
 }
 
-pub fn haunter() -> Pokemon {
+pub fn haunter(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Haunter",
         ftype: Type::Ghost,
@@ -935,12 +885,11 @@ pub fn haunter() -> Pokemon {
         sp_def: 103,
         init: 175,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/093 - Haunter.wav",
-        sprite_path: "/sprites/93.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/093 - Haunter.wav", "/sprites/93.png").unwrap()
     }
 }
 
-pub fn hitmonchan() -> Pokemon {
+pub fn hitmonchan(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Hitmonchan",
         ftype: Type::Fighting,
@@ -952,12 +901,11 @@ pub fn hitmonchan() -> Pokemon {
         sp_def: 202,
         init: 141,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/107 - Hitmonchan.wav",
-        sprite_path: "/sprites/107.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/107 - Hitmonchan.wav", "/sprites/107.png").unwrap()
     }
 }
 
-pub fn hitmonlee() -> Pokemon {
+pub fn hitmonlee(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Hitmonlee",
         ftype: Type::Fighting,
@@ -969,12 +917,11 @@ pub fn hitmonlee() -> Pokemon {
         sp_def: 202,
         init: 161,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/106 - Hitmonlee.wav",
-        sprite_path: "/sprites/106.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/106 - Hitmonlee.wav", "/sprites/106.png").unwrap()
     }
 }
 
-pub fn horsea() -> Pokemon {
+pub fn horsea(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Horsea",
         ftype: Type::Water,
@@ -986,12 +933,11 @@ pub fn horsea() -> Pokemon {
         sp_def: 49,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/116 - Horsea.wav",
-        sprite_path: "/sprites/116.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/116 - Horsea.wav", "/sprites/116.png").unwrap()
     }
 }
 
-pub fn hypno() -> Pokemon {
+pub fn hypno(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Hypno",
         ftype: Type::Psychic,
@@ -1003,12 +949,11 @@ pub fn hypno() -> Pokemon {
         sp_def: 211,
         init: 125,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/097 - Hypno.wav",
-        sprite_path: "/sprites/97.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/097 - Hypno.wav", "/sprites/97.png").unwrap()
     }
 }
 
-pub fn ivysaur() -> Pokemon {
+pub fn ivysaur(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Ivysaur",
         ftype: Type::Grass,
@@ -1020,12 +965,11 @@ pub fn ivysaur() -> Pokemon {
         sp_def: 148,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/002 - Ivysaur.wav",
-        sprite_path: "/sprites/2.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/002 - Ivysaur.wav", "/sprites/2.png").unwrap()
     }
 }
 
-pub fn jigglypuff() -> Pokemon {
+pub fn jigglypuff(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "jigglypuff",
         ftype: Type::Normal,
@@ -1037,12 +981,11 @@ pub fn jigglypuff() -> Pokemon {
         sp_def: 49,
         init: 40,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/039 - Jigglypuff.wav",
-        sprite_path: "/sprites/39.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/039 - Jigglypuff.wav", "/sprites/39.png").unwrap()
     }
 }
 
-pub fn jolteon() -> Pokemon {
+pub fn jolteon(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Jolteon",
         ftype: Type::Electric,
@@ -1054,12 +997,11 @@ pub fn jolteon() -> Pokemon {
         sp_def: 175,
         init: 238,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/135 - Jolteon.wav",
-        sprite_path: "/sprites/135.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/135 - Jolteon.wav", "/sprites/135.png").unwrap()
     }
 }
 
-pub fn jynx() -> Pokemon {
+pub fn jynx(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Jynx",
         ftype: Type::Ice,
@@ -1071,12 +1013,11 @@ pub fn jynx() -> Pokemon {
         sp_def: 175,
         init: 175,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/124 - Jynx.wav",
-        sprite_path: "/sprites/124.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/124 - Jynx.wav", "/sprites/124.png").unwrap()
     }
 }
 
-pub fn kabuto() -> Pokemon {
+pub fn kabuto(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Kabuto",
         ftype: Type::Rock,
@@ -1088,12 +1029,11 @@ pub fn kabuto() -> Pokemon {
         sp_def: 85,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/140 - Kabuto.wav",
-        sprite_path: "/sprites/140.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/140 - Kabuto.wav", "/sprites/140.png").unwrap()
     }
 }
 
-pub fn kabutops() -> Pokemon {
+pub fn kabutops(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Kabutops",
         ftype: Type::Rock,
@@ -1105,12 +1045,11 @@ pub fn kabutops() -> Pokemon {
         sp_def: 130,
         init: 148,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/141 - Kabutops.wav",
-        sprite_path: "/sprites/141.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/141 - Kabutops.wav", "/sprites/141.png").unwrap()
     }
 }
 
-pub fn kadabra() -> Pokemon {
+pub fn kadabra(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Bulbasur",
         ftype: Type::Psychic,
@@ -1122,12 +1061,11 @@ pub fn kadabra() -> Pokemon {
         sp_def: 130,
         init: 193,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/064 - Kadabra.wav",
-        sprite_path: "/sprites/64.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/064 - Kadabra.wav", "/sprites/64.png").unwrap()
     }
 }
 
-pub fn kakuna() -> Pokemon {
+pub fn kakuna(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Kakuna",
         ftype: Type::Bug,
@@ -1139,12 +1077,12 @@ pub fn kakuna() -> Pokemon {
         sp_def: 49,
         init: 67,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/014 - Kakuna.wav",
-        sprite_path: "/sprites/14.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/014 - Kakuna.wav", "/sprites/14.png").unwrap()
+        
     }
 }
 
-pub fn kangaskhan() -> Pokemon {
+pub fn kangaskhan(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Kangaskhan",
         ftype: Type::Normal,
@@ -1156,12 +1094,11 @@ pub fn kangaskhan() -> Pokemon {
         sp_def: 148,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/115 - Kangaskhan.wav",
-        sprite_path: "/sprites/115.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/115 - Kangaskhan.wav", "/sprites/115.png").unwrap()
     }
 }
 
-pub fn kingler() -> Pokemon {
+pub fn kingler(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Kingler",
         ftype: Type::Water,
@@ -1173,12 +1110,11 @@ pub fn kingler() -> Pokemon {
         sp_def: 94,
         init: 139,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/099 - Kingler.wav",
-        sprite_path: "/sprites/99.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/099 - Kingler.wav", "/sprites/99.png").unwrap()
     }
 }
 
-pub fn koffing() -> Pokemon {
+pub fn koffing(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Koffing",
         ftype: Type::Poison,
@@ -1190,12 +1126,11 @@ pub fn koffing() -> Pokemon {
         sp_def: 85,
         init: 67,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/109 - Koffing.wav",
-        sprite_path: "/sprites/109.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/109 - Koffing.wav", "/sprites/109.png").unwrap()
     }
 }
 
-pub fn krabby() -> Pokemon {
+pub fn krabby(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Krabby",
         ftype: Type::Water,
@@ -1207,12 +1142,11 @@ pub fn krabby() -> Pokemon {
         sp_def: 49,
         init: 94,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/098 - Krabby.wav",
-        sprite_path: "/sprites/98.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/098 - Krabby.wav", "/sprites/98.png").unwrap()
     }
 }
 
-pub fn lapras() -> Pokemon {
+pub fn lapras(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Lapras",
         ftype: Type::Water,
@@ -1224,12 +1158,11 @@ pub fn lapras() -> Pokemon {
         sp_def: 175,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/131 - Lapras.wav",
-        sprite_path: "/sprites/131.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/131 - Lapras.wav", "/sprites/131.png").unwrap()
     }
 }
 
-pub fn lickitung() -> Pokemon {
+pub fn lickitung(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Lickitung",
         ftype: Type::Normal,
@@ -1241,12 +1174,11 @@ pub fn lickitung() -> Pokemon {
         sp_def: 139,
         init: 58,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/108 - Lickitung.wav",
-        sprite_path: "/sprites/108.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/108 - Lickitung.wav", "/sprites/108.png").unwrap()
     }
 }
 
-pub fn machamp() -> Pokemon {
+pub fn machamp(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Machamp",
         ftype: Type::Fighting,
@@ -1258,12 +1190,11 @@ pub fn machamp() -> Pokemon {
         sp_def: 157,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/068 - Machamp.wav",
-        sprite_path: "/sprites/68.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/068 - Machamp.wav", "/sprites/68.png").unwrap()
     }
 }
 
-pub fn machoke() -> Pokemon {
+pub fn machoke(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Machoke",
         ftype: Type::Fighting,
@@ -1275,12 +1206,11 @@ pub fn machoke() -> Pokemon {
         sp_def: 112,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/067 - Machoke.wav",
-        sprite_path: "/sprites/67.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/067 - Machoke.wav", "/sprites/67.png").unwrap()
     }
 }
 
-pub fn machop() -> Pokemon {
+pub fn machop(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Machop",
         ftype: Type::Fighting,
@@ -1292,12 +1222,11 @@ pub fn machop() -> Pokemon {
         sp_def: 67,
         init: 67,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/066 - Machop.wav",
-        sprite_path: "/sprites/66.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/066 - Machop.wav", "/sprites/66.png").unwrap()
     }
 }
 
-pub fn magikarp() -> Pokemon {
+pub fn magikarp(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Magikarp",
         ftype: Type::Water,
@@ -1309,12 +1238,11 @@ pub fn magikarp() -> Pokemon {
         sp_def: 40,
         init: 148,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/129 - Magikarp.wav",
-        sprite_path: "/sprites/129.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/129 - Magikarp.wav", "/sprites/129.png").unwrap()
     }
 }
 
-pub fn magmar() -> Pokemon {
+pub fn magmar(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Magmar",
         ftype: Type::Fire,
@@ -1326,12 +1254,11 @@ pub fn magmar() -> Pokemon {
         sp_def: 157,
         init: 171,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/126 - Magmar.wav",
-        sprite_path: "/sprites/126.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/126 - Magmar.wav", "/sprites/126.png").unwrap()
     }
 }
 
-pub fn magnemite() -> Pokemon {
+pub fn magnemite(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Magnemite",
         ftype: Type::Electric,
@@ -1343,12 +1270,11 @@ pub fn magnemite() -> Pokemon {
         sp_def: 103,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/081 - Magnemite.wav",
-        sprite_path: "/sprites/81.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/081 - Magnemite.wav", "/sprites/81.png").unwrap()
     }
 }
 
-pub fn magneton() -> Pokemon {
+pub fn magneton(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Magneton",
         ftype: Type::Electric,
@@ -1360,12 +1286,11 @@ pub fn magneton() -> Pokemon {
         sp_def: 130,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/082 - Magneton.wav",
-        sprite_path: "/sprites/82.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/082 - Magneton.wav", "/sprites/82.png").unwrap()
     }
 }
 
-pub fn mankey() -> Pokemon {
+pub fn mankey(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Mankey",
         ftype: Type::Fighting,
@@ -1377,12 +1302,11 @@ pub fn mankey() -> Pokemon {
         sp_def: 85,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/056 - Mankey.wav",
-        sprite_path: "/sprites/56.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/056 - Mankey.wav", "/sprites/56.png").unwrap()
     }
 }
 
-pub fn marowak() -> Pokemon {
+pub fn marowak(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Marowak",
         ftype: Type::Ground,
@@ -1394,12 +1318,11 @@ pub fn marowak() -> Pokemon {
         sp_def: 148,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/105 - Marowak.wav",
-        sprite_path: "/sprites/105.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/105 - Marowak.wav", "/sprites/105.png").unwrap()
     }
 }
 
-pub fn meowth() -> Pokemon {
+pub fn meowth(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Meowth",
         ftype: Type::Normal,
@@ -1411,12 +1334,11 @@ pub fn meowth() -> Pokemon {
         sp_def: 76,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/052 - Meowth.wav",
-        sprite_path: "/sprites/52.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/052 - Meowth.wav", "/sprites/52.png").unwrap()
     }
 }
 
-pub fn metapod() -> Pokemon {
+pub fn metapod(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Metapod",
         ftype: Type::Bug,
@@ -1428,12 +1350,11 @@ pub fn metapod() -> Pokemon {
         sp_def: 49,
         init: 58,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/011 - Metapod.wav",
-        sprite_path: "/sprites/11.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/011 - Metapod.wav", "/sprites/11.png").unwrap()
     }
 }
 
-pub fn mew() -> Pokemon {
+pub fn mew(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Mew",
         ftype: Type::Psychic,
@@ -1445,12 +1366,11 @@ pub fn mew() -> Pokemon {
         sp_def: 184,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/151 - Mew.wav",
-        sprite_path: "/sprites/151.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/151 - Mew.wav", "/sprites/151.png").unwrap()
     }
 }
 
-pub fn mewtwo() -> Pokemon {
+pub fn mewtwo(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Mewtwo",
         ftype: Type::Psychic,
@@ -1462,12 +1382,11 @@ pub fn mewtwo() -> Pokemon {
         sp_def: 166,
         init: 238,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/150 - Mewtwo.wav",
-        sprite_path: "/sprites/150.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/150 - Mewtwo.wav", "/sprites/150.png").unwrap()
     }
 }
 
-pub fn moltres() -> Pokemon {
+pub fn moltres(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Moltres",
         ftype: Type::Fire,
@@ -1479,12 +1398,11 @@ pub fn moltres() -> Pokemon {
         sp_def: 157,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/146 - Moltres.wav",
-        sprite_path: "/sprites/146.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/146 - Moltres.wav", "/sprites/146.png").unwrap()
     }
 }
 
-pub fn mrmime() -> Pokemon {
+pub fn mrmime(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Mr.Mime",
         ftype: Type::Psychic,
@@ -1496,12 +1414,11 @@ pub fn mrmime() -> Pokemon {
         sp_def: 220,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/122 - Mr. Mime.wav",
-        sprite_path: "/sprites/122.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/122 - Mr. Mime.wav", "/sprites/122.png").unwrap()
     }
 }
 
-pub fn muk() -> Pokemon {
+pub fn muk(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Muk",
         ftype: Type::Poison,
@@ -1513,12 +1430,11 @@ pub fn muk() -> Pokemon {
         sp_def: 184,
         init: 94,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/089 - Muk.wav",
-        sprite_path: "/sprites/89.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/089 - Muk.wav", "/sprites/89.png").unwrap()
     }
 }
 
-pub fn nidoking() -> Pokemon {
+pub fn nidoking(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Nidoking",
         ftype: Type::Poison,
@@ -1530,12 +1446,11 @@ pub fn nidoking() -> Pokemon {
         sp_def: 139,
         init: 157,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/034 - Nidoking.wav",
-        sprite_path: "/sprites/34.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/034 - Nidoking.wav", "/sprites/34.png").unwrap()
     }
 }
 
-pub fn nidoqueen() -> Pokemon {
+pub fn nidoqueen(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Nidoqueen",
         ftype: Type::Poison,
@@ -1547,12 +1462,11 @@ pub fn nidoqueen() -> Pokemon {
         sp_def: 157,
         init: 141,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/031 - Nidoqueen.wav",
-        sprite_path: "/sprites/31.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/031 - Nidoqueen.wav", "/sprites/31.png").unwrap()
     }
 }
 
-pub fn nidoranf() -> Pokemon {
+pub fn nidoranf(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Nidoran",
         ftype: Type::Poison,
@@ -1564,12 +1478,11 @@ pub fn nidoranf() -> Pokemon {
         sp_def: 76,
         init: 78,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/029 - Nidoran (Female).wav",
-        sprite_path: "/sprites/29.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/029 - Nidoran (Female).wav", "/sprites/29.png").unwrap()
     }
 }
 
-pub fn nidoranm() -> Pokemon {
+pub fn nidoranm(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Nidoran",
         ftype: Type::Poison,
@@ -1581,12 +1494,11 @@ pub fn nidoranm() -> Pokemon {
         sp_def: 76,
         init: 94,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/032 - Nidoran (Male).wav",
-        sprite_path: "/sprites/32.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/032 - Nidoran (Male).wav", "/sprites/32.png").unwrap()
     }
 }
 
-pub fn nidorina() -> Pokemon {
+pub fn nidorina(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Nidorina",
         ftype: Type::Poison,
@@ -1598,12 +1510,11 @@ pub fn nidorina() -> Pokemon {
         sp_def: 103,
         init: 105,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/030 - Nidorina.wav",
-        sprite_path: "/sprites/30.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/030 - Nidorina.wav", "/sprites/30.png").unwrap()
     }
 }
 
-pub fn nidorino() -> Pokemon {
+pub fn nidorino(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Nidorino",
         ftype: Type::Poison,
@@ -1615,12 +1526,11 @@ pub fn nidorino() -> Pokemon {
         sp_def: 103,
         init: 121,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/033 - Nidorino.wav",
-        sprite_path: "/sprites/33.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/033 - Nidorino.wav", "/sprites/33.png").unwrap()
     }
 }
 
-pub fn ninetales() -> Pokemon {
+pub fn ninetales(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Ninetales",
         ftype: Type::Fire,
@@ -1632,12 +1542,11 @@ pub fn ninetales() -> Pokemon {
         sp_def: 184,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/038 - Ninetales.wav",
-        sprite_path: "/sprites/38.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/038 - Ninetales.wav", "/sprites/38.png").unwrap()
     }
 }
 
-pub fn oddish() -> Pokemon {
+pub fn oddish(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Oddish",
         ftype: Type::Grass,
@@ -1649,12 +1558,11 @@ pub fn oddish() -> Pokemon {
         sp_def: 121,
         init: 58,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/043 - Oddish.wav",
-        sprite_path: "/sprites/43.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/043 - Oddish.wav", "/sprites/43.png").unwrap()
     }
 }
 
-pub fn omanyte() -> Pokemon {
+pub fn omanyte(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Omanyte",
         ftype: Type::Rock,
@@ -1666,12 +1574,11 @@ pub fn omanyte() -> Pokemon {
         sp_def: 103,
         init: 67,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/138 - Omanyte.wav",
-        sprite_path: "/sprites/138.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/138 - Omanyte.wav", "/sprites/138.png").unwrap()
     }
 }
 
-pub fn omastar() -> Pokemon {
+pub fn omastar(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Omastar",
         ftype: Type::Rock,
@@ -1683,12 +1590,11 @@ pub fn omastar() -> Pokemon {
         sp_def: 130,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/139 - Amoroso.wav",
-        sprite_path: "/sprites/139.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/139 - Amoroso.wav", "/sprites/139.png").unwrap()
     }
 }
 
-pub fn onix() -> Pokemon {
+pub fn onix(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Onix",
         ftype: Type::Rock,
@@ -1700,12 +1606,12 @@ pub fn onix() -> Pokemon {
         sp_def: 85,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/095 - Onix.wav",
-        sprite_path: "/sprites/95.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/095 - Onix.wav", "/sprites/95.png").unwrap()
+
     }
 }
 
-pub fn paras() -> Pokemon {
+pub fn paras(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Paras",
         ftype: Type::Bug,
@@ -1717,12 +1623,11 @@ pub fn paras() -> Pokemon {
         sp_def: 103,
         init: 49,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/046 - Paras.wav",
-        sprite_path: "/sprites/46.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/046 - Paras.wav", "/sprites/46.png").unwrap()
     }
 }
 
-pub fn parasect() -> Pokemon {
+pub fn parasect(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Parasect",
         ftype: Type::Bug,
@@ -1734,12 +1639,11 @@ pub fn parasect() -> Pokemon {
         sp_def: 148,
         init: 58,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/047 - Parasect.wav",
-        sprite_path: "/sprites/47.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/047 - Parasect.wav", "/sprites/47.png").unwrap()
     }
 }
 
-pub fn persian() -> Pokemon {
+pub fn persian(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Persian",
         ftype: Type::Normal,
@@ -1751,12 +1655,11 @@ pub fn persian() -> Pokemon {
         sp_def: 121,
         init: 211,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/053 - Persian.wav",
-        sprite_path: "/sprites/53.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/053 - Persian.wav", "/sprites/53.png").unwrap()
     }
 }
 
-pub fn pidgeot() -> Pokemon {
+pub fn pidgeot(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Pidgeot",
         ftype: Type::Normal,
@@ -1768,12 +1671,11 @@ pub fn pidgeot() -> Pokemon {
         sp_def: 130,
         init: 168,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/018 - Pidgeot.wav",
-        sprite_path: "/sprites/18.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/018 - Pidgeot.wav", "/sprites/18.png").unwrap()
     }
 }
 
-pub fn pidgeotto() -> Pokemon {
+pub fn pidgeotto(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Pidgeotto",
         ftype: Type::Normal,
@@ -1785,12 +1687,11 @@ pub fn pidgeotto() -> Pokemon {
         sp_def: 94,
         init: 132,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/017 - Pidgeotto.wav",
-        sprite_path: "/sprites/17.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/017 - Pidgeotto.wav", "/sprites/17.png").unwrap()
     }
 }
 
-pub fn pidgey() -> Pokemon {
+pub fn pidgey(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Pidgey",
         ftype: Type::Normal,
@@ -1802,12 +1703,11 @@ pub fn pidgey() -> Pokemon {
         sp_def: 67,
         init: 105,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/016 - Pidgey.wav",
-        sprite_path: "/sprites/16.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/016 - Pidgey.wav", "/sprites/16.png").unwrap()
     }
 }
 
-pub fn pikachu() -> Pokemon {
+pub fn pikachu(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Pikachu",
         ftype: Type::Electric,
@@ -1819,12 +1719,11 @@ pub fn pikachu() -> Pokemon {
         sp_def: 76,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/025 - Pikachu.wav",
-        sprite_path: "/sprites/25.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/025 - Pikachu.wav", "/sprites/25.png").unwrap()
     }
 }
 
-pub fn pinsir() -> Pokemon {
+pub fn pinsir(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Pinsir",
         ftype: Type::Bug,
@@ -1836,12 +1735,11 @@ pub fn pinsir() -> Pokemon {
         sp_def: 130,
         init: 157,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/127 - Pinsir.wav",
-        sprite_path: "/sprites/127.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/127 - Pinsir.wav", "/sprites/127.png").unwrap()
     }
 }
 
-pub fn poliwag() -> Pokemon {
+pub fn poliwag(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Poliwag",
         ftype: Type::Water,
@@ -1853,12 +1751,11 @@ pub fn poliwag() -> Pokemon {
         sp_def: 76,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/060 - Poliwag.wav",
-        sprite_path: "/sprites/60.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/060 - Poliwag.wav", "/sprites/60.png").unwrap()
     }
 }
 
-pub fn poliwhirl() -> Pokemon {
+pub fn poliwhirl(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Poliwhirl",
         ftype: Type::Water,
@@ -1870,12 +1767,11 @@ pub fn poliwhirl() -> Pokemon {
         sp_def: 94,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/061 - Poliwhirl.wav",
-        sprite_path: "/sprites/61.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/061 - Poliwhirl.wav", "/sprites/61.png").unwrap()
     }
 }
 
-pub fn poliwrath() -> Pokemon {
+pub fn poliwrath(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Poliwrath",
         ftype: Type::Water,
@@ -1887,12 +1783,11 @@ pub fn poliwrath() -> Pokemon {
         sp_def: 166,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/062 - Poliwrath.wav",
-        sprite_path: "/sprites/62.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/062 - Poliwrath.wav", "/sprites/62.png").unwrap()
     }
 }
 
-pub fn ponyta() -> Pokemon {
+pub fn ponyta(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Ponyta",
         ftype: Type::Fire,
@@ -1904,12 +1799,11 @@ pub fn ponyta() -> Pokemon {
         sp_def: 121,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/077 - Ponita.wav",
-        sprite_path: "/sprites/77.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/077 - Ponita.wav", "/sprites/77.png").unwrap()
     }
 }
 
-pub fn porygon() -> Pokemon {
+pub fn porygon(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Porygon",
         ftype: Type::Normal,
@@ -1921,12 +1815,12 @@ pub fn porygon() -> Pokemon {
         sp_def: 139,
         init: 76,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/137 - Porygon.wav",
-        sprite_path: "/sprites/137.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/137 - Porygon.wav", "/sprites/137.png").unwrap()
+
     }
 }
 
-pub fn primeape() -> Pokemon {
+pub fn primeape(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Primeape",
         ftype: Type::Fighting,
@@ -1938,12 +1832,11 @@ pub fn primeape() -> Pokemon {
         sp_def: 130,
         init: 175,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/057 - Rasaff.wav",
-        sprite_path: "/sprites/57.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/057 - Rasaff.wav", "/sprites/57.png").unwrap()
     }
 }
 
-pub fn psyduck() -> Pokemon {
+pub fn psyduck(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Parasect",
         ftype: Type::Water,
@@ -1955,12 +1848,11 @@ pub fn psyduck() -> Pokemon {
         sp_def: 94,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/054 - Psyduck.wav",
-        sprite_path: "/sprites/54.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/054 - Psyduck.wav", "/sprites/54.png").unwrap()
     }
 }
 
-pub fn raichu() -> Pokemon {
+pub fn raichu(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Raichu",
         ftype: Type::Electric,
@@ -1972,12 +1864,11 @@ pub fn raichu() -> Pokemon {
         sp_def: 148,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/026 - Raichu.wav",
-        sprite_path: "/sprites/26.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/026 - Raichu.wav", "/sprites/26.png").unwrap()
     }
 }
 
-pub fn rapidash() -> Pokemon {
+pub fn rapidash(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Rapidash",
         ftype: Type::Fire,
@@ -1989,12 +1880,11 @@ pub fn rapidash() -> Pokemon {
         sp_def: 148,
         init: 193,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/078 - Rapidash.wav",
-        sprite_path: "/sprites/78.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/078 - Rapidash.wav", "/sprites/78.png").unwrap()
     }
 }
 
-pub fn raticate() -> Pokemon {
+pub fn raticate(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Raticate",
         ftype: Type::Normal,
@@ -2006,12 +1896,11 @@ pub fn raticate() -> Pokemon {
         sp_def: 130,
         init: 179,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/020 - raticate.wav",
-        sprite_path: "/sprites/20.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/020 - raticate.wav", "/sprites/20.png").unwrap()
     }
 }
 
-pub fn rattata() -> Pokemon {
+pub fn rattata(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Rattata",
         ftype: Type::Normal,
@@ -2023,12 +1912,11 @@ pub fn rattata() -> Pokemon {
         sp_def: 67,
         init: 134,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/019 - Rattata.wav",
-        sprite_path: "/sprites/19.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/019 - Rattata.wav", "/sprites/19.png").unwrap()
     }
 }
 
-pub fn rhydon() -> Pokemon {
+pub fn rhydon(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Rhydon",
         ftype: Type::Ground,
@@ -2040,12 +1928,11 @@ pub fn rhydon() -> Pokemon {
         sp_def: 85,
         init: 76,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/112 - Rhydon.wav",
-        sprite_path: "/sprites/112.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/112 - Rhydon.wav", "/sprites/112.png").unwrap()
     }
 }
 
-pub fn rhyhorn() -> Pokemon {
+pub fn rhyhorn(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Rhyhorn",
         ftype: Type::Ground,
@@ -2057,12 +1944,11 @@ pub fn rhyhorn() -> Pokemon {
         sp_def: 58,
         init: 49,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/111 - Rhyhorn.wav",
-        sprite_path: "/sprites/111.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/111 - Rhyhorn.wav", "/sprites/111.png").unwrap()
     }
 }
 
-pub fn sandshrew() -> Pokemon {
+pub fn sandshrew(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Sandshrew",
         ftype: Type::Ground,
@@ -2074,12 +1960,11 @@ pub fn sandshrew() -> Pokemon {
         sp_def: 58,
         init: 76,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/027 - Sandshrew.wav",
-        sprite_path: "/sprites/27.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/027 - Sandshrew.wav", "/sprites/27.png").unwrap()
     }
 }
 
-pub fn sandslash() -> Pokemon {
+pub fn sandslash(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Sandslash",
         ftype: Type::Ground,
@@ -2091,12 +1976,11 @@ pub fn sandslash() -> Pokemon {
         sp_def: 103,
         init: 121,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/028 - Sandslash.wav",
-        sprite_path: "/sprites/28.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/028 - Sandslash.wav", "/sprites/28.png").unwrap()
     }
 }
 
-pub fn scyther() -> Pokemon {
+pub fn scyther(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Scyther",
         ftype: Type::Bug,
@@ -2108,12 +1992,11 @@ pub fn scyther() -> Pokemon {
         sp_def: 148,
         init: 193,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/122 - Scyther.wav",
-        sprite_path: "/sprites/122.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/122 - Scyther.wav", "/sprites/122.png").unwrap()
     }
 }
 
-pub fn seadra() -> Pokemon {
+pub fn seadra(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Seadra",
         ftype: Type::Water,
@@ -2125,12 +2008,11 @@ pub fn seadra() -> Pokemon {
         sp_def: 85,
         init: 157,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/117 - Seadra.wav",
-        sprite_path: "/sprites/117.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/117 - Seadra.wav", "/sprites/117.png").unwrap()
     }
 }
 
-pub fn seaking() -> Pokemon {
+pub fn seaking(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Seaking",
         ftype: Type::Water,
@@ -2142,12 +2024,11 @@ pub fn seaking() -> Pokemon {
         sp_def: 148,
         init: 126,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/119 - Golking.wav",
-        sprite_path: "/sprites/119.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/119 - Golking.wav", "/sprites/119.png").unwrap()
     }
 }
 
-pub fn seel() -> Pokemon {
+pub fn seel(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Seel",
         ftype: Type::Water,
@@ -2159,12 +2040,11 @@ pub fn seel() -> Pokemon {
         sp_def: 130,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/086 - Seel.wav",
-        sprite_path: "/sprites/86.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/086 - Seel.wav", "/sprites/86.png").unwrap()
     }
 }
 
-pub fn shellder() -> Pokemon {
+pub fn shellder(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Shellder",
         ftype: Type::Water,
@@ -2176,12 +2056,11 @@ pub fn shellder() -> Pokemon {
         sp_def: 49,
         init: 76,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/090 - Shellder.wav",
-        sprite_path: "/sprites/90.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/090 - Shellder.wav", "/sprites/90.png").unwrap()
     }
 }
 
-pub fn slowbro() -> Pokemon {
+pub fn slowbro(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Slowbro",
         ftype: Type::Water,
@@ -2193,12 +2072,11 @@ pub fn slowbro() -> Pokemon {
         sp_def: 148,
         init: 58,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/080 - Slowbro.wav",
-        sprite_path: "/sprites/80.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/080 - Slowbro.wav", "/sprites/80.png").unwrap()
     }
 }
 
-pub fn slowpoke() -> Pokemon {
+pub fn slowpoke(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Slowpoke",
         ftype: Type::Water,
@@ -2210,12 +2088,11 @@ pub fn slowpoke() -> Pokemon {
         sp_def: 76,
         init: 31,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/079 - Slowpoke.wav",
-        sprite_path: "/sprites/79.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/079 - Slowpoke.wav", "/sprites/79.png").unwrap()
     }
 }
 
-pub fn snorlax() -> Pokemon {
+pub fn snorlax(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Snorlax",
         ftype: Type::Normal,
@@ -2227,12 +2104,11 @@ pub fn snorlax() -> Pokemon {
         sp_def: 202,
         init: 58,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/143 - Snorlax.wav",
-        sprite_path: "/sprites/143.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/143 - Snorlax.wav", "/sprites/143.png").unwrap()
     }
 }
 
-pub fn spearow() -> Pokemon {
+pub fn spearow(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Spearow",
         ftype: Type::Normal,
@@ -2244,12 +2120,11 @@ pub fn spearow() -> Pokemon {
         sp_def: 60,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/021 - Spearow.wav",
-        sprite_path: "/sprites/21.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/021 - Spearow.wav", "/sprites/21.png").unwrap()
     }
 }
 
-pub fn squirtle() -> Pokemon {
+pub fn squirtle(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Squirtle",
         ftype: Type::Water,
@@ -2261,12 +2136,11 @@ pub fn squirtle() -> Pokemon {
         sp_def: 119,
         init: 81,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/007 - Squirtle.wav",
-        sprite_path: "/sprites/7.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/007 - Squirtle.wav", "/sprites/7.png").unwrap()
     }
 }
 
-pub fn starmie() -> Pokemon {
+pub fn starmie(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Starmie",
         ftype: Type::Water,
@@ -2278,12 +2152,11 @@ pub fn starmie() -> Pokemon {
         sp_def: 157,
         init: 211,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/121 - Starmie.wav",
-        sprite_path: "/sprites/121.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/121 - Starmie.wav", "/sprites/121.png").unwrap()
     }
 }
 
-pub fn staryu() -> Pokemon {
+pub fn staryu(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Staryu",
         ftype: Type::Water,
@@ -2295,12 +2168,11 @@ pub fn staryu() -> Pokemon {
         sp_def: 103,
         init: 157,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/120 - Staryu.wav",
-        sprite_path: "/sprites/120.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/120 - Staryu.wav", "/sprites/120.png").unwrap()
     }
 }
 
-pub fn tangela() -> Pokemon {
+pub fn tangela(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Tangela",
         ftype: Type::Grass,
@@ -2312,12 +2184,11 @@ pub fn tangela() -> Pokemon {
         sp_def: 76,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/114 - Tangela.wav",
-        sprite_path: "/sprites/114.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/114 - Tangela.wav", "/sprites/114.png").unwrap()
     }
 }
 
-pub fn tauros() -> Pokemon {
+pub fn tauros(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Tauros",
         ftype: Type::Normal,
@@ -2329,12 +2200,11 @@ pub fn tauros() -> Pokemon {
         sp_def: 130,
         init: 202,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/128 - Tauros.wav",
-        sprite_path: "/sprites/128.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/128 - Tauros.wav", "/sprites/128.png").unwrap()
     }
 }
 
-pub fn tentacool() -> Pokemon {
+pub fn tentacool(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Tentacool",
         ftype: Type::Water,
@@ -2346,12 +2216,11 @@ pub fn tentacool() -> Pokemon {
         sp_def: 184,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/072 - Tentacool.wav",
-        sprite_path: "/sprites/72.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/072 - Tentacool.wav", "/sprites/72.png").unwrap()
     }
 }
 
-pub fn tentacruel() -> Pokemon {
+pub fn tentacruel(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Tentacruel",
         ftype: Type::Water,
@@ -2363,12 +2232,11 @@ pub fn tentacruel() -> Pokemon {
         sp_def: 220,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/073 - Tentacruel.wav",
-        sprite_path: "/sprites/73.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/073 - Tentacruel.wav", "/sprites/73.png").unwrap()
     }
 }
 
-pub fn vaporeon() -> Pokemon {
+pub fn vaporeon(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Vaporeon",
         ftype: Type::Water,
@@ -2380,12 +2248,11 @@ pub fn vaporeon() -> Pokemon {
         sp_def: 175,
         init: 121,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/134 - Vaporeon.wav",
-        sprite_path: "/sprites/134.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/134 - Vaporeon.wav", "/sprites/134.png").unwrap()
     }
 }
 
-pub fn venomoth() -> Pokemon {
+pub fn venomoth(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Venomoth",
         ftype: Type::Bug,
@@ -2397,12 +2264,11 @@ pub fn venomoth() -> Pokemon {
         sp_def: 139,
         init: 166,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/049 - Venomoth.wav",
-        sprite_path: "/sprites/49.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/049 - Venomoth.wav", "/sprites/49.png").unwrap()
     }
 }
 
-pub fn venonat() -> Pokemon {
+pub fn venonat(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Venonat",
         ftype: Type::Bug,
@@ -2414,12 +2280,11 @@ pub fn venonat() -> Pokemon {
         sp_def: 103,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/048 - Venonat.wav",
-        sprite_path: "/sprites/48.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/048 - Venonat.wav", "/sprites/48.png").unwrap()
     }
 }
 
-pub fn venusaur() -> Pokemon {
+pub fn venusaur(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Venusaur",
         ftype: Type::Grass,
@@ -2431,12 +2296,11 @@ pub fn venusaur() -> Pokemon {
         sp_def: 184,
         init: 148,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/003 - Venusaur.wav",
-        sprite_path: "/sprites/3.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/003 - Venusaur.wav", "/sprites/3.png").unwrap()
     }
 }
 
-pub fn victreebel() -> Pokemon {
+pub fn victreebel(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Victreble",
         ftype: Type::Grass,
@@ -2448,12 +2312,11 @@ pub fn victreebel() -> Pokemon {
         sp_def: 112,
         init: 130,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/071 - Victreebel.wav",
-        sprite_path: "/sprites/71.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/071 - Victreebel.wav", "/sprites/71.png").unwrap()
     }
 }
 
-pub fn vileplume() -> Pokemon {
+pub fn vileplume(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Vileplume",
         ftype: Type::Grass,
@@ -2465,12 +2328,11 @@ pub fn vileplume() -> Pokemon {
         sp_def: 166,
         init: 94,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/045 - Vileplume.wav",
-        sprite_path: "/sprites/45.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/045 - Vileplume.wav", "/sprites/45.png").unwrap()
     }
 }
 
-pub fn voltorb() -> Pokemon {
+pub fn voltorb(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Voltorb",
         ftype: Type::Electric,
@@ -2482,12 +2344,11 @@ pub fn voltorb() -> Pokemon {
         sp_def: 103,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/100 - Voltorb.wav",
-        sprite_path: "/sprites/100.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/100 - Voltorb.wav", "/sprites/100.png").unwrap()
     }
 }
 
-pub fn vulpix() -> Pokemon {
+pub fn vulpix(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Vulpix",
         ftype: Type::Fire,
@@ -2499,12 +2360,11 @@ pub fn vulpix() -> Pokemon {
         sp_def: 121,
         init: 121,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/037 - Vilpix.wav",
-        sprite_path: "/sprites/37.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/037 - Vilpix.wav", "/sprites/37.png").unwrap()
     }
 }
 
-pub fn wartortle() -> Pokemon {
+pub fn wartortle(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Wartortle",
         ftype: Type::Water,
@@ -2516,12 +2376,11 @@ pub fn wartortle() -> Pokemon {
         sp_def: 148,
         init: 108,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/008 - Wartorle.wav",
-        sprite_path: "/sprites/8.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/008 - Wartorle.wav", "/sprites/8.png").unwrap()
     }
 }
 
-pub fn weedle() -> Pokemon {
+pub fn weedle(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Weedle",
         ftype: Type::Bug,
@@ -2533,12 +2392,11 @@ pub fn weedle() -> Pokemon {
         sp_def: 40,
         init: 94,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/013 - Weedle.wav",
-        sprite_path: "/sprites/13.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/013 - Weedle.wav", "/sprites/13.png").unwrap()
     }
 }
 
-pub fn weepinbell() -> Pokemon {
+pub fn weepinbell(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Weepinbell",
         ftype: Type::Grass,
@@ -2550,12 +2408,11 @@ pub fn weepinbell() -> Pokemon {
         sp_def: 85,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/070 - Weepinbell.wav",
-        sprite_path: "/sprites/70.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/070 - Weepinbell.wav", "/sprites/70.png").unwrap()
     }
 }
 
-pub fn weezing() -> Pokemon {
+pub fn weezing(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Weezing",
         ftype: Type::Poison,
@@ -2567,12 +2424,11 @@ pub fn weezing() -> Pokemon {
         sp_def: 130,
         init: 112,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/110 - Weezing.wav",
-        sprite_path: "/sprites/110.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/110 - Weezing.wav", "/sprites/110.png").unwrap()
     }
 }
 
-pub fn wigglytuff() -> Pokemon {
+pub fn wigglytuff(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Wigglytuff",
         ftype: Type::Normal,
@@ -2584,12 +2440,11 @@ pub fn wigglytuff() -> Pokemon {
         sp_def: 94,
         init: 85,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/040 - Wigglytuff.wav",
-        sprite_path: "/sprites/40.png"
+        assets: PokemonAssets::new(ctx, "/sprites/40.png", "/battle_cries/040 - Wigglytuff.wav").unwrap()
     }
 }
 
-pub fn zapdos() -> Pokemon {
+pub fn zapdos(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Zaptos",
         ftype: Type::Electric,
@@ -2601,12 +2456,11 @@ pub fn zapdos() -> Pokemon {
         sp_def: 166,
         init: 184,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/145 - Zapdos.wav",
-        sprite_path: "/sprites/145.png"
+        assets: PokemonAssets::new(ctx, "/battle_cries/145 - Zapdos.wav", "/sprites/145.png").unwrap()
     }
 }
 
-pub fn zubat() -> Pokemon {
+pub fn zubat(ctx: &mut Context) -> Pokemon {
     Pokemon {
         name: "Zubat",
         ftype: Type::Poison,
@@ -2618,7 +2472,6 @@ pub fn zubat() -> Pokemon {
         sp_def: 76,
         init: 103,
         moves: [attacks::dummy(); 4],
-        battle_cry_path: "/battle_cries/041 - Zubat.wav",
-        sprite_path: "/sprites/41.png"
+        assets: PokemonAssets::new(ctx, "/sprites/41.png", "/battle_cries/041 - Zubat.wav").unwrap()
     }
 }

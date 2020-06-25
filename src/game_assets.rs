@@ -2,7 +2,7 @@ use ggez::{Context, ContextBuilder, GameResult, filesystem};
 use ggez::audio::{self, Source, SoundSource};
 use ggez::event::{self, EventHandler, KeyCode, KeyMods};
 use ggez::graphics::{self, Image, Color};
-use crate::default_structures::{battle, team_picking};
+use crate::default_structures::{battle, team_picking, attacks};
 use mint;
 
 // **********************************************************************
@@ -154,7 +154,7 @@ impl EventHandler for battle::Battle {
                 },
                 battle::State::A1 => {
                     match self.a1 {
-                        battle::Action::Swap(slot) => self.swap(slot, true),
+                        battle::Action::Swap(slot) => self.check_swap(slot),
                         battle::Action::Attack(atk) => self.attack(atk, false),
                         _ => {},
                     };
@@ -170,9 +170,30 @@ impl EventHandler for battle::Battle {
                     self.a2 = battle::Action::Picking;
                     self.state = battle::State::Between;
                 },
-                battle::State::After => {
+                battle::State::After => {   // check if any effects to be applied
+                    self.stat_eff(true);
+                    self.stat_eff(false);
                     self.state = battle::State::Picking;
                     self.text = "What will you do?".to_string();
+                }
+
+
+                battle::State::SelfReplace => {
+                    let mut done: bool = true;
+                    for i in self.own_team.iter() {
+                         if i.current_health != 0 {done = false; break;}
+                    }
+                    self.state = if done {battle::State::Fin} else {battle::State::SelfReplace};
+                    if done {event::quit(ctx);}
+        
+                }
+                battle::State::EnemyReplace => {
+                    let mut done: bool = true;
+                    for i in self.enemy_team.iter() {
+                        if i.current_health != 0 {done = false; break;}
+                    }
+                    self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
+                    if !done {self.enemy_swap();} else {event::quit(ctx);}
                 }
                 _ => {},
             };
@@ -181,12 +202,24 @@ impl EventHandler for battle::Battle {
         else {
             if self.dmg == 0 {} else { 
                 if self.user {
-                    if self.own_team[self.p1].current_health == 0 {self.timer -= self.dmg; self.dmg = 1;}
+                    if self.own_team[self.p1].current_health == 0 {
+                        self.timer = 90; self.dmg = 1;
+                        self.text = String::new();
+                        self.text.push_str(self.own_team[self.p1].name());
+                        self.text.push_str(" fainted!");
+                        self.state = battle::State::SelfReplace;
+                    }
                     else {self.own_team[self.p1].current_health -= 1;}
                     self.dmg -= 1;
                 }
                 else {
-                    if self.enemy_team[self.p2].current_health == 0 {self.timer -= self.dmg; self.dmg = 1;}
+                    if self.enemy_team[self.p2].current_health == 0 {
+                        self.timer = 150; self.dmg = 1;
+                        self.text = String::new();
+                        self.text.push_str(self.enemy_team[self.p2].name());
+                        self.text.push_str(" fainted!");
+                        self.state = battle::State::EnemyReplace;
+                    }
                     else {self.enemy_team[self.p2].current_health -= 1;}
                     self.dmg -= 1;
                 }
@@ -273,6 +306,16 @@ impl EventHandler for battle::Battle {
                 _ => (),
                 };
             },
+            battle::State::SelfReplace => {match key {
+                KeyCode::Key1 => self.check_swap(0),
+                KeyCode::Key2 => self.check_swap(1),
+                KeyCode::Key3 => self.check_swap(2),
+                KeyCode::Key4 => self.check_swap(3),
+                KeyCode::Key5 => self.check_swap(4),
+                KeyCode::Key6 => self.check_swap(5), 
+                _ => (),
+                };
+            }
             _ => if key == KeyCode::Key0 {event::quit(ctx)},
         };
         ()

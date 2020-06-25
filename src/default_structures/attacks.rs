@@ -38,6 +38,20 @@ pub enum Status {
     Sleep (u8),
 }
 
+impl Status {
+    pub fn name(&self) -> &'static str {
+        match self {
+            Status::Burn => "Burn",
+            Status::Poison => "Poison",
+            Status::Paralysis => "Paralysis",
+            Status::None => "None",
+            Status::Freeze(u8) => "Freeze",
+            Status::Sleep(u8) => "Sleep",
+        }
+
+    }
+}
+
 // if let Foo::Bar(ref mut wrapped_value) = foo {
 //     *wrapped_value = 15;
 // }

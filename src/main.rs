@@ -23,6 +23,7 @@ fn main() {
         [battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),], 
         [battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),battle::Battlemon::dummy(),]);
         // for testing Battle stuff seperated*/
+        
     // Run!
     match event::run(&mut ctx, &mut event_loop, &mut my_game) {
         Ok(_) => println!("Exited cleanly."),

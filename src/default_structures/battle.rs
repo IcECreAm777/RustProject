@@ -63,12 +63,14 @@ pub enum State {
     Between,
     A1,
     A2,
-    After,
+    After1,
+    After2,
     E1,
     E2,
     SelfReplace,
     EnemyReplace,
     Fin,
+    None,
 }
 
 pub struct Battle {
@@ -83,6 +85,7 @@ pub struct Battle {
     pub dmg: u32,
     pub timer: u32,
     pub user: bool,
+    pub ret: State,
 }
 
 impl Battle {
@@ -99,6 +102,15 @@ impl Battle {
             dmg: 0,
             timer: 0,
             user: true,
+            ret: State::None,
+        }
+    }
+
+    pub fn ret_state(&self) -> State {
+        match self.ret {
+            State::After2 => State::After2,
+            State::Between => State::Between,
+            _ => State::None,
         }
     }
 
@@ -144,7 +156,7 @@ impl Battle {
 
     // function to find out what action needs to be performed next
     pub fn between(&self) -> State {
-        if self.a1 == Action::Picking && self.a2 == Action::Picking {State::After} 
+        if self.a1 == Action::Picking && self.a2 == Action::Picking {State::After1} 
         else {if self.a2 == Action::Picking {State::A1}
                 else {State::A2}
         }

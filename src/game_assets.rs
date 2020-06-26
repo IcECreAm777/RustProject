@@ -153,6 +153,7 @@ impl EventHandler for battle::Battle {
                     self.timer = 5;
                 },
                 battle::State::A1 => {
+                    self.ret = battle::State::Between;
                     match self.a1 {
                         battle::Action::Swap(slot) => self.check_swap(slot),
                         battle::Action::Attack(atk) => self.attack(atk, false),
@@ -162,6 +163,7 @@ impl EventHandler for battle::Battle {
                     self.state = battle::State::Between;
                 },
                 battle::State::A2 => {
+                    self.ret = battle::State::Between;
                     match self.a2 {
                         battle::Action::Swap(slot) => self.swap(slot, false),
                         battle::Action::Attack(atk) => self.attack(atk, true),
@@ -170,11 +172,16 @@ impl EventHandler for battle::Battle {
                     self.a2 = battle::Action::Picking;
                     self.state = battle::State::Between;
                 },
-                battle::State::After => {   // check if any effects to be applied
+                battle::State::After1 => {   // check if any effects to be applied
                     self.stat_eff(true);
+                    self.ret = battle::State::After2;
+                    self.state = battle::State::After2;
+                }
+                battle::State::After2 => {
                     self.stat_eff(false);
                     self.state = battle::State::Picking;
-                    self.text = "What will you do?".to_string();
+                    self.text = String::new();
+                    self.text.push_str("What will you do?")
                 }
 
 
@@ -185,6 +192,7 @@ impl EventHandler for battle::Battle {
                     }
                     self.state = if done {battle::State::Fin} else {battle::State::SelfReplace};
                     if done {event::quit(ctx);}
+                    if self.own_team[self.p1].current_health != 0 {self.state = self.ret_state();}
         
                 }
                 battle::State::EnemyReplace => {
@@ -194,31 +202,37 @@ impl EventHandler for battle::Battle {
                     }
                     self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
                     if !done {self.enemy_swap();} else {event::quit(ctx);}
+                    self.state = self.ret_state();
                 }
                 _ => {},
             };
             Ok(())
         }
         else {
-            if self.dmg == 0 {} else { 
+            if self.dmg == 0 {} 
+            else { 
                 if self.user {
-                    if self.own_team[self.p1].current_health == 0 {
+                    if self.own_team[self.p1].current_health == 1 {
+                        self.own_team[self.p1].current_health = 0;
                         self.timer = 90; self.dmg = 1;
                         self.text = String::new();
                         self.text.push_str(self.own_team[self.p1].name());
                         self.text.push_str(" fainted!");
                         self.state = battle::State::SelfReplace;
+                        self.a1 = battle::Action::Picking;
                     }
                     else {self.own_team[self.p1].current_health -= 1;}
                     self.dmg -= 1;
                 }
                 else {
-                    if self.enemy_team[self.p2].current_health == 0 {
+                    if self.enemy_team[self.p2].current_health == 1 {
+                        self.enemy_team[self.p2].current_health = 0;
                         self.timer = 150; self.dmg = 1;
                         self.text = String::new();
                         self.text.push_str(self.enemy_team[self.p2].name());
                         self.text.push_str(" fainted!");
                         self.state = battle::State::EnemyReplace;
+                        self.a2 = battle::Action::Picking;
                     }
                     else {self.enemy_team[self.p2].current_health -= 1;}
                     self.dmg -= 1;
@@ -287,6 +301,7 @@ impl EventHandler for battle::Battle {
                 };
             },
             battle::State::PickAtk => {match key {
+                KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
                 KeyCode::Key1 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[0]),
                 KeyCode::Key2 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[1]),
@@ -296,6 +311,7 @@ impl EventHandler for battle::Battle {
                 };
             },
             battle::State::PickSlot => {match key {
+                KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
                 KeyCode::Key1 => self.a1 = battle::Action::Swap(0),
                 KeyCode::Key2 => self.a1 = battle::Action::Swap(1),
@@ -307,6 +323,7 @@ impl EventHandler for battle::Battle {
                 };
             },
             battle::State::SelfReplace => {match key {
+                KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Key1 => self.check_swap(0),
                 KeyCode::Key2 => self.check_swap(1),
                 KeyCode::Key3 => self.check_swap(2),

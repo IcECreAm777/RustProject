@@ -139,6 +139,7 @@ impl EventHandler for battle::Battle {
         if self.timer == 0 {
             match self.state {
                 battle::State::Picking => {
+                    if self.text != "What will you do?" {self.text = "What will you do?".to_string();}
                     if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
                         self.state = self.prio();
                         self.timer = 5;
@@ -156,7 +157,7 @@ impl EventHandler for battle::Battle {
                     self.ret = battle::State::Between;
                     match self.a1 {
                         battle::Action::Swap(slot) => self.check_swap(slot),
-                        battle::Action::Attack(atk) => self.attack(atk, false),
+                        battle::Action::Attack(atk) => self.atk_init(atk, false),
                         _ => {},
                     };
                     self.a1 = battle::Action::Picking;
@@ -166,13 +167,15 @@ impl EventHandler for battle::Battle {
                     self.ret = battle::State::Between;
                     match self.a2 {
                         battle::Action::Swap(slot) => self.swap(slot, false),
-                        battle::Action::Attack(atk) => self.attack(atk, true),
+                        battle::Action::Attack(atk) => self.atk_init(atk, true),
                         _ => {},
                     };
                     self.a2 = battle::Action::Picking;
                     self.state = battle::State::Between;
                 },
                 battle::State::After1 => {   // check if any effects to be applied
+                    self.own_team[self.p1].flinch = false;
+                    self.enemy_team[self.p2].flinch = false;
                     self.stat_eff(true);
                     self.ret = battle::State::After2;
                     self.state = battle::State::After2;
@@ -180,8 +183,6 @@ impl EventHandler for battle::Battle {
                 battle::State::After2 => {
                     self.stat_eff(false);
                     self.state = battle::State::Picking;
-                    self.text = String::new();
-                    self.text.push_str("What will you do?")
                 }
 
 
@@ -313,12 +314,12 @@ impl EventHandler for battle::Battle {
             battle::State::PickSlot => {match key {
                 KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
-                KeyCode::Key1 => self.a1 = battle::Action::Swap(0),
-                KeyCode::Key2 => self.a1 = battle::Action::Swap(1),
-                KeyCode::Key3 => self.a1 = battle::Action::Swap(2),
-                KeyCode::Key4 => self.a1 = battle::Action::Swap(3),
-                KeyCode::Key5 => self.a1 = battle::Action::Swap(4),
-                KeyCode::Key6 => self.a1 = battle::Action::Swap(5),
+                KeyCode::Key1 => {self.a1 = if 0 != self.p1 {battle::Action::Swap(0)} else {battle::Action::Picking}; if 0 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
+                KeyCode::Key2 => {self.a1 = if 1 != self.p1 {battle::Action::Swap(1)} else {battle::Action::Picking}; if 1 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
+                KeyCode::Key3 => {self.a1 = if 2 != self.p1 {battle::Action::Swap(2)} else {battle::Action::Picking}; if 2 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
+                KeyCode::Key4 => {self.a1 = if 3 != self.p1 {battle::Action::Swap(3)} else {battle::Action::Picking}; if 3 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
+                KeyCode::Key5 => {self.a1 = if 4 != self.p1 {battle::Action::Swap(4)} else {battle::Action::Picking}; if 4 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
+                KeyCode::Key6 => {self.a1 = if 5 != self.p1 {battle::Action::Swap(5)} else {battle::Action::Picking}; if 5 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
                 _ => (),
                 };
             },

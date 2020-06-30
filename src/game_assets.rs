@@ -252,11 +252,12 @@ impl EventHandler for battle::Battle {
 
         graphics::draw(ctx, &self.assets.healthbar, graphics::DrawParam::default().dest(mint::Point2{x:0.0,y:0.0}))?;
         graphics::draw(ctx, &self.assets.healthbar2, graphics::DrawParam::default().dest(mint::Point2{x:500.0,y:0.0}))?;
+        graphics::draw(ctx, &self.assets.botbox, graphics::DrawParam::default().dest(mint::Point2{x:0.0,y:500.0}))?;
 
-        let health1 = graphics::Rect::new(100.0,54.0,150.0 * self.own_team[self.p1].clone().hp_fract(),13.0);
+        let health1 = graphics::Rect::new(100.0,55.0,150.0 * self.own_team[self.p1].clone().hp_fract(),13.0);
         let c1 = if self.own_team[self.p1].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h1 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health1, c1)?;
-        let health2 = graphics::Rect::new(700.0,54.0,-150.0*self.enemy_team[self.p2].clone().hp_fract(),13.0);
+        let health2 = graphics::Rect::new(700.0,55.0,-150.0*self.enemy_team[self.p2].clone().hp_fract(),13.0);
         let c2 = if self.enemy_team[self.p2].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h2 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health2, c2)?;
         graphics::draw(ctx, &h1, graphics::DrawParam::default())?;

@@ -16,6 +16,7 @@ pub struct BattleAssets {
     pub healthbar: ggez::graphics::Image,
     pub healthbar2: ggez::graphics::Image,
     pub ball: ggez::graphics::Image,
+    pub botbox: ggez::graphics::Image,
 }
 
 impl BattleAssets {
@@ -23,10 +24,12 @@ impl BattleAssets {
         let health = graphics::Image::new(ctx, "/healthbar.png");
         let health2 = graphics::Image::new(ctx, "/healthbar2.png");
         let ball = graphics::Image::new(ctx, "/ball.png");
+        let botbox = graphics::Image::new(ctx, "/botbox.png");
         BattleAssets{
             healthbar: health.unwrap(),
             healthbar2: health2.unwrap(),
             ball: ball.unwrap(),
+            botbox: botbox.unwrap(),
         }
     }
 }

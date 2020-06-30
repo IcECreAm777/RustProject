@@ -139,7 +139,7 @@ impl EventHandler for battle::Battle {
         if self.timer == 0 {
             match self.state {
                 battle::State::Picking => {
-                    if self.text != "What will you do?" {self.text = "What will you do?".to_string();}
+                    //if self.text != "What will you do?" {self.text = "What will you do?".to_string();}
                     if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
                         self.state = self.prio();
                         self.timer = 5;
@@ -183,6 +183,8 @@ impl EventHandler for battle::Battle {
                 battle::State::After2 => {
                     self.stat_eff(false);
                     self.state = battle::State::Picking;
+                    self.ret = battle::State::Picking;
+                    self.text = "What will you do?".to_string();
                 }
 
 
@@ -216,9 +218,7 @@ impl EventHandler for battle::Battle {
                     if self.own_team[self.p1].current_health == 1 {
                         self.own_team[self.p1].current_health = 0;
                         self.timer = 90; self.dmg = 1;
-                        self.text = String::new();
-                        self.text.push_str(self.own_team[self.p1].name());
-                        self.text.push_str(" fainted!");
+                        self.text = format!("{} fainted!", self.own_team[self.p1].name());
                         self.state = battle::State::SelfReplace;
                         self.a1 = battle::Action::Picking;
                     }
@@ -229,9 +229,7 @@ impl EventHandler for battle::Battle {
                     if self.enemy_team[self.p2].current_health == 1 {
                         self.enemy_team[self.p2].current_health = 0;
                         self.timer = 150; self.dmg = 1;
-                        self.text = String::new();
-                        self.text.push_str(self.enemy_team[self.p2].name());
-                        self.text.push_str(" fainted!");
+                        self.text = format!("Enemy {} fainted!", self.enemy_team[self.p2].name());
                         self.state = battle::State::EnemyReplace;
                         self.a2 = battle::Action::Picking;
                     }

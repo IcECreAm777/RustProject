@@ -314,12 +314,48 @@ impl EventHandler for battle::Battle {
             battle::State::PickSlot => {match key {
                 KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
-                KeyCode::Key1 => {self.a1 = if 0 != self.p1 {battle::Action::Swap(0)} else {battle::Action::Picking}; if 0 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
-                KeyCode::Key2 => {self.a1 = if 1 != self.p1 {battle::Action::Swap(1)} else {battle::Action::Picking}; if 1 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
-                KeyCode::Key3 => {self.a1 = if 2 != self.p1 {battle::Action::Swap(2)} else {battle::Action::Picking}; if 2 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
-                KeyCode::Key4 => {self.a1 = if 3 != self.p1 {battle::Action::Swap(3)} else {battle::Action::Picking}; if 3 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
-                KeyCode::Key5 => {self.a1 = if 4 != self.p1 {battle::Action::Swap(4)} else {battle::Action::Picking}; if 4 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
-                KeyCode::Key6 => {self.a1 = if 5 != self.p1 {battle::Action::Swap(5)} else {battle::Action::Picking}; if 5 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}},
+                KeyCode::Key1 => {
+                    if self.own_team[0].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 0 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(0);}
+                    }
+                },
+                KeyCode::Key2 => {
+                    if self.own_team[1].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 1 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(1);}
+                    }
+                },
+                KeyCode::Key3 => {
+                    if self.own_team[2].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 2 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(2);}
+                    }
+                },
+                KeyCode::Key4 => {
+                    if self.own_team[3].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 3 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(3);}
+                    }
+                },
+                KeyCode::Key5 => {
+                    if self.own_team[4].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 4 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(4);}
+                    }
+                },
+                KeyCode::Key6 => {
+                    if self.own_team[5].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 5 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(5);}
+                    }
+                },
                 _ => (),
                 };
             },

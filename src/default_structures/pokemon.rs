@@ -54,7 +54,7 @@ pub fn dummy_pokemon(ctx: &mut Context) -> Pokemon {
         sp_def: 10,
         init: 10,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/063 - Abra.wav", "/sprites/63.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/000 - Dummy.wav", "/sprites/dummy.png").unwrap()
     }
 }
 

@@ -264,6 +264,9 @@ impl EventHandler for battle::Battle {
         graphics::draw(ctx, &h2, graphics::DrawParam::default())?;
         graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(mint::Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?;
 
+        graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(mint::Point2{x:30.0,y:200.0}))?;
+        graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(mint::Point2{x:514.0,y:200.0}))?;
+
         let temp = graphics::Text::new(self.own_team[self.p1].clone().name());
         let temp2 = graphics::Text::new(self.enemy_team[self.p2].clone().name());
         graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:17.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;

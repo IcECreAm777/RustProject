@@ -16,7 +16,7 @@ fn main() {
         .window_mode(WindowMode::default().fullscreen_type(FullscreenType::Windowed))
         .build()
         .unwrap();
-
+    ggez::graphics::set_default_filter(&mut ctx, graphics::FilterMode::Nearest);
     //init game
     //let mut my_game = TeamPickingGame::new(&mut ctx);
     let mut my_game = battle::Battle::new(

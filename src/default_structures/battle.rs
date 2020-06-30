@@ -2,6 +2,7 @@ use crate::default_structures::{pokemon, attacks, Type, self};
 use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
 use ggez::Context;
+use ggez::graphics;
 
 #[derive(PartialEq)]
 pub enum Action {
@@ -9,6 +10,25 @@ pub enum Action {
     Attack (attacks::Attack),
     Picking,
     None, //temporary?
+}
+#[derive(Clone)]
+pub struct BattleAssets {
+    pub healthbar: ggez::graphics::Image,
+    pub healthbar2: ggez::graphics::Image,
+    pub ball: ggez::graphics::Image,
+}
+
+impl BattleAssets {
+    fn new(ctx: &mut Context) -> BattleAssets {
+        let health = graphics::Image::new(ctx, "/healthbar.png");
+        let health2 = graphics::Image::new(ctx, "/healthbar2.png");
+        let ball = graphics::Image::new(ctx, "/ball.png");
+        BattleAssets{
+            healthbar: health.unwrap(),
+            healthbar2: health2.unwrap(),
+            ball: ball.unwrap(),
+        }
+    }
 }
 
 #[derive(Clone)]
@@ -39,6 +59,9 @@ impl Battlemon {
         self.pokemon.name
     }
 
+    pub fn health(&self) -> u32 {
+        self.pokemon.health
+    }
     pub fn hp_fract(&self) -> f32 {
         (self.current_health as f32)/(self.pokemon.health as f32)
     }
@@ -74,6 +97,7 @@ pub enum State {
 }
 
 pub struct Battle {
+    pub assets: BattleAssets,
     pub own_team: [Battlemon; 6],
     pub enemy_team: [Battlemon; 6],
     pub p1: usize,
@@ -89,8 +113,9 @@ pub struct Battle {
 }
 
 impl Battle {
-    pub fn new(own: [Battlemon; 6], enemy: [Battlemon; 6]) -> Battle {
+    pub fn new(own: [Battlemon; 6], enemy: [Battlemon; 6], ctx: &mut Context) -> Battle {
         Battle {
+            assets: BattleAssets::new(ctx),
             own_team: own,
             enemy_team: enemy,
             p1: 0,

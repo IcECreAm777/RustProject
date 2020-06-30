@@ -250,43 +250,35 @@ impl EventHandler for battle::Battle {
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
 
-        let bar1 = graphics::Rect::new(0.0,0.0,300.0,100.0);
-        let r1 = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), bar1, graphics::BLACK)?;
-        graphics::draw(ctx, &r1, graphics::DrawParam::default())?;
-        let bar2 = graphics::Rect::new(500.0,0.0,300.0,100.0);
-        let r2 = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), bar2, graphics::BLACK)?;
-        graphics::draw(ctx, &r2, graphics::DrawParam::default())?;
-        let boxx = graphics::Rect::new(0.0,500.0,800.0,100.0);
-        let boxxx = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::stroke(5.0), boxx, graphics::BLACK)?;
-        graphics::draw(ctx, &boxxx, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &self.assets.healthbar, graphics::DrawParam::default().dest(mint::Point2{x:0.0,y:0.0}))?;
+        graphics::draw(ctx, &self.assets.healthbar2, graphics::DrawParam::default().dest(mint::Point2{x:500.0,y:0.0}))?;
 
-        let health1 = graphics::Rect::new(100.0,50.0,100.0 * self.own_team[self.p1].clone().hp_fract(),50.0);
+        let health1 = graphics::Rect::new(100.0,54.0,150.0 * self.own_team[self.p1].clone().hp_fract(),13.0);
         let c1 = if self.own_team[self.p1].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h1 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health1, c1)?;
-        let health2 = graphics::Rect::new(600.0,50.0,100.0*self.enemy_team[self.p2].clone().hp_fract(),50.0);
+        let health2 = graphics::Rect::new(700.0,54.0,-150.0*self.enemy_team[self.p2].clone().hp_fract(),13.0);
         let c2 = if self.enemy_team[self.p2].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h2 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health2, c2)?;
         graphics::draw(ctx, &h1, graphics::DrawParam::default())?;
         graphics::draw(ctx, &h2, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(mint::Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?;
 
         let temp = graphics::Text::new(self.own_team[self.p1].clone().name());
         let temp2 = graphics::Text::new(self.enemy_team[self.p2].clone().name());
-        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:40.0,y:20.0}).color(graphics::WHITE))?;
-        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:20.0}).color(graphics::WHITE))?;
-        let ball = graphics::Text::new("Icon here?");
-        graphics::draw(ctx, &ball, graphics::DrawParam::default().dest(mint::Point2{x:365.0,y:50.0}).color(graphics::BLACK))?;
+        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:17.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+
+        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+        // TODO: calculation for name length for 2nd name text 
+        
         let info = graphics::Text::new(self.text.as_str());
         graphics::draw(ctx, &info, graphics::DrawParam::default().dest(mint::Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
-        let mut healthh1 = self.own_team[self.p1].current_health.to_string();
-        healthh1.push_str("/");
-        healthh1.push_str(self.own_team[self.p1].pokemon.health.to_string().as_str());
+
+        let healthh1 = format!("{}/{}", self.own_team[self.p1].current_health.to_string(), self.own_team[self.p1].health().to_string());
         let hn1 = graphics::Text::new(healthh1);
-        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(mint::Point2{x:100.0,y:25.0}).color(graphics::WHITE))?;
-        let mut healthh2 = self.enemy_team[self.p2].current_health.to_string();
-        healthh2.push_str("/");
-        healthh2.push_str(self.enemy_team[self.p2].pokemon.health.to_string().as_str());
+        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(mint::Point2{x:14.0,y:52.0}).scale(mint::Vector2{x:1.20,y:1.20}).color(graphics::BLACK))?;
+        let healthh2 = format!("{}/{}", self.enemy_team[self.p2].current_health.to_string(), self.enemy_team[self.p2].health().to_string());
         let hn2 = graphics::Text::new(healthh2);
-        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(mint::Point2{x:600.0,y:25.0}).color(graphics::WHITE))?;
+        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(mint::Point2{x:717.0,y:52.0}).scale(mint::Vector2{x:1.2,y:1.2}).color(graphics::BLACK))?;
         graphics::present(ctx)?;
 
         Ok(())

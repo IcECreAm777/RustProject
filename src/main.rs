@@ -13,7 +13,7 @@ fn main() {
     let (mut ctx, mut event_loop) =
     ContextBuilder::new("Pokemon Rust edition", "Niklas Rosseck _ Kilian Woick _ Henning Gütschow")
         .window_setup(WindowSetup::default().title("Pokemon Stadium - Rust Edition").icon("/ball.png"))
-        .window_mode(WindowMode::default().fullscreen_type(FullscreenType::True))
+        .window_mode(WindowMode::default().fullscreen_type(FullscreenType::Windowed))
         .build()
         .unwrap();
 
@@ -21,7 +21,8 @@ fn main() {
     //let mut my_game = TeamPickingGame::new(&mut ctx);
     let mut my_game = battle::Battle::new(
         [battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),], 
-        [battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),]);
+        [battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),battle::Battlemon::dummy(&mut ctx),],
+        &mut ctx);
         // for testing Battle stuff seperated
         
     // Run!

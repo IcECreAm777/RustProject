@@ -54,7 +54,7 @@ pub fn dummy_pokemon(ctx: &mut Context) -> Pokemon {
         sp_def: 10,
         init: 10,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "", "").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/000 - Dummy.wav", "/sprites/dummy.png").unwrap()
     }
 }
 
@@ -310,7 +310,7 @@ pub fn charmaleon(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/005 - Charmaleon.wav", "/sprites/5.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/005 - Charmeleon.wav", "/sprites/5.png").unwrap()
     }
 }
 
@@ -629,7 +629,7 @@ pub fn exeggcutor(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/103 - Exeggcutor.wav", "/sprites/103.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/103 - Exeggutor.wav", "/sprites/103.png").unwrap()
     }
 }
 
@@ -1590,7 +1590,7 @@ pub fn omastar(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/139 - Amoroso.wav", "/sprites/139.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/139 - Omastar.wav", "/sprites/139.png").unwrap()
     }
 }
 

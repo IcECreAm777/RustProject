@@ -238,6 +238,7 @@ impl EventHandler for battle::Battle {
         if self.timer == 0 {
             match self.state {
                 battle::State::Picking => {
+                    //if self.text != "What will you do?" {self.text = "What will you do?".to_string();}
                     if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
                         self.state = self.prio();
                         self.timer = 5;
@@ -252,27 +253,36 @@ impl EventHandler for battle::Battle {
                     self.timer = 5;
                 },
                 battle::State::A1 => {
+                    self.ret = battle::State::Between;
                     match self.a1 {
                         battle::Action::Swap(slot) => self.check_swap(slot),
-                        battle::Action::Attack(atk) => self.attack(atk, false),
+                        battle::Action::Attack(atk) => self.atk_init(atk, false),
                         _ => {},
                     };
                     self.a1 = battle::Action::Picking;
                     self.state = battle::State::Between;
                 },
                 battle::State::A2 => {
+                    self.ret = battle::State::Between;
                     match self.a2 {
                         battle::Action::Swap(slot) => self.swap(slot, false),
-                        battle::Action::Attack(atk) => self.attack(atk, true),
+                        battle::Action::Attack(atk) => self.atk_init(atk, true),
                         _ => {},
                     };
                     self.a2 = battle::Action::Picking;
                     self.state = battle::State::Between;
                 },
-                battle::State::After => {   // check if any effects to be applied
+                battle::State::After1 => {   // check if any effects to be applied
+                    self.own_team[self.p1].flinch = false;
+                    self.enemy_team[self.p2].flinch = false;
                     self.stat_eff(true);
+                    self.ret = battle::State::After2;
+                    self.state = battle::State::After2;
+                }
+                battle::State::After2 => {
                     self.stat_eff(false);
                     self.state = battle::State::Picking;
+                    self.ret = battle::State::Picking;
                     self.text = "What will you do?".to_string();
                 }
 
@@ -284,6 +294,7 @@ impl EventHandler for battle::Battle {
                     }
                     self.state = if done {battle::State::Fin} else {battle::State::SelfReplace};
                     if done {event::quit(ctx);}
+                    if self.own_team[self.p1].current_health != 0 {self.state = self.ret_state();}
         
                 }
                 battle::State::EnemyReplace => {
@@ -293,31 +304,33 @@ impl EventHandler for battle::Battle {
                     }
                     self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
                     if !done {self.enemy_swap();} else {event::quit(ctx);}
+                    self.state = self.ret_state();
                 }
                 _ => {},
             };
             Ok(())
         }
         else {
-            if self.dmg == 0 {} else { 
+            if self.dmg == 0 {} 
+            else { 
                 if self.user {
-                    if self.own_team[self.p1].current_health == 0 {
+                    if self.own_team[self.p1].current_health == 1 {
+                        self.own_team[self.p1].current_health = 0;
                         self.timer = 90; self.dmg = 1;
-                        self.text = String::new();
-                        self.text.push_str(self.own_team[self.p1].name());
-                        self.text.push_str(" fainted!");
+                        self.text = format!("{} fainted!", self.own_team[self.p1].name());
                         self.state = battle::State::SelfReplace;
+                        self.a1 = battle::Action::Picking;
                     }
                     else {self.own_team[self.p1].current_health -= 1;}
                     self.dmg -= 1;
                 }
                 else {
-                    if self.enemy_team[self.p2].current_health == 0 {
+                    if self.enemy_team[self.p2].current_health == 1 {
+                        self.enemy_team[self.p2].current_health = 0;
                         self.timer = 150; self.dmg = 1;
-                        self.text = String::new();
-                        self.text.push_str(self.enemy_team[self.p2].name());
-                        self.text.push_str(" fainted!");
+                        self.text = format!("Enemy {} fainted!", self.enemy_team[self.p2].name());
                         self.state = battle::State::EnemyReplace;
+                        self.a2 = battle::Action::Picking;
                     }
                     else {self.enemy_team[self.p2].current_health -= 1;}
                     self.dmg -= 1;
@@ -334,43 +347,39 @@ impl EventHandler for battle::Battle {
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
 
-        let bar1 = graphics::Rect::new(0.0,0.0,300.0,100.0);
-        let r1 = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), bar1, graphics::BLACK)?;
-        graphics::draw(ctx, &r1, graphics::DrawParam::default())?;
-        let bar2 = graphics::Rect::new(500.0,0.0,300.0,100.0);
-        let r2 = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::fill(), bar2, graphics::BLACK)?;
-        graphics::draw(ctx, &r2, graphics::DrawParam::default())?;
-        let boxx = graphics::Rect::new(0.0,500.0,800.0,100.0);
-        let boxxx = graphics::Mesh::new_rectangle(ctx, graphics::DrawMode::stroke(5.0), boxx, graphics::BLACK)?;
-        graphics::draw(ctx, &boxxx, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &self.assets.healthbar, graphics::DrawParam::default().dest(mint::Point2{x:0.0,y:0.0}))?;
+        graphics::draw(ctx, &self.assets.healthbar2, graphics::DrawParam::default().dest(mint::Point2{x:500.0,y:0.0}))?;
+        graphics::draw(ctx, &self.assets.botbox, graphics::DrawParam::default().dest(mint::Point2{x:0.0,y:500.0}))?;
 
-        let health1 = graphics::Rect::new(100.0,50.0,100.0 * self.own_team[self.p1].clone().hp_fract(),50.0);
+        let health1 = graphics::Rect::new(100.0,55.0,150.0 * self.own_team[self.p1].clone().hp_fract(),13.0);
         let c1 = if self.own_team[self.p1].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h1 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health1, c1)?;
-        let health2 = graphics::Rect::new(600.0,50.0,100.0*self.enemy_team[self.p2].clone().hp_fract(),50.0);
+        let health2 = graphics::Rect::new(700.0,55.0,-150.0*self.enemy_team[self.p2].clone().hp_fract(),13.0);
         let c2 = if self.enemy_team[self.p2].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h2 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health2, c2)?;
         graphics::draw(ctx, &h1, graphics::DrawParam::default())?;
         graphics::draw(ctx, &h2, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(mint::Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?;
+
+        graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(mint::Point2{x:30.0,y:200.0}))?;
+        graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(mint::Point2{x:514.0,y:200.0}))?;
 
         let temp = graphics::Text::new(self.own_team[self.p1].clone().name());
         let temp2 = graphics::Text::new(self.enemy_team[self.p2].clone().name());
-        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:40.0,y:20.0}).color(graphics::WHITE))?;
-        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:20.0}).color(graphics::WHITE))?;
-        let ball = graphics::Text::new("Icon here?");
-        graphics::draw(ctx, &ball, graphics::DrawParam::default().dest(mint::Point2{x:365.0,y:50.0}).color(graphics::BLACK))?;
+        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:17.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+
+        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+        // TODO: calculation for name length for 2nd name text 
+        
         let info = graphics::Text::new(self.text.as_str());
         graphics::draw(ctx, &info, graphics::DrawParam::default().dest(mint::Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
-        let mut healthh1 = self.own_team[self.p1].current_health.to_string();
-        healthh1.push_str("/");
-        healthh1.push_str(self.own_team[self.p1].pokemon.health.to_string().as_str());
+
+        let healthh1 = format!("{}/{}", self.own_team[self.p1].current_health.to_string(), self.own_team[self.p1].health().to_string());
         let hn1 = graphics::Text::new(healthh1);
-        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(mint::Point2{x:100.0,y:25.0}).color(graphics::WHITE))?;
-        let mut healthh2 = self.enemy_team[self.p2].current_health.to_string();
-        healthh2.push_str("/");
-        healthh2.push_str(self.enemy_team[self.p2].pokemon.health.to_string().as_str());
+        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(mint::Point2{x:14.0,y:52.0}).scale(mint::Vector2{x:1.20,y:1.20}).color(graphics::BLACK))?;
+        let healthh2 = format!("{}/{}", self.enemy_team[self.p2].current_health.to_string(), self.enemy_team[self.p2].health().to_string());
         let hn2 = graphics::Text::new(healthh2);
-        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(mint::Point2{x:600.0,y:25.0}).color(graphics::WHITE))?;
+        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(mint::Point2{x:717.0,y:52.0}).scale(mint::Vector2{x:1.2,y:1.2}).color(graphics::BLACK))?;
         graphics::present(ctx)?;
 
         Ok(())
@@ -386,6 +395,7 @@ impl EventHandler for battle::Battle {
                 };
             },
             battle::State::PickAtk => {match key {
+                KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
                 KeyCode::Key1 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[0]),
                 KeyCode::Key2 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[1]),
@@ -395,17 +405,55 @@ impl EventHandler for battle::Battle {
                 };
             },
             battle::State::PickSlot => {match key {
+                KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
-                KeyCode::Key1 => self.a1 = battle::Action::Swap(0),
-                KeyCode::Key2 => self.a1 = battle::Action::Swap(1),
-                KeyCode::Key3 => self.a1 = battle::Action::Swap(2),
-                KeyCode::Key4 => self.a1 = battle::Action::Swap(3),
-                KeyCode::Key5 => self.a1 = battle::Action::Swap(4),
-                KeyCode::Key6 => self.a1 = battle::Action::Swap(5),
+                KeyCode::Key1 => {
+                    if self.own_team[0].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 0 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(0);}
+                    }
+                },
+                KeyCode::Key2 => {
+                    if self.own_team[1].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 1 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(1);}
+                    }
+                },
+                KeyCode::Key3 => {
+                    if self.own_team[2].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 2 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(2);}
+                    }
+                },
+                KeyCode::Key4 => {
+                    if self.own_team[3].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 3 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(3);}
+                    }
+                },
+                KeyCode::Key5 => {
+                    if self.own_team[4].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 4 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(4);}
+                    }
+                },
+                KeyCode::Key6 => {
+                    if self.own_team[5].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
+                    else {
+                        if 5 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
+                        else {self.a1 = battle::Action::Swap(5);}
+                    }
+                },
                 _ => (),
                 };
             },
             battle::State::SelfReplace => {match key {
+                KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Key1 => self.check_swap(0),
                 KeyCode::Key2 => self.check_swap(1),
                 KeyCode::Key3 => self.check_swap(2),

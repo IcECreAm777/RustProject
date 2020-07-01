@@ -2,6 +2,7 @@ use crate::default_structures::{pokemon, attacks, Type, self};
 use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
 use ggez::Context;
+use ggez::graphics;
 
 #[derive(PartialEq)]
 pub enum Action {
@@ -9,6 +10,28 @@ pub enum Action {
     Attack (attacks::Attack),
     Picking,
     None, //temporary?
+}
+#[derive(Clone)]
+pub struct BattleAssets {
+    pub healthbar: ggez::graphics::Image,
+    pub healthbar2: ggez::graphics::Image,
+    pub ball: ggez::graphics::Image,
+    pub botbox: ggez::graphics::Image,
+}
+
+impl BattleAssets {
+    fn new(ctx: &mut Context) -> BattleAssets {
+        let health = graphics::Image::new(ctx, "/healthbar.png");
+        let health2 = graphics::Image::new(ctx, "/healthbar2.png");
+        let ball = graphics::Image::new(ctx, "/ball.png");
+        let botbox = graphics::Image::new(ctx, "/botbox.png");
+        BattleAssets{
+            healthbar: health.unwrap(),
+            healthbar2: health2.unwrap(),
+            ball: ball.unwrap(),
+            botbox: botbox.unwrap(),
+        }
+    }
 }
 
 #[derive(Clone)]
@@ -39,6 +62,9 @@ impl Battlemon {
         self.pokemon.name
     }
 
+    pub fn health(&self) -> u32 {
+        self.pokemon.health
+    }
     pub fn hp_fract(&self) -> f32 {
         (self.current_health as f32)/(self.pokemon.health as f32)
     }
@@ -63,15 +89,18 @@ pub enum State {
     Between,
     A1,
     A2,
-    After,
+    After1,
+    After2,
     E1,
     E2,
     SelfReplace,
     EnemyReplace,
     Fin,
+    None,
 }
 
 pub struct Battle {
+    pub assets: BattleAssets,
     pub own_team: [Battlemon; 6],
     pub enemy_team: [Battlemon; 6],
     pub p1: usize,
@@ -83,11 +112,13 @@ pub struct Battle {
     pub dmg: u32,
     pub timer: u32,
     pub user: bool,
+    pub ret: State,
 }
 
 impl Battle {
-    pub fn new(own: [Battlemon; 6], enemy: [Battlemon; 6]) -> Battle {
+    pub fn new(own: [Battlemon; 6], enemy: [Battlemon; 6], ctx: &mut Context) -> Battle {
         Battle {
+            assets: BattleAssets::new(ctx),
             own_team: own,
             enemy_team: enemy,
             p1: 0,
@@ -99,6 +130,15 @@ impl Battle {
             dmg: 0,
             timer: 0,
             user: true,
+            ret: State::None,
+        }
+    }
+
+    pub fn ret_state(&self) -> State {
+        match self.ret {
+            State::After2 => State::After2,
+            State::Between => State::Between,
+            _ => State::None,
         }
     }
 
@@ -140,11 +180,12 @@ impl Battle {
     // function to compare the speed values of two Battlemon
     pub fn speed_test(&self) -> bool {
         self.own_team[self.p1].pokemon.init >= self.enemy_team[self.p2].pokemon.init
+        // TODO: implement check for paralysis -> if so init - 75% or 50% (gen 7/8 orso)
     }
 
     // function to find out what action needs to be performed next
     pub fn between(&self) -> State {
-        if self.a1 == Action::Picking && self.a2 == Action::Picking {State::After} 
+        if self.a1 == Action::Picking && self.a2 == Action::Picking {State::After1} 
         else {if self.a2 == Action::Picking {State::A1}
                 else {State::A2}
         }
@@ -156,14 +197,75 @@ impl Battle {
         else {self.p2 = slot;}
         self.timer = 60;
         self.text = String::new();
-        if which {self.text.push_str("You sent out ");
-                    self.text.push_str(self.own_team[slot].name());}
-        else {self.text.push_str("Opponent sent out ");
-                self.text.push_str(self.enemy_team[slot].name());}
+        if which {self.text = format!("You sent out {}", self.own_team[slot].name());}
+        else {self.text = format!("Opponent sent out {}", self.enemy_team[slot].name());}
+    }
+
+    pub fn atk_init(&mut self, atk: attacks::Attack, target: bool) {
+        if !target {
+            if self.own_team[self.p1].flinch {
+                self.text = format!("{} flinched", self.own_team[self.p1].name());
+                self.timer = 90;
+                return;
+            }
+            
+            match self.own_team[self.p1].status {
+                attacks::Status::Sleep(val) => {
+                    self.text = format!("{} is fast asleep", self.own_team[self.p1].name());
+                    self.timer = 90;
+                    return;
+                },
+                attacks::Status::Freeze(val) => {
+                    self.text = format!("{} is frozen solid", self.own_team[self.p1].name());
+                    self.timer = 90;
+                    return;
+                }
+                attacks::Status::Paralysis => {
+                    if rand::thread_rng().gen_range(0,100) <= 25 {
+                        self.text = format!("{} is paralysed and could not move", self.own_team[self.p1].name());
+                        self.timer = 90;
+                        return;
+                    }
+                },
+                _ => {},
+            };
+            //for now: just default attack, no differentiation yet
+            self.dmg_attack(atk, target);
+        }
+        else {
+            if self.enemy_team[self.p2].flinch {
+                self.text = format!("Enemy {} flinched", self.enemy_team[self.p2].name());
+                self.timer = 90;
+                return;
+            }
+            
+            match self.enemy_team[self.p2].status {
+                attacks::Status::Sleep(val) => {
+                    self.text = format!("Enemy {} is fast asleep", self.enemy_team[self.p2].name());
+                    self.timer = 90;
+                    return;
+                },
+                attacks::Status::Freeze(val) => {
+                    self.text = format!("Enemy {} is frozen solid", self.enemy_team[self.p2].name());
+                    self.timer = 90;
+                    return;
+                }
+                attacks::Status::Paralysis => {
+                    if rand::thread_rng().gen_range(0,100) <= 25 {
+                        self.text = format!("Enemy {} is paralysed and could not move", self.enemy_team[self.p2].name());
+                        self.timer = 90;
+                        return;
+                    }
+                },
+                _ => {},
+            };
+            //for now: just default attack, no differentiation yet
+            self.dmg_attack(atk, target);
+        }
     }
 
     // basic normal atk calc
-    pub fn attack(&mut self, atk: attacks::Attack, target: bool) {
+    pub fn dmg_attack(&mut self, atk: attacks::Attack, target: bool) {
         let user = !(target);
         if user {
             let mult = effective(&atk.etype, &self.enemy_team[self.p2].pokemon.ftype)*effective(&atk.etype, &self.enemy_team[self.p2].pokemon.stype);
@@ -173,10 +275,9 @@ impl Battle {
                                     {(((42*atk.strength*(self.own_team[self.p1].pokemon.atk))as f32)/((50*self.enemy_team[self.p2].pokemon.def)as f32))/(brt as f32)+2.0}
                              else {((42*atk.strength*(self.own_team[self.p1].pokemon.sp_atk))as f32)/((50*self.enemy_team[self.p2].pokemon.sp_def)as f32)/(brt)+2.0};
             let stab: f32 = stab(&atk.etype, &self.own_team[self.p1].pokemon);
-            let z = rand::thread_rng().gen_range(84,101) as f32;
+            let z = rand::thread_rng().gen_range(85,101) as f32;
             let damage: f32 = basic*mult*stab*(z/100.0); //TODO: Crit
             self.dmg = damage as u32;
-            self.timer = damage as u32 + 30;
             self.user = false;
             }
         else {
@@ -187,15 +288,17 @@ impl Battle {
                                     {(((42*atk.strength*(self.enemy_team[self.p2].pokemon.atk))as f32)/((50*self.own_team[self.p1].pokemon.def)as f32))/(brt)+2.0}
                             else {((42*atk.strength*(self.enemy_team[self.p2].pokemon.sp_atk))as f32)/((50*self.own_team[self.p1].pokemon.sp_def)as f32)/(brt)+2.0};
             let stab: f32 = stab(&atk.etype, &self.enemy_team[self.p2].pokemon);
-            let z = rand::thread_rng().gen_range(84,101) as f32;
+            let z = rand::thread_rng().gen_range(85,101) as f32;
             let damage: f32 = basic*mult*stab*(z/100.0); //TODO: Crit
             self.dmg = damage as u32;
-            self.text = String::new();
-            if user {self.text.push_str(self.own_team[self.p1].name()); self.text.push_str(" used "); self.text.push_str(atk.name); self.text.push_str("!");}
-            else {self.text.push_str(self.enemy_team[self.p2].name()); self.text.push_str(" used "); self.text.push_str(atk.name); self.text.push_str("!");}
-            self.timer = damage as u32 + 30;
             self.user = true;
         }
+        self.text = String::new();
+        if user {self.text = format!("{} used {}!", self.own_team[self.p1].name(), atk.name);}
+        else {self.text = format!("Enemy {} used {}!", self.enemy_team[self.p2].name(), atk.name);}
+        self.timer = self.dmg + 30;
+            
+        
 
 
     }
@@ -223,11 +326,14 @@ impl Battle {
 
     pub fn check_swap(&mut self, slot: usize) {
         if self.own_team[slot].dead() {
-            self.text = String::new();
-            self.text.push_str(self.own_team[slot].name());
-            self.text.push_str(" has already fainted");
-        } 
-        else {self.swap(slot, true)}
+            self.text = format!("{} has already fainted", self.own_team[slot].name());
+        }
+        else {
+            if slot == self.p1 {
+            self.text = "You cannot switch to the Pokemon currently sent out".to_string();
+            } 
+            else {self.swap(slot, true);}
+        }
     }
 
     pub fn stat_eff(&mut self, who: bool) {
@@ -235,13 +341,33 @@ impl Battle {
             match self.own_team[self.p1].status {
                 attacks::Status::Burn | attacks::Status::Poison => {
                     self.user = true;
-                    self.dmg = self.own_team[self.p1].pokemon.health/16;
-                    self.text = String::new();
-                    self.text.push_str(self.own_team[self.p1].name());
-                    self.text.push_str(" took ");
-                    self.text.push_str(self.own_team[self.p1].status.name());
-                    self.text.push_str(" damage");
+                    self.dmg = self.own_team[self.p1].pokemon.health/16;    // maybe change poison to 1/8 like in gen2+
+                    self.text = format!("{} took {} damage", self.own_team[self.p1].name(), self.own_team[self.p1].status.name());
                     self.timer = self.dmg + 30;
+                },
+                attacks::Status::Sleep(val) => {
+                    if val == 1 {
+                        self.own_team[self.p1].status = attacks::Status::None;
+                        self.text = format!("{} woke up!", self.own_team[self.p1].name());
+                    }
+                    else {
+                        self.own_team[self.p1].status = attacks::Status::Sleep(val-1);
+                        self.text = format!("{} is still asleep", self.own_team[self.p1].name());
+                    }
+                    self.timer = 60;
+                }
+                attacks::Status::Freeze(val) => {
+                    if val == 1 {
+                        self.own_team[self.p1].status = attacks::Status::None; 
+                        self.text = self.own_team[self.p1].name().to_string();
+                        self.text.push_str(" unfroze!");
+                        self.text = format!("{} unfroze!", self.own_team[self.p1].name());
+                    }
+                    else {
+                        self.own_team[self.p1].status = attacks::Status::Freeze(val-1);
+                        self.text = format!("{} is still frozen", self.own_team[self.p1].name());
+                    }
+                    self.timer = 60;
                 },
                 _ => {},
             };
@@ -250,209 +376,37 @@ impl Battle {
             match self.enemy_team[self.p2].status {
                 attacks::Status::Burn | attacks::Status::Poison => {
                     self.user = false;
-                    self.dmg = self.enemy_team[self.p2].pokemon.health/16;
-                    self.text = String::new();
-                    self.text.push_str(self.enemy_team[self.p2].name());
-                    self.text.push_str(" took ");
-                    self.text.push_str(self.enemy_team[self.p2].status.name());
-                    self.text.push_str(" damage");
+                    self.dmg = self.enemy_team[self.p2].pokemon.health/16;  // maybe change poison to 1/8 like in gen2+
+                    self.text = format!("Enemy {} took {} damage", self.enemy_team[self.p2].name(), self.enemy_team[self.p2].status.name());
                     self.timer = self.dmg + 30;
                 },
                 attacks::Status::Sleep(val) => {
-                    self.enemy_team[self.p2].status = attacks::Status::Sleep(if val == 0 {0} else {val-1});
+                    if val == 1 {
+                        self.enemy_team[self.p2].status = attacks::Status::None; 
+                        self.text = format!("Enemy {} woke up!", self.enemy_team[self.p2].name());
+                    }
+                    else {
+                        self.enemy_team[self.p2].status = attacks::Status::Sleep(val-1);
+                        self.text = format!("Enemy {} is still asleep", self.enemy_team[self.p2].name());
+                    }
+                    self.timer = 60;
                 }
                 attacks::Status::Freeze(val) => {
-                    self.enemy_team[self.p2].status = attacks::Status::Freeze(if val == 0 {0} else {val-1});
-                }
+                    if val == 1 {
+                        self.enemy_team[self.p2].status = attacks::Status::None; 
+                        self.text = format!("Enemy {} unfroze!", self.enemy_team[self.p2].name());
+                    }
+                    else {
+                        self.enemy_team[self.p2].status = attacks::Status::Freeze(val-1);
+                        self.text = format!("Enemy {} is still frozen", self.enemy_team[self.p2].name());
+                    }
+                    self.timer = 60;
+                },
                 _ => {},
             };
         }
     }
-    /*pub fn pick_phase(&mut self) {
-        let own_picking = std::thread::spawn(|| {
-           //TODO implement picking algorithm 
-           Action::Attack(attacks::dummy())
-        });
-
-        let enemy_picking = std::thread::spawn(|| {
-            //TODO implement picking algorith (network or AI)
-            Action::Attack(attacks::dummy())
-        });
-
-        self.a1 = own_picking.join().unwrap();
-        self.a2 = enemy_picking.join().unwrap();
-    }
-
-    pub fn battle_phase(&mut self) {
-        //TODO implement battle logic
-    
-        //flags/other stuff cuz Rust is weird
-        let mut swap1: bool = false;
-        let mut swap2: bool = false;
-        let mut to_switch: usize = 0; 
-        let mut atk1: bool = false;
-        let mut atk2: bool = false;
-        let mut to_atk1: attacks::Attack = attacks::dummy();
-        let mut to_atk2: attacks::Attack = attacks::dummy();
-        let mut dead = 0;
-
-        //match and if swap do so immediately
-        match self.a1 {
-            Action::Swap (pok) => {swap1 = true; to_switch = pok;},
-            Action::Attack (atk) => {atk1 = true; to_atk1 = atk;}
-            _ => {},
-        };
-        if swap1 == true {
-            Battle::swap_pokemon(&mut self.p1, &mut self.own_team[to_switch]);
-            //swap1 = false;
-        }
-
-        match self.a2 {
-            Action::Swap (pok) => {swap2 = true; to_switch = pok;},
-            Action::Attack (atk) => {atk2 = true; to_atk2 = atk;}
-            _ => {},
-        };
-        if swap2 == true {
-            Battle::swap_pokemon(&mut self.p2, &mut self.enemy_team[to_switch]);
-            //swap2 = false;
-        }
-        if swap1 && swap2 {return}
-
-        //attack
-        
-        if prio {       // TODO: Add freeze/paralysis/sleep check
-            if atk1 == true {
-                Battle::attacks(&to_atk1, &mut self.p1, &mut self.p2);
-                //atk1 = false;
-                for i in self.own_team.iter() {         // check if either team dead
-                    if i.current_health == 0 {
-                        dead += 1;
-                    }
-                }
-                if dead == 6 {return}
-                else {dead = 0;}
-                for i in self.enemy_team.iter() {
-                        if i.current_health == 0 {
-                            dead += 1;
-                        }
-                }
-                if dead == 6 {return}
-                else {dead = 0;}
-            }
-
-            if atk2 == true {
-                if self.p2.flinch == true {self.p2.flinch = false}
-                else {
-                    Battle::attacks(&to_atk2, &mut self.p2, &mut self.p1);
-                    self.p1.flinch = false;
-                    //atk2 = false;
-                    for i in self.own_team.iter() {         // again check if either team dead
-                        if i.current_health == 0 {
-                            dead += 1;
-                        }
-                    }
-                    if dead == 6 {return}
-                    else {dead = 0;}
-                     for i in self.enemy_team.iter() {
-                        if i.current_health == 0 {
-                            dead += 1;
-                        }
-                    }
-                    if dead == 6 {return}
-                }
-            }
-
-        else {
-            if atk2 == true {
-                Battle::attacks(&to_atk2, &mut self.p2, &mut self.p1);
-                //atk2 = false;
-                for i in self.own_team.iter() {         // check if either team dead
-                    if i.current_health == 0 {
-                        dead += 1;
-                    }
-                }
-                if dead == 6 {return}
-                else {dead = 0;}
-                for i in self.enemy_team.iter() {
-                        if i.current_health == 0 {
-                            dead += 1;
-                        }
-                }
-                if dead == 6 {return}
-                else {dead = 0;}
-            }
-
-            if atk1 == true {
-                if self.p1.flinch == true {self.p1.flinch = false;}
-                else {
-                    Battle::attacks(&to_atk1, &mut self.p1, &mut self.p2);
-                    self.p2.flinch = false;
-                    //atk2 = false;
-                    for i in self.own_team.iter() {         // again check if either team dead
-                        if i.current_health == 0 {
-                            dead += 1;
-                        }
-                    }
-                    if dead == 6 {return}
-                    else {dead = 0;}
-                    for i in self.enemy_team.iter() {
-                        if i.current_health == 0 {
-                            dead += 1;
-                        }
-                    }
-                    if dead == 6 {return}
-                }
-            }
-        }
-    }
-
-        // TODO: implement check to return if one team is completely dead after each atk
-
-        //effects (burn, sleep, etc.)
-        match self.p1.status {
-            attacks::Status::Burn | attacks::Status::Poison => self.p1.current_health -= self.p1.pokemon.health/16,
-            attacks::Status::Sleep(value) => {if value <= 1 {self.p1.status = attacks::Status::Sleep(0);}
-                                            else {self.p1.status = attacks::Status::Sleep(value-1);}},
-            attacks::Status::Freeze(value) => {if value <=1 {self.p1.status = attacks::Status::Freeze(0);}
-                                            else {self.p1.status = attacks::Status::Freeze(value-1)}}, 
-            _ => {},
-        };  // Poison 1/8 in gen 2+
-
-        match self.p2.status {
-            attacks::Status::Burn | attacks::Status::Poison => self.p2.current_health -= self.p2.pokemon.health/16,
-            attacks::Status::Sleep(value) => {if value <= 1 {self.p2.status = attacks::Status::Sleep(0);}
-                                            else {self.p2.status = attacks::Status::Sleep(value-1);}},
-            attacks::Status::Freeze(value) => {if value <=1 {self.p2.status = attacks::Status::Freeze(0);}
-                                            else {self.p2.status = attacks::Status::Freeze(value-1)}}, 
-            _ => {},
-        };
-        // TODO: again check if either team dead after effects
-        // actually not necessarily? Battle phase just exits
-
-        self.a1 = Action::Picking;
-        self.a2 = Action::Picking;
-    }
-
-    pub fn swap_pokemon(current: &mut Battlemon, pok: &mut Battlemon) {
-        //current = &pok;
-        return
-    } //TODO implement
-
-    pub fn attacks(attack: &attacks::Attack, user: &mut Battlemon, target: &mut Battlemon) {
-        if attack.atype != attacks::AttackType::Status {
-            let mult = effective(&attack.etype, &target.pokemon.ftype)*effective(&attack.etype, &target.pokemon.stype);
-            let brt: u32 = if user.status == attacks::Status::Burn && attack.atype == attacks::AttackType::Physical {2} else {1};
-        // TODO effect checks like constant damage/status
-            let basic: f32 = if attack.atype == attacks::AttackType::Physical {(42*attack.strength*(user.pokemon.atk/(50*target.pokemon.def))/(brt)+2) as f32}
-                             else {(42*attack.strength*(user.pokemon.sp_atk/(50*target.pokemon.sp_def))/(brt)+2) as f32};
-            let stab: f32 = stab(&attack.etype, &user.pokemon);
-            let z = rand::thread_rng().gen_range(84,101) as f32;
-            let damage: u32 = (basic*mult*stab*(z/100.0)) as u32; //TODO: Crit
-            let curr = target.current_health;
-            if damage >= target.current_health {target.current_health = 0;}
-            else {target.current_health -= damage;}
-            let done = curr - target.current_health;
-
+/*
             match attack.effect_1 {
                 attacks::Effect::Flinch10 => if rand::thread_rng().gen_range(0,100) <= 10 {target.flinch = true}, //randomness einbauen
                 attacks::Effect::Flinch33 => if rand::thread_rng().gen_range(0,100) <= 33 {target.flinch = true},
@@ -462,10 +416,7 @@ impl Battle {
                                            else {user.current_health -= done/4;},
                 _ => {},
             };
-        }
 
-        }
-        // TODO check for effects after dmg calc
     */}
 
 pub fn effect() {

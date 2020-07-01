@@ -1,8 +1,9 @@
 use ggez::{Context, ContextBuilder, GameResult, filesystem};
 use ggez::audio::{self, Source, SoundSource};
 use ggez::event::{self, EventHandler, KeyCode, KeyMods};
-use ggez::graphics::{self, Image, Color};
-use crate::default_structures::{battle, team_picking, attacks};
+use ggez::graphics::{self, Image, Color, Scale, DrawMode, DrawParam};
+use crate::default_structures::{battle, team_picking, attacks, pokemon};
+use std::fmt::Display;
 use mint;
 
 // **********************************************************************
@@ -42,26 +43,6 @@ impl TeamPickingAssets {
     }
 }
 
-/// handles incoming input
-//TODO remove?
-struct InputState {
-    x_axis: f32,
-    y_axis: f32,
-    a: bool,
-    b: bool
-}
-
-impl Default for InputState {
-    fn default() -> Self {
-        InputState {
-            x_axis: 0.0,
-            y_axis: 0.0,
-            a: false,
-            b: false
-        }
-    }
-}
-
 // **********************************************************************
 // Structs and Methods for the Main Game
 // **********************************************************************
@@ -69,7 +50,6 @@ impl Default for InputState {
 /// Contains the necessary data to run the game
 pub struct PokemonGame {
     //TODO implement state - data for the game
-    inputs: InputState, 
     assets: GeneralGameAssets
 }
 
@@ -77,7 +57,6 @@ impl PokemonGame {
     pub fn new(_ctx: &mut Context) -> PokemonGame {
         // Load/create resources here: images, fonts, sounds, etc.
         PokemonGame { 
-            inputs: InputState::default(),
             assets: GeneralGameAssets::new(_ctx).unwrap()
         }
     }
@@ -120,6 +99,8 @@ impl TeamPickingGame {
             selected_pokemon_index: 0,
             selected_header_index:  0
         };
+
+        tpg.header.set_font(tpg.general.assets.title_font, Scale{x: 50.0, y: 50.0});
         let _ = tpg.assets.music.play_detached(); //TODO doesn't loop
         tpg
     }
@@ -136,38 +117,49 @@ impl EventHandler for TeamPickingGame {
         graphics::clear(_ctx, graphics::WHITE);
 
         graphics::draw(_ctx, &self.assets.background, graphics::DrawParam::default())?;
+        graphics::draw(_ctx, &self.header, graphics::DrawParam::default().dest(mint::Point2{x: 300.0, y:10.0}).color(graphics::BLACK))?;
 
-        //TODO change font
-        //TODO make centered
-        graphics::draw(_ctx, &self.header, graphics::DrawParam::default().dest(mint::Point2{x: 0.0, y:0.0}).color(graphics::BLACK));
+        Self::draw_pokemon_header(_ctx, self.teams.team[0].clone(), mint::Point2{x:100.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[1].clone(), mint::Point2{x:200.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[2].clone(), mint::Point2{x:300.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[3].clone(), mint::Point2{x:400.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[4].clone(), mint::Point2{x:500.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[5].clone(), mint::Point2{x:600.0, y:100.0})?;
 
-        //TODO change points
-        draw_pokemon_header(_ctx, self.teams.team[0], mint::Point2{x:0.0, y:0.0});
-        draw_pokemon_header(_ctx, self.teams.team[1], mint::Point2{x:0.0, y:0.0});
-        draw_pokemon_header(_ctx, self.teams.team[2], mint::Point2{x:0.0, y:0.0});
-        draw_pokemon_header(_ctx, self.teams.team[3], mint::Point2{x:0.0, y:0.0});
-        draw_pokemon_header(_ctx, self.teams.team[4], mint::Point2{x:0.0, y:0.0});
-        draw_pokemon_header(_ctx, self.teams.team[5], mint::Point2{x:0.0, y:0.0});
+        let rectP: mint::Point2<f32>;
+        match self.selected_header_index {
+            0 => rectP = mint::Point2{x: 100.0, y: 95.0},
+            1 => rectP = mint::Point2{x: 200.0, y: 95.0},
+            2 => rectP = mint::Point2{x: 300.0, y: 95.0},
+            3 => rectP = mint::Point2{x: 400.0, y: 95.0},
+            4 => rectP = mint::Point2{x: 500.0, y: 95.0},
+            5 => rectP = mint::Point2{x: 600.0, y: 95.0},
+            _ => rectP = mint::Point2{x: 0.0, y: 0.0}
+        }
+
+        let rect = graphics::Rect::new(rectP.x, rectP.y, 80.0, 30.0);
+        let mesh = graphics::Mesh::new_rectangle(_ctx, DrawMode::stroke(1.0), rect, graphics::BLACK)?;
+        graphics::draw(_ctx, &mesh, DrawParam::default())?;
 
         if self.pokemon_selection {
             //TODO use actual points
             //TODO maybe draw more entries than 5
-            if selected_pokemon_index - 2 >= 0 {
-                draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 2).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0});
+            if self.selected_pokemon_index - 2 >= 0 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 2).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
             }
 
-            if selected_pokemon_index - 1 >= 0 {
-                draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0});
+            if self.selected_pokemon_index - 1 >= 0 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
             }
 
-            draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0});
+            Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
 
-            if selected_pokemon_index + 1 <= 151 {
-                draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index + 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0});
+            if self.selected_pokemon_index + 1 <= 151 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index + 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
             }
 
-            if selected_pokemon_index + 2 <= 151 {
-                draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index + 2).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0});
+            if self.selected_pokemon_index + 2 <= 151 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index + 2).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
             }
 
             //TODO on selection draw attack selection
@@ -182,11 +174,12 @@ impl EventHandler for TeamPickingGame {
                 //TODO is match syntax possible?
                 //TODO are the keycodes correct?
                 KeyCode::Space => self.pokemon_selection = true,
-                KeyCode::Enter => self.pokemon_selection = true,
+                KeyCode::Return => self.pokemon_selection = true,
                 KeyCode::Left => {
-                    self.selected_header_index - 1;
-                    if self.selected_header_index < 0 {
+                    if self.selected_header_index - 1 < 0 {
                         self.selected_header_index = 5;
+                    } else {
+                        self.selected_header_index - 1;
                     }
                 },
                 KeyCode::Right => {
@@ -207,29 +200,31 @@ impl EventHandler for TeamPickingGame {
 }
 
 impl TeamPickingGame {
-    pub fn draw_pokemon_header(ctx: &mut Context, pok: pokemon::Pokemon, pos: mint::Point2) -> GameResult<()> {
+    pub fn draw_pokemon_header(ctx: &mut Context, pok: pokemon::Pokemon, pos: mint::Point2<f32>) -> GameResult<()> {
         //TODO textre and actual points
         let name = graphics::Text::new(pok.name);
 
-        graphics::draw(ctx, &name, graphics::DrawParam::default());
+        graphics::draw(ctx, &name, graphics::DrawParam::default().dest(pos))?;
 
         Ok(())
     }
 
-    pub fn draw_pokemon_list_entry(ctx: &mut Context, pok: pokemon::Pokemon, pos: mint::Point2) -> GameResult<()> {
+    pub fn draw_pokemon_list_entry(ctx: &mut Context, pok: pokemon::Pokemon, pos: mint::Point2<f32>) -> GameResult<()> {
         //TODO texture and actual points
         let name = graphics::Text::new(pok.name);
 
-        graphics::draw(ctx, &name, graphics::DrawParam::default());
+        graphics::draw(ctx, &name, graphics::DrawParam::default().dest(pos))?;
 
         Ok(())
     }
 
     pub fn draw_pokemon_details(ctx: &mut Context, pok: pokemon::Pokemon) -> GameResult<()> {
-        let details = graphics::Text::new(pok);
+        let details = graphics::Text::new(format!("{}", pok));
         //TODO add actual points
         //TODO change font
-        graphics::draw(ctx, &details, graphics::DrawParam::defalt());
+        graphics::draw(ctx, &details, graphics::DrawParam::default())?;
+
+        Ok(())
     }
 }
 

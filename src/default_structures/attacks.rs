@@ -16,7 +16,7 @@ pub struct Attack {
 
 impl Display for Attack {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", self.name)
+        write!(f, "{}\n{} | {}\n{:<10}{}\n{:<10}{}", self.name, self.etype, self.atype, "strength", self.strength, "acc", self.acc)
     }
 }
 
@@ -25,6 +25,16 @@ pub enum AttackType {
     Physical,
     Special,
     Status,
+}
+
+impl Display for AttackType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        match *self {
+            AttackType::Physical => write!(f, "Physical"),
+            AttackType::Special => write!(f, "Special"),
+            AttackType::Status => write!(f, "Status"),
+        }
+    }
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]

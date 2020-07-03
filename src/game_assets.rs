@@ -4,7 +4,7 @@ use ggez::event::{self, EventHandler, KeyCode, KeyMods};
 use ggez::graphics::{self, Image, Color, Scale, DrawMode, DrawParam};
 use crate::default_structures::{battle, team_picking, attacks, pokemon};
 use std::fmt::Display;
-use mint;
+use mint::{self, Point2, Vector2};
 
 // **********************************************************************
 // Assets used in every scene
@@ -34,7 +34,7 @@ struct TeamPickingAssets {
 impl TeamPickingAssets {
     fn new(ctx: &mut Context) -> GameResult<TeamPickingAssets> {
         let music = audio::Source::new(ctx, "/sounds/team_picking.mp3")?;
-        let background = Image::new(ctx, "/team_picking_background.png")?;
+        let background = Image::new(ctx, "/Evening_Sunshine.jpg")?;
 
         Ok(TeamPickingAssets {
             music,
@@ -84,8 +84,12 @@ pub struct TeamPickingGame {
     general: PokemonGame, 
     header: graphics::Text,
     pokemon_selection: bool,
-    selected_pokemon_index: usize,
-    selected_header_index: usize
+    attack_selection: bool,
+    attack_list: bool,
+    selected_pokemon_index: i16,
+    selected_header_index: i8, 
+    selected_attack_header_index: i8,
+    selected_attack_index: i16
 }
 
 impl TeamPickingGame {
@@ -96,8 +100,12 @@ impl TeamPickingGame {
             general: PokemonGame::new(_ctx),
             header: graphics::Text::new("Select your Team"),
             pokemon_selection: false,
+            attack_selection: false,
+            attack_list: false,
             selected_pokemon_index: 0,
-            selected_header_index:  0
+            selected_header_index:  0,
+            selected_attack_header_index: 0,
+            selected_attack_index: 0
         };
 
         tpg.header.set_font(tpg.general.assets.title_font, Scale{x: 50.0, y: 50.0});
@@ -117,52 +125,144 @@ impl EventHandler for TeamPickingGame {
         graphics::clear(_ctx, graphics::WHITE);
 
         graphics::draw(_ctx, &self.assets.background, graphics::DrawParam::default())?;
-        graphics::draw(_ctx, &self.header, graphics::DrawParam::default().dest(mint::Point2{x: 300.0, y:10.0}).color(graphics::BLACK))?;
+        graphics::draw(_ctx, &self.header, graphics::DrawParam::default().dest(Point2{x: 300.0, y:10.0}).color(graphics::BLACK))?;
 
-        Self::draw_pokemon_header(_ctx, self.teams.team[0].clone(), mint::Point2{x:100.0, y:100.0})?;
-        Self::draw_pokemon_header(_ctx, self.teams.team[1].clone(), mint::Point2{x:200.0, y:100.0})?;
-        Self::draw_pokemon_header(_ctx, self.teams.team[2].clone(), mint::Point2{x:300.0, y:100.0})?;
-        Self::draw_pokemon_header(_ctx, self.teams.team[3].clone(), mint::Point2{x:400.0, y:100.0})?;
-        Self::draw_pokemon_header(_ctx, self.teams.team[4].clone(), mint::Point2{x:500.0, y:100.0})?;
-        Self::draw_pokemon_header(_ctx, self.teams.team[5].clone(), mint::Point2{x:600.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[0].clone(), Point2{x:100.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[1].clone(), Point2{x:200.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[2].clone(), Point2{x:300.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[3].clone(), Point2{x:400.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[4].clone(), Point2{x:500.0, y:100.0})?;
+        Self::draw_pokemon_header(_ctx, self.teams.team[5].clone(), Point2{x:600.0, y:100.0})?;
 
-        let rectP: mint::Point2<f32>;
+        let rect_p: Point2<f32>;
         match self.selected_header_index {
-            0 => rectP = mint::Point2{x: 100.0, y: 95.0},
-            1 => rectP = mint::Point2{x: 200.0, y: 95.0},
-            2 => rectP = mint::Point2{x: 300.0, y: 95.0},
-            3 => rectP = mint::Point2{x: 400.0, y: 95.0},
-            4 => rectP = mint::Point2{x: 500.0, y: 95.0},
-            5 => rectP = mint::Point2{x: 600.0, y: 95.0},
-            _ => rectP = mint::Point2{x: 0.0, y: 0.0}
+            0 => rect_p = Point2{x: 95.0, y: 95.0},
+            1 => rect_p = Point2{x: 195.0, y: 95.0},
+            2 => rect_p = Point2{x: 295.0, y: 95.0},
+            3 => rect_p = Point2{x: 395.0, y: 95.0},
+            4 => rect_p = Point2{x: 495.0, y: 95.0},
+            5 => rect_p = Point2{x: 595.0, y: 95.0},
+            _ => rect_p = Point2{x: 0.0, y: 0.0}
         }
 
-        let rect = graphics::Rect::new(rectP.x, rectP.y, 80.0, 30.0);
+        let rect = graphics::Rect::new(rect_p.x, rect_p.y, 90.0, 30.0);
         let mesh = graphics::Mesh::new_rectangle(_ctx, DrawMode::stroke(1.0), rect, graphics::BLACK)?;
         graphics::draw(_ctx, &mesh, DrawParam::default())?;
 
         if self.pokemon_selection {
-            //TODO use actual points
-            //TODO maybe draw more entries than 5
+            if self.selected_pokemon_index - 3 >= 0 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index((self.selected_pokemon_index - 3) as usize).unwrap().0.clone(), Point2{x:100.0, y:150.0})?;
+            }
+
             if self.selected_pokemon_index - 2 >= 0 {
-                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 2).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index((self.selected_pokemon_index - 2) as usize).unwrap().0.clone(), Point2{x:100.0, y:200.0})?;
             }
 
             if self.selected_pokemon_index - 1 >= 0 {
-                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index((self.selected_pokemon_index - 1) as usize).unwrap().0.clone(), Point2{x:100.0, y:250.0})?;
             }
 
-            Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index - 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
+            Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().0.clone(), Point2{x:100.0, y:300.0})?;
 
-            if self.selected_pokemon_index + 1 <= 151 {
-                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index + 1).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
+            if self.selected_pokemon_index + 1 < (self.teams.usable_moves_table.len()) as i16 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index((self.selected_pokemon_index + 1) as usize).unwrap().0.clone(), Point2{x:100.0, y:350.0})?;
             }
 
-            if self.selected_pokemon_index + 2 <= 151 {
-                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index + 2).unwrap().0.clone(), mint::Point2{x:0.0, y:0.0})?;
+            if self.selected_pokemon_index + 2 < (self.teams.usable_moves_table.len()) as i16 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index((self.selected_pokemon_index + 2) as usize).unwrap().0.clone(), Point2{x:100.0, y:400.0})?;
             }
 
-            //TODO on selection draw attack selection
+            if self.selected_pokemon_index + 3 < (self.teams.usable_moves_table.len()) as i16 {
+                Self::draw_pokemon_list_entry(_ctx, self.teams.usable_moves_table.get_index((self.selected_pokemon_index + 3) as usize).unwrap().0.clone(), Point2{x:100.0, y:450.0})?;
+            }
+
+            let pok_rect = graphics::Rect::new(40.0, 290.0, 200.0, 50.0);
+            let middle = graphics::Mesh::new_rectangle(_ctx, DrawMode::stroke(1.0), pok_rect, graphics::BLACK)?;
+            graphics::draw(_ctx, &middle, DrawParam::default())?;
+
+            if !self.attack_selection {
+                Self::draw_pokemon_details(_ctx, self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().0.clone())?;
+                graphics::draw(
+                    _ctx, 
+                    &self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().0.assets.front_sprite, 
+                    DrawParam::default().dest(Point2 {x: 500.0, y: 150.0}).scale(Vector2 {x: 4.0, y: 4.0}))?;
+            } else {
+                Self::draw_attack_header(_ctx, self.teams.team[self.selected_header_index as usize].moves[0].clone(), Point2{x: 300.0, y: 150.0})?;
+                Self::draw_attack_header(_ctx, self.teams.team[self.selected_header_index as usize].moves[1].clone(), Point2{x: 300.0, y: 200.0})?;
+                Self::draw_attack_header(_ctx, self.teams.team[self.selected_header_index as usize].moves[2].clone(), Point2{x: 300.0, y: 250.0})?;
+                Self::draw_attack_header(_ctx, self.teams.team[self.selected_header_index as usize].moves[3].clone(), Point2{x: 300.0, y: 300.0})?;
+
+                let rect_a: Point2<f32>;
+                match self.selected_attack_header_index {
+                    0 => rect_a = Point2 {x: 295.0, y: 145.0},
+                    1 => rect_a = Point2 {x: 295.0, y: 195.0},
+                    2 => rect_a = Point2 {x: 295.0, y: 245.0},
+                    3 => rect_a = Point2 {x: 295.0, y: 295.0},
+                    _ => rect_a = Point2 {x: 0.0, y: 0.0},
+                }
+
+                let rect_attack = graphics::Rect::new(rect_a.x, rect_a.y, 80.0, 30.0);
+                let attack_mesh = graphics::Mesh::new_rectangle(_ctx, DrawMode::stroke(1.0), rect_attack, graphics::BLACK)?;
+                graphics::draw(_ctx, &attack_mesh, DrawParam::default())?;
+
+                if self.attack_list {
+                    if self.selected_attack_index - 3 >= 0 {
+                        Self::draw_attack_header(
+                            _ctx, 
+                            self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[(self.selected_attack_index - 3) as usize].clone(), 
+                            Point2{x: 400.0, y: 150.0})?;
+                    }
+
+                    if self.selected_attack_index - 2 >= 0 {
+                        Self::draw_attack_header(
+                            _ctx, 
+                            self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[(self.selected_attack_index - 2) as usize].clone(), 
+                            Point2{x: 400.0, y: 200.0})?;
+                    }
+
+                    if self.selected_attack_index - 1 >= 0 {
+                        Self::draw_attack_header(
+                            _ctx, 
+                            self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[(self.selected_attack_index - 1) as usize].clone(), 
+                            Point2{x: 400.0, y: 250.0})?;
+                    }
+
+                    Self::draw_attack_header(
+                        _ctx, 
+                        self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[self.selected_attack_index as usize].clone(), 
+                        Point2{x: 400.0, y: 300.0})?;
+
+                    if self.selected_attack_index + 1 < self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1.len() as i16 {
+                        Self::draw_attack_header(
+                            _ctx, 
+                            self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[(self.selected_attack_index + 1) as usize].clone(), 
+                            Point2{x: 400.0, y: 350.0})?;
+                    }
+
+                    if self.selected_attack_index + 2 < self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1.len() as i16 {
+                        Self::draw_attack_header(
+                            _ctx, 
+                            self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[(self.selected_attack_index + 2) as usize].clone(), 
+                            Point2{x: 400.0, y: 400.0})?;
+                    }
+
+                    if self.selected_attack_index + 3 < self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1.len() as i16 {
+                        Self::draw_attack_header(
+                            _ctx, 
+                            self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[(self.selected_attack_index + 3) as usize].clone(), 
+                            Point2{x: 400.0, y: 450.0})?;
+                    }
+
+                    let atk_rect = graphics::Rect::new(390.0, 295.0, 150.0, 40.0);
+                    let atk_middle = graphics::Mesh::new_rectangle(_ctx, DrawMode::stroke(1.0), atk_rect, graphics::BLACK)?;
+                    graphics::draw(_ctx, &atk_middle, DrawParam::default())?;
+
+                    Self::draw_attack_details(
+                        _ctx, 
+                        self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[self.selected_attack_index as usize].clone(), 
+                        Point2 {x: 550.0, y: 250.0})?;
+                }
+            }
         }
 
         graphics::present(_ctx)
@@ -171,59 +271,139 @@ impl EventHandler for TeamPickingGame {
     fn key_down_event(&mut self, ctx: &mut Context, key: KeyCode, _keymods: KeyMods, _: bool) {
         if !self.pokemon_selection {
             match key {
-                //TODO is match syntax possible?
-                //TODO are the keycodes correct?
                 KeyCode::Space => self.pokemon_selection = true,
                 KeyCode::Return => self.pokemon_selection = true,
                 KeyCode::Left => {
-                    if self.selected_header_index - 1 < 0 {
+                    self.selected_header_index = self.selected_header_index - 1;
+                    if self.selected_header_index < 0 {
                         self.selected_header_index = 5;
-                    } else {
-                        self.selected_header_index - 1;
                     }
                 },
                 KeyCode::Right => {
-                    self.selected_header_index + 1;
+                    self.selected_header_index = self.selected_header_index + 1;
                     if self.selected_header_index > 5 {
                         self.selected_header_index = 0;
                     }
-                }
+                },
+                KeyCode::Escape => ggez::event::quit(ctx),
                 _ => ()
             }
             return;
         }
 
-        //TODO up down in pokemon or attack select 
+        if !self.attack_selection {
+            match key {
+                KeyCode::Space => {
+                    self.attack_selection = true;
+                    self.teams.team[self.selected_header_index as usize] = self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().0.clone();
+                },
+                KeyCode::Return => {
+                    self.attack_selection = true;
+                    self.teams.team[self.selected_header_index as usize] = self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().0.clone();
+                },
+                KeyCode::Up => {
+                    self.selected_pokemon_index = self.selected_pokemon_index - 1;
+                    if self.selected_pokemon_index < 0 {
+                        self.selected_pokemon_index = (self.teams.usable_moves_table.len() - 1) as i16;
+                    }
+                },
+                KeyCode::Down => {
+                    self.selected_pokemon_index = self.selected_pokemon_index + 1;
+                    if self.selected_pokemon_index >= self.teams.usable_moves_table.len() as i16 {
+                        self.selected_pokemon_index = 0; //TODO buggy for some reason
+                    }
+                },
+                KeyCode::Escape => self.pokemon_selection = false,
+                _ => ()
+            }
+            return;
+        }
+        
+        if !self.attack_list {
+            match key {
+                KeyCode::Space => self.attack_list = true,
+                KeyCode::Return => self.attack_list = true,
+                KeyCode::Escape => self.attack_selection = false,
+                KeyCode::Up => {
+                    self.selected_attack_header_index = self.selected_attack_header_index - 1;
+                    if self.selected_attack_header_index < 0 {
+                        self.selected_attack_header_index = 3;
+                    }
+                }, 
+                KeyCode::Down => {
+                    self.selected_attack_header_index = self.selected_attack_header_index + 1;
+                    if self.selected_attack_header_index > 3 {
+                        self.selected_attack_header_index = 0;
+                    }
+                },
+                _ => ()
+            }
+            return;
+        }
 
-        //TODO a&b depending on situation
+        match key {
+            KeyCode::Space => {
+                self.teams.team[self.selected_header_index as usize].moves[self.selected_attack_header_index as usize] = 
+                    self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[self.selected_attack_index as usize].clone();
+                self.selected_attack_index = 0;
+                self.attack_list = false;
+            },
+            KeyCode::Return => {
+                self.teams.team[self.selected_header_index as usize].moves[self.selected_attack_header_index as usize] = 
+                    self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1[self.selected_attack_index as usize].clone();
+                self.selected_attack_index = 0;
+                self.attack_list = false;
+            }, 
+            KeyCode::Escape => { 
+                self.attack_list = false;
+                self.selected_attack_index = 0;
+            }, 
+            KeyCode::Up => {
+                self.selected_attack_index = self.selected_attack_index - 1;
+                if self.selected_attack_index < 0 {
+                    self.selected_attack_index = (self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1.len() as i16) - 1;
+                }
+            }, 
+            KeyCode::Down => {
+                self.selected_attack_index = self.selected_attack_index + 1;
+                if self.selected_attack_index >= self.teams.usable_moves_table.get_index(self.selected_pokemon_index as usize).unwrap().1.len() as i16 {
+                    self.selected_attack_index = 0;
+                }
+            }, 
+            _ => ()
+        }
     }
 }
 
 impl TeamPickingGame {
-    pub fn draw_pokemon_header(ctx: &mut Context, pok: pokemon::Pokemon, pos: mint::Point2<f32>) -> GameResult<()> {
-        //TODO textre and actual points
+    pub fn draw_pokemon_header(ctx: &mut Context, pok: pokemon::Pokemon, pos: Point2<f32>) -> GameResult<()> {
         let name = graphics::Text::new(pok.name);
-
         graphics::draw(ctx, &name, graphics::DrawParam::default().dest(pos))?;
-
         Ok(())
     }
 
-    pub fn draw_pokemon_list_entry(ctx: &mut Context, pok: pokemon::Pokemon, pos: mint::Point2<f32>) -> GameResult<()> {
-        //TODO texture and actual points
+    pub fn draw_pokemon_list_entry(ctx: &mut Context, pok: pokemon::Pokemon, pos: Point2<f32>) -> GameResult<()> {
         let name = graphics::Text::new(pok.name);
-
+        graphics::draw(ctx, &pok.assets.front_sprite, DrawParam::default().dest(Point2 {x: pos.x - 50.0, y: pos.y - 10.0}).scale(Vector2 {x: 0.7, y: 0.7}))?;
         graphics::draw(ctx, &name, graphics::DrawParam::default().dest(pos))?;
-
         Ok(())
     }
 
     pub fn draw_pokemon_details(ctx: &mut Context, pok: pokemon::Pokemon) -> GameResult<()> {
         let details = graphics::Text::new(format!("{}", pok));
-        //TODO add actual points
-        //TODO change font
-        graphics::draw(ctx, &details, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &details, graphics::DrawParam::default().dest(Point2 {x: 300.0, y: 150.0}).scale(Vector2 {x: 1.5, y:1.5}))?;
+        Ok(())
+    }
 
+    pub fn draw_attack_header(ctx: &mut Context, atk: attacks::Attack, pos: Point2<f32>) -> GameResult<()> {
+        let name = graphics::Text::new(atk.name);
+        graphics::draw(ctx, &name, DrawParam::default().dest(pos))?;
+        Ok(())
+    }
+
+    pub fn draw_attack_details(ctx: &mut Context, atk: attacks::Attack, pos: Point2<f32>) -> GameResult<()> {
+        let name = graphics::Text::new(format!("{}", atk));
+        graphics::draw(ctx, &name, DrawParam::default().dest(pos).scale(Vector2{x: 1.3, y: 1.3}))?;
         Ok(())
     }
 }
@@ -342,9 +522,9 @@ impl EventHandler for battle::Battle {
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
 
-        graphics::draw(ctx, &self.assets.healthbar, graphics::DrawParam::default().dest(mint::Point2{x:0.0,y:0.0}))?;
-        graphics::draw(ctx, &self.assets.healthbar2, graphics::DrawParam::default().dest(mint::Point2{x:500.0,y:0.0}))?;
-        graphics::draw(ctx, &self.assets.botbox, graphics::DrawParam::default().dest(mint::Point2{x:0.0,y:500.0}))?;
+        graphics::draw(ctx, &self.assets.healthbar, graphics::DrawParam::default().dest(Point2{x:0.0,y:0.0}))?;
+        graphics::draw(ctx, &self.assets.healthbar2, graphics::DrawParam::default().dest(Point2{x:500.0,y:0.0}))?;
+        graphics::draw(ctx, &self.assets.botbox, graphics::DrawParam::default().dest(Point2{x:0.0,y:500.0}))?;
 
         let health1 = graphics::Rect::new(100.0,55.0,150.0 * self.own_team[self.p1].clone().hp_fract(),13.0);
         let c1 = if self.own_team[self.p1].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
@@ -354,27 +534,27 @@ impl EventHandler for battle::Battle {
         let h2 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health2, c2)?;
         graphics::draw(ctx, &h1, graphics::DrawParam::default())?;
         graphics::draw(ctx, &h2, graphics::DrawParam::default())?;
-        graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(mint::Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?;
+        graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?;
 
-        graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(mint::Point2{x:30.0,y:200.0}))?;
-        graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(mint::Point2{x:514.0,y:200.0}))?;
+        graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:30.0,y:200.0}))?;
+        graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:514.0,y:200.0}))?;
 
         let temp = graphics::Text::new(self.own_team[self.p1].clone().name());
         let temp2 = graphics::Text::new(self.enemy_team[self.p2].clone().name());
-        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(mint::Point2{x:17.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+        graphics::draw(ctx, &temp, graphics::DrawParam::default().dest(Point2{x:17.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
 
-        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(mint::Point2{x:540.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+        graphics::draw(ctx, &temp2, graphics::DrawParam::default().dest(Point2{x:540.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
         // TODO: calculation for name length for 2nd name text 
         
         let info = graphics::Text::new(self.text.as_str());
-        graphics::draw(ctx, &info, graphics::DrawParam::default().dest(mint::Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
+        graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
 
         let healthh1 = format!("{}/{}", self.own_team[self.p1].current_health.to_string(), self.own_team[self.p1].health().to_string());
         let hn1 = graphics::Text::new(healthh1);
-        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(mint::Point2{x:14.0,y:52.0}).scale(mint::Vector2{x:1.20,y:1.20}).color(graphics::BLACK))?;
+        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(Point2{x:14.0,y:52.0}).scale(mint::Vector2{x:1.20,y:1.20}).color(graphics::BLACK))?;
         let healthh2 = format!("{}/{}", self.enemy_team[self.p2].current_health.to_string(), self.enemy_team[self.p2].health().to_string());
         let hn2 = graphics::Text::new(healthh2);
-        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(mint::Point2{x:717.0,y:52.0}).scale(mint::Vector2{x:1.2,y:1.2}).color(graphics::BLACK))?;
+        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(Point2{x:717.0,y:52.0}).scale(mint::Vector2{x:1.2,y:1.2}).color(graphics::BLACK))?;
         graphics::present(ctx)?;
 
         Ok(())

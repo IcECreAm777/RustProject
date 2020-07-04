@@ -14,10 +14,15 @@ pub enum Action {
 }
 #[derive(Clone)]
 pub struct BattleAssets {
-    pub healthbar: ggez::graphics::Image,
-    pub healthbar2: ggez::graphics::Image,
-    pub ball: ggez::graphics::Image,
-    pub botbox: ggez::graphics::Image,
+    pub healthbar: graphics::Image,
+    pub healthbar2: graphics::Image,
+    pub ball: graphics::Image,
+    pub botbox: graphics::Image,
+    pub brn: graphics::Image,
+    pub frz: graphics::Image,
+    pub par: graphics::Image,
+    pub slp: graphics::Image,
+    pub psn: graphics::Image,
 }
 
 impl BattleAssets {
@@ -26,11 +31,21 @@ impl BattleAssets {
         let health2 = graphics::Image::new(ctx, "/healthbar2.png");
         let ball = graphics::Image::new(ctx, "/ball.png");
         let botbox = graphics::Image::new(ctx, "/botbox.png");
+        let brn = graphics::Image::new(ctx, "/stati/brn.png");
+        let frz = graphics::Image::new(ctx, "/stati/frz.png");
+        let par = graphics::Image::new(ctx, "/stati/par.png");
+        let slp = graphics::Image::new(ctx, "/stati/slp.png");
+        let psn = graphics::Image::new(ctx, "/stati/psn.png");
         BattleAssets{
             healthbar: health.unwrap(),
             healthbar2: health2.unwrap(),
             ball: ball.unwrap(),
             botbox: botbox.unwrap(),
+            brn: brn.unwrap(),
+            frz: frz.unwrap(),
+            par: par.unwrap(),
+            slp: slp.unwrap(),
+            psn: psn.unwrap(),
         }
     }
 }

@@ -412,6 +412,27 @@ impl EventHandler for battle::Battle {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         if self.timer == 0 {
             match self.state {
+                battle::State::Start => {
+                    if !self.own_sent || self.own_sounds[self.p1].playing() {
+                        if !self.own_sent {
+                            self.text = format!("You sent out {}", self.own_team[self.p1].name());
+                            let _ = self.own_sounds[self.p1].play();
+                            self.own_sent = true;
+                        }
+                    }
+                    else {
+                        if !self.enemy_sounds[self.p2].playing() && !self.enemy_sent {
+                            self.text = format!("Opponent sent out {}", self.enemy_team[self.p2].name());
+                            let _ = self.enemy_sounds[self.p2].play();
+                            self.enemy_sent = true;
+                        }
+
+                    }
+                    if self.enemy_sent && !self.enemy_sounds[self.p2].playing() {
+                        self.state = battle::State::Picking;
+                        self.text = "What will you do?".to_string();
+                    }
+                },
                 battle::State::Picking => {
                     //if self.text != "What will you do?" {self.text = "What will you do?".to_string();}
                     if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
@@ -430,7 +451,7 @@ impl EventHandler for battle::Battle {
                 battle::State::A1 => {
                     self.ret = battle::State::Between;
                     match self.a1 {
-                        battle::Action::Swap(slot) => self.check_swap(slot),
+                        battle::Action::Swap(slot) => self.check_swap(slot, ctx),
                         battle::Action::Attack(atk) => self.atk_init(atk, false),
                         _ => {},
                     };
@@ -440,7 +461,7 @@ impl EventHandler for battle::Battle {
                 battle::State::A2 => {
                     self.ret = battle::State::Between;
                     match self.a2 {
-                        battle::Action::Swap(slot) => self.swap(slot, false),
+                        battle::Action::Swap(slot) => self.swap(slot, false, ctx),
                         battle::Action::Attack(atk) => self.atk_init(atk, true),
                         _ => {},
                     };
@@ -478,7 +499,7 @@ impl EventHandler for battle::Battle {
                         if i.current_health != 0 {done = false; break;}
                     }
                     self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
-                    if !done {self.enemy_swap();} else {event::quit(ctx);}
+                    if !done {self.enemy_swap(ctx);} else {event::quit(ctx);}
                     self.state = self.ret_state();
                 }
                 _ => {},
@@ -526,18 +547,24 @@ impl EventHandler for battle::Battle {
         graphics::draw(ctx, &self.assets.healthbar2, graphics::DrawParam::default().dest(Point2{x:500.0,y:0.0}))?;
         graphics::draw(ctx, &self.assets.botbox, graphics::DrawParam::default().dest(Point2{x:0.0,y:500.0}))?;
 
-        let health1 = graphics::Rect::new(100.0,55.0,150.0 * self.own_team[self.p1].clone().hp_fract(),13.0);
-        let c1 = if self.own_team[self.p1].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
-        let h1 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health1, c1)?;
+        if self.own_sent {
+            let health1 = graphics::Rect::new(100.0,55.0,150.0 * self.own_team[self.p1].clone().hp_fract(),13.0);
+            let c1 = if self.own_team[self.p1].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
+            let h1 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health1, c1)?;
+            graphics::draw(ctx, &h1, graphics::DrawParam::default())?;
+            graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:30.0,y:200.0}))?;
+        }
+
+        if self.enemy_sent {
         let health2 = graphics::Rect::new(700.0,55.0,-150.0*self.enemy_team[self.p2].clone().hp_fract(),13.0);
         let c2 = if self.enemy_team[self.p2].clone().hp_fract() <= 0.2 {graphics::Color::new(1.0,0.0,0.0,1.0)} else {graphics::Color::new(0.0,1.0,0.0,1.0)};
         let h2 = graphics::Mesh::new_rectangle(ctx,graphics::DrawMode::fill(), health2, c2)?;
-        graphics::draw(ctx, &h1, graphics::DrawParam::default())?;
         graphics::draw(ctx, &h2, graphics::DrawParam::default())?;
+        graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:514.0,y:200.0}))?;
+        }
+
         graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?;
 
-        graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:30.0,y:200.0}))?;
-        graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:514.0,y:200.0}))?;
 
         let temp = graphics::Text::new(self.own_team[self.p1].clone().name());
         let temp2 = graphics::Text::new(self.enemy_team[self.p2].clone().name());
@@ -548,13 +575,16 @@ impl EventHandler for battle::Battle {
         
         let info = graphics::Text::new(self.text.as_str());
         graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
-
-        let healthh1 = format!("{}/{}", self.own_team[self.p1].current_health.to_string(), self.own_team[self.p1].health().to_string());
-        let hn1 = graphics::Text::new(healthh1);
-        graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(Point2{x:14.0,y:52.0}).scale(mint::Vector2{x:1.20,y:1.20}).color(graphics::BLACK))?;
-        let healthh2 = format!("{}/{}", self.enemy_team[self.p2].current_health.to_string(), self.enemy_team[self.p2].health().to_string());
-        let hn2 = graphics::Text::new(healthh2);
-        graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(Point2{x:717.0,y:52.0}).scale(mint::Vector2{x:1.2,y:1.2}).color(graphics::BLACK))?;
+        if self.own_sent {
+            let healthh1 = format!("{}/{}", self.own_team[self.p1].current_health.to_string(), self.own_team[self.p1].health().to_string());
+            let hn1 = graphics::Text::new(healthh1);
+            graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(Point2{x:14.0,y:52.0}).scale(mint::Vector2{x:1.20,y:1.20}).color(graphics::BLACK))?;
+        }
+        if self.enemy_sent {
+            let healthh2 = format!("{}/{}", self.enemy_team[self.p2].current_health.to_string(), self.enemy_team[self.p2].health().to_string());
+            let hn2 = graphics::Text::new(healthh2);
+            graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(Point2{x:717.0,y:52.0}).scale(mint::Vector2{x:1.2,y:1.2}).color(graphics::BLACK))?;
+        }
         graphics::present(ctx)?;
 
         Ok(())
@@ -629,12 +659,12 @@ impl EventHandler for battle::Battle {
             },
             battle::State::SelfReplace => {match key {
                 KeyCode::Key0 => event::quit(ctx),
-                KeyCode::Key1 => self.check_swap(0),
-                KeyCode::Key2 => self.check_swap(1),
-                KeyCode::Key3 => self.check_swap(2),
-                KeyCode::Key4 => self.check_swap(3),
-                KeyCode::Key5 => self.check_swap(4),
-                KeyCode::Key6 => self.check_swap(5), 
+                KeyCode::Key1 => self.check_swap(0, ctx),
+                KeyCode::Key2 => self.check_swap(1, ctx),
+                KeyCode::Key3 => self.check_swap(2, ctx),
+                KeyCode::Key4 => self.check_swap(3, ctx),
+                KeyCode::Key5 => self.check_swap(4, ctx),
+                KeyCode::Key6 => self.check_swap(5, ctx), 
                 _ => (),
                 };
             }
@@ -650,8 +680,8 @@ impl EventHandler for battle::Battle {
 
 #[derive(Clone)]
 pub struct PokemonAssets {
-    battle_cry: audio::SoundData,
-    front_sprite: graphics::Image
+    pub battle_cry: audio::SoundData,
+    pub front_sprite: graphics::Image
 }
 
 impl PokemonAssets {

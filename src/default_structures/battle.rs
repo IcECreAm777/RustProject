@@ -3,6 +3,7 @@ use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
 use ggez::Context;
 use ggez::graphics;
+use ggez::audio::{self, Source, SoundSource};
 
 #[derive(PartialEq)]
 pub enum Action {
@@ -83,6 +84,7 @@ impl Battlemon {
 }
 #[derive(Clone, PartialEq)]
 pub enum State {
+    Start,
     Picking,
     PickAtk,
     PickSlot,
@@ -113,10 +115,37 @@ pub struct Battle {
     pub timer: u32,
     pub user: bool,
     pub ret: State,
+    pub own_sounds: [audio::Source; 6],
+    pub enemy_sounds: [audio::Source; 6],
+    pub own_sent: bool,
+    pub enemy_sent: bool,
 }
 
 impl Battle {
     pub fn new(own: [Battlemon; 6], enemy: [Battlemon; 6], ctx: &mut Context) -> Battle {
+        let mut soundsa: [audio::Source; 6] = [
+            audio::Source::from_data(ctx, own[0].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, own[1].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, own[2].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, own[3].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, own[4].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, own[5].pokemon.assets.battle_cry.clone()).unwrap(),
+        ];
+
+        let mut soundsb: [audio::Source; 6] = [
+            audio::Source::from_data(ctx, enemy[0].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, enemy[1].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, enemy[2].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, enemy[3].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, enemy[4].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, enemy[5].pokemon.assets.battle_cry.clone()).unwrap(),
+        ];
+
+        for i in 0..6 {
+            soundsa[i as usize].set_volume(0.25);
+            soundsb[i as usize].set_volume(0.25);
+        }
+        
         Battle {
             assets: BattleAssets::new(ctx),
             own_team: own,
@@ -125,12 +154,16 @@ impl Battle {
             p2: 0,
             a1: Action::Picking,
             a2: Action::Swap(2),
-            text: "What will you do?".to_string(),
-            state: State::Picking,
+            text: "".to_string(),
+            state: State::Start,
             dmg: 0,
-            timer: 0,
+            timer: 120,
             user: true,
             ret: State::None,
+            own_sounds: soundsa,
+            enemy_sounds: soundsb,
+            own_sent: false,
+            enemy_sent: false,
         }
     }
 
@@ -192,13 +225,19 @@ impl Battle {
     }
 
     // basic swap
-    pub fn swap(&mut self, slot: usize, which: bool) {
+    pub fn swap(&mut self, slot: usize, which: bool, ctx: &mut Context) {
         if which {self.p1 = slot;}
         else {self.p2 = slot;}
         self.timer = 60;
         self.text = String::new();
-        if which {self.text = format!("You sent out {}", self.own_team[slot].name());}
-        else {self.text = format!("Opponent sent out {}", self.enemy_team[slot].name());}
+        if which {
+            self.text = format!("You sent out {}", self.own_team[slot].name());
+            let _ = self.own_sounds[self.p1].play();
+        }
+        else {
+            self.text = format!("Opponent sent out {}", self.enemy_team[slot].name());
+            let _ = self.enemy_sounds[self.p2].play();
+        }
     }
 
     pub fn atk_init(&mut self, atk: attacks::Attack, target: bool) {
@@ -303,7 +342,7 @@ impl Battle {
 
     }
 
-    pub fn enemy_swap(&mut self) {
+    pub fn enemy_swap(&mut self, ctx: &mut Context) {
         let mut slot: usize = 6;
         for i in 0..6 {
             if self.enemy_team[i as usize].current_health == 0 {continue;}
@@ -321,10 +360,10 @@ impl Battle {
                     slot = i as usize;
                 }
         }
-        self.swap(slot, false);
+        self.swap(slot, false, ctx);
     }
 
-    pub fn check_swap(&mut self, slot: usize) {
+    pub fn check_swap(&mut self, slot: usize, ctx: &mut Context) {
         if self.own_team[slot].dead() {
             self.text = format!("{} has already fainted", self.own_team[slot].name());
         }
@@ -332,7 +371,7 @@ impl Battle {
             if slot == self.p1 {
             self.text = "You cannot switch to the Pokemon currently sent out".to_string();
             } 
-            else {self.swap(slot, true);}
+            else {self.swap(slot, true, ctx);}
         }
     }
 

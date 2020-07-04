@@ -451,7 +451,7 @@ impl EventHandler for battle::Battle {
                 battle::State::A1 => {
                     self.ret = battle::State::Between;
                     match self.a1 {
-                        battle::Action::Swap(slot) => self.check_swap(slot, ctx),
+                        battle::Action::Swap(slot) => self.check_swap(slot),
                         battle::Action::Attack(atk) => self.atk_init(atk, false),
                         _ => {},
                     };
@@ -461,7 +461,7 @@ impl EventHandler for battle::Battle {
                 battle::State::A2 => {
                     self.ret = battle::State::Between;
                     match self.a2 {
-                        battle::Action::Swap(slot) => self.swap(slot, false, ctx),
+                        battle::Action::Swap(slot) => self.swap(slot, false),
                         battle::Action::Attack(atk) => self.atk_init(atk, true),
                         _ => {},
                     };
@@ -499,7 +499,7 @@ impl EventHandler for battle::Battle {
                         if i.current_health != 0 {done = false; break;}
                     }
                     self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
-                    if !done {self.enemy_swap(ctx);} else {event::quit(ctx);}
+                    if !done {self.enemy_swap();} else {event::quit(ctx);}
                     self.state = self.ret_state();
                 }
                 _ => {},
@@ -672,12 +672,12 @@ impl EventHandler for battle::Battle {
             },
             battle::State::SelfReplace => {match key {
                 KeyCode::Key0 => event::quit(ctx),
-                KeyCode::Key1 => self.check_swap(0, ctx),
-                KeyCode::Key2 => self.check_swap(1, ctx),
-                KeyCode::Key3 => self.check_swap(2, ctx),
-                KeyCode::Key4 => self.check_swap(3, ctx),
-                KeyCode::Key5 => self.check_swap(4, ctx),
-                KeyCode::Key6 => self.check_swap(5, ctx), 
+                KeyCode::Key1 => self.check_swap(0),
+                KeyCode::Key2 => self.check_swap(1),
+                KeyCode::Key3 => self.check_swap(2),
+                KeyCode::Key4 => self.check_swap(3),
+                KeyCode::Key5 => self.check_swap(4),
+                KeyCode::Key6 => self.check_swap(5), 
                 _ => (),
                 };
             }

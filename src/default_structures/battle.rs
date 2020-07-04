@@ -3,7 +3,7 @@ use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
 use ggez::Context;
 use ggez::graphics;
-use ggez::audio::{self, Source, SoundSource};
+use ggez::audio::{self, SoundSource};
 
 #[derive(PartialEq)]
 pub enum Action {
@@ -240,7 +240,7 @@ impl Battle {
     }
 
     // basic swap
-    pub fn swap(&mut self, slot: usize, which: bool, ctx: &mut Context) {
+    pub fn swap(&mut self, slot: usize, which: bool) {
         if which {self.p1 = slot;}
         else {self.p2 = slot;}
         self.timer = 60;
@@ -264,12 +264,12 @@ impl Battle {
             }
             
             match self.own_team[self.p1].status {
-                attacks::Status::Sleep(val) => {
+                attacks::Status::Sleep(_val) => {
                     self.text = format!("{} is fast asleep", self.own_team[self.p1].name());
                     self.timer = 90;
                     return;
                 },
-                attacks::Status::Freeze(val) => {
+                attacks::Status::Freeze(_val) => {
                     self.text = format!("{} is frozen solid", self.own_team[self.p1].name());
                     self.timer = 90;
                     return;
@@ -294,12 +294,12 @@ impl Battle {
             }
             
             match self.enemy_team[self.p2].status {
-                attacks::Status::Sleep(val) => {
+                attacks::Status::Sleep(_val) => {
                     self.text = format!("Enemy {} is fast asleep", self.enemy_team[self.p2].name());
                     self.timer = 90;
                     return;
                 },
-                attacks::Status::Freeze(val) => {
+                attacks::Status::Freeze(_val) => {
                     self.text = format!("Enemy {} is frozen solid", self.enemy_team[self.p2].name());
                     self.timer = 90;
                     return;
@@ -357,7 +357,7 @@ impl Battle {
 
     }
 
-    pub fn enemy_swap(&mut self, ctx: &mut Context) {
+    pub fn enemy_swap(&mut self) {
         let mut slot: usize = 6;
         for i in 0..6 {
             if self.enemy_team[i as usize].current_health == 0 {continue;}
@@ -375,10 +375,10 @@ impl Battle {
                     slot = i as usize;
                 }
         }
-        self.swap(slot, false, ctx);
+        self.swap(slot, false);
     }
 
-    pub fn check_swap(&mut self, slot: usize, ctx: &mut Context) {
+    pub fn check_swap(&mut self, slot: usize) {
         if self.own_team[slot].dead() {
             self.text = format!("{} has already fainted", self.own_team[slot].name());
         }
@@ -386,7 +386,7 @@ impl Battle {
             if slot == self.p1 {
             self.text = "You cannot switch to the Pokemon currently sent out".to_string();
             } 
-            else {self.swap(slot, true, ctx);}
+            else {self.swap(slot, true);}
         }
     }
 

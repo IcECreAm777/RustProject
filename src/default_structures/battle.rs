@@ -134,6 +134,7 @@ pub struct Battle {
     pub enemy_sounds: [audio::Source; 6],
     pub own_sent: bool,
     pub enemy_sent: bool,
+    pub selected: u8,
 }
 
 impl Battle {
@@ -179,6 +180,7 @@ impl Battle {
             enemy_sounds: soundsb,
             own_sent: false,
             enemy_sent: false,
+            selected: 0,
         }
     }
 

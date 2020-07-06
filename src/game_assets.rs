@@ -581,8 +581,48 @@ impl EventHandler for battle::Battle {
 
         graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?; 
         
-        let info = graphics::Text::new(self.text.as_str());
-        graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
+        match self.state {
+            battle::State::PickAtk => {
+                //draw arrow indicating what is picked
+                let mut x: f32 = 50.0;
+                let mut y: f32 = 520.0; 
+                for i in 0..4 {
+                    /*if self.own_team[self.p1].pokemon.moves[i as usize] == attacks::dummy() {
+                        continue;
+                    }*/
+                    let color: graphics::Color = if i != self.selected {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
+                    let atki = graphics::Text::new(self.own_team[self.p1].pokemon.moves[i as usize].name());
+                    graphics::draw(ctx, &atki, graphics::DrawParam::default().scale(Point2{x:1.25,y:1.25}).dest(Point2{x: x,y: y}).color(color))?;
+                    match i {
+                        0 => x += 250.0,
+                        1 => {x -= 250.0; y += 50.0;},
+                        2 => x += 250.0,
+                        _ => {},
+                    };
+                }
+            },
+            battle::State::SelfReplace | battle::State::PickSlot => {
+                let mut x: f32 = 50.0;
+                let mut y: f32 = 520.0;
+                for i in 0..6 {
+                    /*if self.own_team[i as usize].name() == "Dummy" {
+                        continue;
+                    }*/
+                    let color: graphics::Color = if i != self.selected {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
+                    let poki = graphics::Text::new(self.own_team[self.p1].name());
+                    graphics::draw(ctx, &poki, graphics::DrawParam::default().scale(Point2{x:1.25,y:1.25}).dest(Point2{x: x,y: y}).color(color))?;
+                    match i {
+                        0 | 1 => x += 250.0,
+                        2 => {x -= 500.0; y += 50.0;}
+                        _ => x += 250.0,
+                    };
+                }
+            }
+            _ => {
+                let info = graphics::Text::new(self.text.as_str());
+                graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
+            }
+        }
         if self.own_sent {
             let text1 = graphics::Text::new(self.own_team[self.p1].name());
             graphics::draw(ctx, &text1, graphics::DrawParam::default().dest(Point2{x:17.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
@@ -615,10 +655,11 @@ impl EventHandler for battle::Battle {
             battle::State::PickAtk => {match key {
                 KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
-                KeyCode::Key1 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[0]),
-                KeyCode::Key2 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[1]),
-                KeyCode::Key3 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[2]),
-                KeyCode::Key4 => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[3]),
+                KeyCode::Key1 => self.selected = if self.own_team[self.p1].pokemon.moves[0] == attacks::dummy() {0} else {0},
+                KeyCode::Key2 => self.selected = if self.own_team[self.p1].pokemon.moves[1] == attacks::dummy() {self.selected} else {1},
+                KeyCode::Key3 => self.selected = if self.own_team[self.p1].pokemon.moves[2] == attacks::dummy() {self.selected} else {2},
+                KeyCode::Key4 => self.selected = if self.own_team[self.p1].pokemon.moves[3] == attacks::dummy() {self.selected} else {3},
+                KeyCode::Return => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[self.selected as usize]),
                 _ => (),
                 };
             },
@@ -672,12 +713,13 @@ impl EventHandler for battle::Battle {
             },
             battle::State::SelfReplace => {match key {
                 KeyCode::Key0 => event::quit(ctx),
-                KeyCode::Key1 => self.check_swap(0),
-                KeyCode::Key2 => self.check_swap(1),
-                KeyCode::Key3 => self.check_swap(2),
-                KeyCode::Key4 => self.check_swap(3),
-                KeyCode::Key5 => self.check_swap(4),
-                KeyCode::Key6 => self.check_swap(5), 
+                KeyCode::Key1 => self.selected = 0,
+                KeyCode::Key2 => self.selected = 1,
+                KeyCode::Key3 => self.selected = 2,
+                KeyCode::Key4 => self.selected = 3,
+                KeyCode::Key5 => self.selected = 4,
+                KeyCode::Key6 => self.selected = 5,
+                KeyCode::Return => {self.check_swap(self.selected as usize); if !self.own_team[self.p1].dead() {self.state = self.ret_state();}},
                 _ => (),
                 };
             }

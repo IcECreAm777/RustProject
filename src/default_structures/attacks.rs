@@ -20,6 +20,12 @@ impl Display for Attack {
     }
 }
 
+impl Attack {
+    pub fn name(&self) -> &'static str {
+        self.name
+    }
+}
+
 #[derive(Copy, Clone, PartialEq, Eq, std::hash::Hash)]
 pub enum AttackType {
     Physical,

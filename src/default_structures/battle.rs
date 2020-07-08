@@ -4,6 +4,7 @@ use rand::prelude::*;
 use ggez::Context;
 use ggez::graphics;
 use ggez::audio::{self, SoundSource};
+use std::time::Duration;
 
 #[derive(PartialEq)]
 pub enum Action {
@@ -12,17 +13,21 @@ pub enum Action {
     Picking,
     None, //temporary?
 }
-#[derive(Clone)]
+
 pub struct BattleAssets {
     pub healthbar: graphics::Image,
     pub healthbar2: graphics::Image,
     pub ball: graphics::Image,
     pub botbox: graphics::Image,
+    pub indic: graphics::Image,
     pub brn: graphics::Image,
     pub frz: graphics::Image,
     pub par: graphics::Image,
     pub slp: graphics::Image,
     pub psn: graphics::Image,
+    pub select: audio::Source,
+    pub pick: audio::Source,
+    pub denied: audio::Source,
 }
 
 impl BattleAssets {
@@ -31,21 +36,32 @@ impl BattleAssets {
         let health2 = graphics::Image::new(ctx, "/healthbar2.png");
         let ball = graphics::Image::new(ctx, "/ball.png");
         let botbox = graphics::Image::new(ctx, "/botbox.png");
+        let indic = graphics::Image::new(ctx, "/indicator.png");
         let brn = graphics::Image::new(ctx, "/stati/brn.png");
         let frz = graphics::Image::new(ctx, "/stati/frz.png");
         let par = graphics::Image::new(ctx, "/stati/par.png");
         let slp = graphics::Image::new(ctx, "/stati/slp.png");
         let psn = graphics::Image::new(ctx, "/stati/psn.png");
+        let mut select = audio::Source::new(ctx, "/sounds/select.wav").unwrap();
+        select.set_volume(0.1);
+        let mut pick = audio::Source::new(ctx, "/sounds/pick.wav").unwrap();
+        pick.set_volume(0.25);
+        let mut denied = audio::Source::new(ctx, "/sounds/denied.wav").unwrap();
+        denied.set_volume(0.25);
         BattleAssets{
             healthbar: health.unwrap(),
             healthbar2: health2.unwrap(),
             ball: ball.unwrap(),
             botbox: botbox.unwrap(),
+            indic: indic.unwrap(),
             brn: brn.unwrap(),
             frz: frz.unwrap(),
             par: par.unwrap(),
             slp: slp.unwrap(),
             psn: psn.unwrap(),
+            select: select,
+            pick: pick,
+            denied: denied,
         }
     }
 }
@@ -125,6 +141,7 @@ pub struct Battle {
     pub a1: Action,
     pub a2: Action,
     pub text: String,
+    pub textcount: usize,
     pub state: State,
     pub dmg: u32,
     pub timer: u32,
@@ -171,6 +188,7 @@ impl Battle {
             a1: Action::Picking,
             a2: Action::Swap(2),
             text: "".to_string(),
+            textcount: 0,
             state: State::Start,
             dmg: 0,
             timer: 120,
@@ -182,6 +200,18 @@ impl Battle {
             enemy_sent: false,
             selected: 0,
         }
+    }
+
+    pub fn pick(&mut self) {
+        let _ = self.assets.pick.play();
+    }
+
+    pub fn select(&mut self) {
+        let _ = self.assets.select.play();
+    }
+
+    pub fn denied(&mut self) {
+        let _ = self.assets.denied.play();
     }
 
     pub fn ret_state(&self) -> State {
@@ -243,16 +273,21 @@ impl Battle {
 
     // basic swap
     pub fn swap(&mut self, slot: usize, which: bool) {
+        ggez::timer::sleep(Duration::new(1,0));
         if which {self.p1 = slot;}
         else {self.p2 = slot;}
-        self.timer = 60;
+        self.timer = 120;
         self.text = String::new();
         if which {
+            self.own_sent = true;
             self.text = format!("You sent out {}", self.own_team[slot].name());
+            self.textcount = 0;
             let _ = self.own_sounds[self.p1].play();
         }
         else {
+            self.enemy_sent = true;
             self.text = format!("Opponent sent out {}", self.enemy_team[slot].name());
+            self.textcount = 0;
             let _ = self.enemy_sounds[self.p2].play();
         }
     }
@@ -261,6 +296,7 @@ impl Battle {
         if !target {
             if self.own_team[self.p1].flinch {
                 self.text = format!("{} flinched", self.own_team[self.p1].name());
+                self.textcount = 0;
                 self.timer = 90;
                 return;
             }
@@ -268,17 +304,20 @@ impl Battle {
             match self.own_team[self.p1].status {
                 attacks::Status::Sleep(_val) => {
                     self.text = format!("{} is fast asleep", self.own_team[self.p1].name());
+                    self.textcount = 0;
                     self.timer = 90;
                     return;
                 },
                 attacks::Status::Freeze(_val) => {
                     self.text = format!("{} is frozen solid", self.own_team[self.p1].name());
+                    self.textcount = 0;
                     self.timer = 90;
                     return;
                 }
                 attacks::Status::Paralysis => {
                     if rand::thread_rng().gen_range(0,100) <= 25 {
                         self.text = format!("{} is paralysed and could not move", self.own_team[self.p1].name());
+                        self.textcount = 0;
                         self.timer = 90;
                         return;
                     }
@@ -291,6 +330,7 @@ impl Battle {
         else {
             if self.enemy_team[self.p2].flinch {
                 self.text = format!("Enemy {} flinched", self.enemy_team[self.p2].name());
+                self.textcount = 0;
                 self.timer = 90;
                 return;
             }
@@ -298,17 +338,20 @@ impl Battle {
             match self.enemy_team[self.p2].status {
                 attacks::Status::Sleep(_val) => {
                     self.text = format!("Enemy {} is fast asleep", self.enemy_team[self.p2].name());
+                    self.textcount = 0;
                     self.timer = 90;
                     return;
                 },
                 attacks::Status::Freeze(_val) => {
                     self.text = format!("Enemy {} is frozen solid", self.enemy_team[self.p2].name());
+                    self.textcount = 0;
                     self.timer = 90;
                     return;
                 }
                 attacks::Status::Paralysis => {
                     if rand::thread_rng().gen_range(0,100) <= 25 {
                         self.text = format!("Enemy {} is paralysed and could not move", self.enemy_team[self.p2].name());
+                        self.textcount = 0;
                         self.timer = 90;
                         return;
                     }
@@ -350,9 +393,15 @@ impl Battle {
             self.user = true;
         }
         self.text = String::new();
-        if user {self.text = format!("{} used {}!", self.own_team[self.p1].name(), atk.name);}
-        else {self.text = format!("Enemy {} used {}!", self.enemy_team[self.p2].name(), atk.name);}
-        self.timer = self.dmg + 30;
+        if user {
+            self.text = format!("{} used {}!", self.own_team[self.p1].name(), atk.name);
+            self.textcount = 0;
+        }
+        else {
+            self.text = format!("Enemy {} used {}!", self.enemy_team[self.p2].name(), atk.name);
+            self.textcount = 0;
+        }
+        self.timer = self.dmg + 120;
             
         
 
@@ -377,19 +426,8 @@ impl Battle {
                     slot = i as usize;
                 }
         }
+        self.enemy_sent = false;
         self.swap(slot, false);
-    }
-
-    pub fn check_swap(&mut self, slot: usize) {
-        if self.own_team[slot].dead() {
-            self.text = format!("{} has already fainted", self.own_team[slot].name());
-        }
-        else {
-            if slot == self.p1 {
-            self.text = "You cannot switch to the Pokemon currently sent out".to_string();
-            } 
-            else {self.swap(slot, true);}
-        }
     }
 
     pub fn stat_eff(&mut self, who: bool) {
@@ -399,29 +437,32 @@ impl Battle {
                     self.user = true;
                     self.dmg = self.own_team[self.p1].pokemon.health/16;    // maybe change poison to 1/8 like in gen2+
                     self.text = format!("{} took {} damage", self.own_team[self.p1].name(), self.own_team[self.p1].status.name());
+                    self.textcount = 0;
                     self.timer = self.dmg + 30;
                 },
                 attacks::Status::Sleep(val) => {
                     if val == 1 {
                         self.own_team[self.p1].status = attacks::Status::None;
                         self.text = format!("{} woke up!", self.own_team[self.p1].name());
+                        self.textcount = 0;
                     }
                     else {
                         self.own_team[self.p1].status = attacks::Status::Sleep(val-1);
                         self.text = format!("{} is still asleep", self.own_team[self.p1].name());
+                        self.textcount = 0;
                     }
                     self.timer = 60;
                 }
                 attacks::Status::Freeze(val) => {
                     if val == 1 {
                         self.own_team[self.p1].status = attacks::Status::None; 
-                        self.text = self.own_team[self.p1].name().to_string();
-                        self.text.push_str(" unfroze!");
                         self.text = format!("{} unfroze!", self.own_team[self.p1].name());
+                        self.textcount = 0;
                     }
                     else {
                         self.own_team[self.p1].status = attacks::Status::Freeze(val-1);
                         self.text = format!("{} is still frozen", self.own_team[self.p1].name());
+                        self.textcount = 0;
                     }
                     self.timer = 60;
                 },
@@ -434,16 +475,19 @@ impl Battle {
                     self.user = false;
                     self.dmg = self.enemy_team[self.p2].pokemon.health/16;  // maybe change poison to 1/8 like in gen2+
                     self.text = format!("Enemy {} took {} damage", self.enemy_team[self.p2].name(), self.enemy_team[self.p2].status.name());
+                    self.textcount = 0;
                     self.timer = self.dmg + 30;
                 },
                 attacks::Status::Sleep(val) => {
                     if val == 1 {
                         self.enemy_team[self.p2].status = attacks::Status::None; 
                         self.text = format!("Enemy {} woke up!", self.enemy_team[self.p2].name());
+                        self.textcount = 0;
                     }
                     else {
                         self.enemy_team[self.p2].status = attacks::Status::Sleep(val-1);
                         self.text = format!("Enemy {} is still asleep", self.enemy_team[self.p2].name());
+                        self.textcount = 0;
                     }
                     self.timer = 60;
                 }
@@ -451,10 +495,12 @@ impl Battle {
                     if val == 1 {
                         self.enemy_team[self.p2].status = attacks::Status::None; 
                         self.text = format!("Enemy {} unfroze!", self.enemy_team[self.p2].name());
+                        self.textcount = 0;
                     }
                     else {
                         self.enemy_team[self.p2].status = attacks::Status::Freeze(val-1);
                         self.text = format!("Enemy {} is still frozen", self.enemy_team[self.p2].name());
+                        self.textcount = 0;
                     }
                     self.timer = 60;
                 },

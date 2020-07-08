@@ -416,25 +416,33 @@ impl EventHandler for battle::Battle {
                     if !self.own_sent || self.own_sounds[self.p1].playing() {
                         if !self.own_sent {
                             self.text = format!("You sent out {}", self.own_team[self.p1].name());
+                            self.textcount = 0;
                             let _ = self.own_sounds[self.p1].play();
                             self.own_sent = true;
+                            self.dmg = 60;
                         }
                     }
                     else {
-                        if !self.enemy_sounds[self.p2].playing() && !self.enemy_sent {
+                        if !self.enemy_sounds[self.p2].playing() && !self.enemy_sent && self.dmg == 0{
                             self.text = format!("Opponent sent out {}", self.enemy_team[self.p2].name());
                             let _ = self.enemy_sounds[self.p2].play();
                             self.enemy_sent = true;
+                            self.textcount = 0;
+                        }
+                        else {
+                            if !self.enemy_sent {
+                                self.dmg -= 1;
+                            }
                         }
 
                     }
                     if self.enemy_sent && !self.enemy_sounds[self.p2].playing() {
                         self.state = battle::State::Picking;
                         self.text = "What will you do?".to_string();
+                        self.textcount = 0;
                     }
                 },
                 battle::State::Picking => {
-                    //if self.text != "What will you do?" {self.text = "What will you do?".to_string();}
                     if self.a1 != battle::Action::Picking && self.a2 != battle::Action::Picking {
                         self.state = self.prio();
                         self.timer = 5;
@@ -451,7 +459,7 @@ impl EventHandler for battle::Battle {
                 battle::State::A1 => {
                     self.ret = battle::State::Between;
                     match self.a1 {
-                        battle::Action::Swap(slot) => self.check_swap(slot),
+                        battle::Action::Swap(slot) => self.swap(slot, true),
                         battle::Action::Attack(atk) => self.atk_init(atk, false),
                         _ => {},
                     };
@@ -480,6 +488,7 @@ impl EventHandler for battle::Battle {
                     self.state = battle::State::Picking;
                     self.ret = battle::State::Picking;
                     self.text = "What will you do?".to_string();
+                    self.textcount = 0;
                 }
 
 
@@ -504,16 +513,22 @@ impl EventHandler for battle::Battle {
                 }
                 _ => {},
             };
+            self.textcount += if self.textcount < self.text.len() {1} else {0};
             Ok(())
         }
+
+        // TODO: implement death "animation" and edit self.sent accordingly
+
         else {
             if self.dmg == 0 {} 
             else { 
                 if self.user {
                     if self.own_team[self.p1].current_health == 1 {
                         self.own_team[self.p1].current_health = 0;
-                        self.timer = 90; self.dmg = 1;
+                        self.timer = 90; 
+                        self.dmg = 1;
                         self.text = format!("{} fainted!", self.own_team[self.p1].name());
+                        self.textcount = 0;
                         self.state = battle::State::SelfReplace;
                         self.a1 = battle::Action::Picking;
                     }
@@ -523,8 +538,10 @@ impl EventHandler for battle::Battle {
                 else {
                     if self.enemy_team[self.p2].current_health == 1 {
                         self.enemy_team[self.p2].current_health = 0;
-                        self.timer = 150; self.dmg = 1;
+                        self.timer = 150; 
+                        self.dmg = 1;
                         self.text = format!("Enemy {} fainted!", self.enemy_team[self.p2].name());
+                        self.textcount = 0;
                         self.state = battle::State::EnemyReplace;
                         self.a2 = battle::Action::Picking;
                     }
@@ -532,11 +549,10 @@ impl EventHandler for battle::Battle {
                     self.dmg -= 1;
                 }
             }
+            self.textcount += if self.textcount < self.text.len() {1} else {0};
             self.timer -= 1;
             Ok(())
         }
-    
-    
     }
 
     
@@ -584,7 +600,7 @@ impl EventHandler for battle::Battle {
         match self.state {
             battle::State::PickAtk => {
                 //draw arrow indicating what is picked
-                let mut x: f32 = 50.0;
+                let mut x: f32 = 25.0;
                 let mut y: f32 = 520.0; 
                 for i in 0..4 {
                     /*if self.own_team[self.p1].pokemon.moves[i as usize] == attacks::dummy() {
@@ -602,25 +618,45 @@ impl EventHandler for battle::Battle {
                 }
             },
             battle::State::SelfReplace | battle::State::PickSlot => {
-                let mut x: f32 = 50.0;
+                let mut x: f32 = 25.0;
                 let mut y: f32 = 520.0;
+                graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().scale(Point2{x:0.5,y:0.5}).dest(Point2{x:5.0+(self.selected%3)as f32*300.0,y:y-3.0+(self.selected/3) as f32*50.0}))?;
                 for i in 0..6 {
                     /*if self.own_team[i as usize].name() == "Dummy" {
                         continue;
                     }*/
                     let color: graphics::Color = if i != self.selected {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
-                    let poki = graphics::Text::new(self.own_team[self.p1].name());
-                    graphics::draw(ctx, &poki, graphics::DrawParam::default().scale(Point2{x:1.25,y:1.25}).dest(Point2{x: x,y: y}).color(color))?;
+                    let poki = graphics::Text::new(format!("{} {}/{}",self.own_team[i as usize].name(), self.own_team[i as usize].current_health, self.own_team[self.p1].pokemon.health));
+                    graphics::draw(ctx, &poki, graphics::DrawParam::default().scale(Point2{x:1.1,y:1.1}).dest(Point2{x: x,y: y}).color(color))?;
                     match i {
-                        0 | 1 => x += 250.0,
-                        2 => {x -= 500.0; y += 50.0;}
-                        _ => x += 250.0,
+                        0 | 1 => x += 300.0,
+                        2 => {x -= 600.0; y += 50.0;}
+                        _ => x += 300.0,
                     };
                 }
-            }
+            },
+            battle::State::Picking => {
+                self.textcount += if self.textcount < self.text.len() {1} else {0};
+                let mut string = self.text.clone();
+                string.truncate(self.textcount+1);
+                let info = graphics::Text::new(string);
+                //graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
+                if self.textcount == self.text.len() {
+                    graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().dest(Point2{x:460.0 + (self.selected as f32 *150.0),y:530.0}))?;
+                    graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:25.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
+                    graphics::draw(ctx, &graphics::Text::new("Attack"), graphics::DrawParam::default().dest(Point2{x:500.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
+                    graphics::draw(ctx, &graphics::Text::new("Switch"), graphics::DrawParam::default().dest(Point2{x:650.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
+                }
+                else {
+                    graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:25.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
+                }
+            },
             _ => {
-                let info = graphics::Text::new(self.text.as_str());
-                graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:175.0,y:550.0}).color(graphics::BLACK))?;
+                self.textcount += if self.textcount < self.text.len() {1} else {0};
+                let mut string = self.text.clone();
+                string.truncate(self.textcount+1);
+                let info = graphics::Text::new(string);
+                graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:25.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
             }
         }
         if self.own_sent {
@@ -646,80 +682,45 @@ impl EventHandler for battle::Battle {
     fn key_down_event(&mut self, ctx: &mut Context, key: KeyCode, _keymods: KeyMods, _: bool) {
         match self.state {
             battle::State::Picking => {match key {
-                    KeyCode::Key1 => {self.state = battle::State::PickAtk; self.text = "Choose an attack".to_string();},
-                    KeyCode::Key2 => {self.state = battle::State::PickSlot; self.text = "Choose a Pokemon".to_string();},
+                    KeyCode::Key1 => {if self.selected != 0 {self.select();} self.selected = 0},
+                    KeyCode::Key2 => {if self.selected != 1 {self.select();} self.selected = 1;},
+                    KeyCode::Return => if self.selected == 0 {self.state = battle::State::PickAtk; self.selected = 0; self.pick();} else {self.state = battle::State::PickSlot; self.selected = 0; self.pick();},
                     KeyCode::Key0 => event::quit(ctx),
                     _ => (),
                 };
             },
             battle::State::PickAtk => {match key {
                 KeyCode::Key0 => event::quit(ctx),
-                KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
+                KeyCode::Escape => {self.state = battle::State::Picking; self.selected = 0;},
                 KeyCode::Key1 => self.selected = if self.own_team[self.p1].pokemon.moves[0] == attacks::dummy() {0} else {0},
                 KeyCode::Key2 => self.selected = if self.own_team[self.p1].pokemon.moves[1] == attacks::dummy() {self.selected} else {1},
                 KeyCode::Key3 => self.selected = if self.own_team[self.p1].pokemon.moves[2] == attacks::dummy() {self.selected} else {2},
                 KeyCode::Key4 => self.selected = if self.own_team[self.p1].pokemon.moves[3] == attacks::dummy() {self.selected} else {3},
-                KeyCode::Return => self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[self.selected as usize]),
+                KeyCode::Return => {self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[self.selected as usize]); self.selected = 0; self.pick();},
                 _ => (),
                 };
             },
             battle::State::PickSlot => {match key {
                 KeyCode::Key0 => event::quit(ctx),
-                KeyCode::Escape => self.state = {self.text = "What will you do".to_string(); battle::State::Picking},
-                KeyCode::Key1 => {
-                    if self.own_team[0].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
-                    else {
-                        if 0 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
-                        else {self.a1 = battle::Action::Swap(0);}
-                    }
-                },
-                KeyCode::Key2 => {
-                    if self.own_team[1].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
-                    else {
-                        if 1 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
-                        else {self.a1 = battle::Action::Swap(1);}
-                    }
-                },
-                KeyCode::Key3 => {
-                    if self.own_team[2].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
-                    else {
-                        if 2 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
-                        else {self.a1 = battle::Action::Swap(2);}
-                    }
-                },
-                KeyCode::Key4 => {
-                    if self.own_team[3].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
-                    else {
-                        if 3 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
-                        else {self.a1 = battle::Action::Swap(3);}
-                    }
-                },
-                KeyCode::Key5 => {
-                    if self.own_team[4].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
-                    else {
-                        if 4 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
-                        else {self.a1 = battle::Action::Swap(4);}
-                    }
-                },
-                KeyCode::Key6 => {
-                    if self.own_team[5].dead() {self.text = "Cannot swtich to dead Pokemon".to_string();}
-                    else {
-                        if 5 == self.p1 {self.text = "Cannot switch to Pokemon that is sent out already".to_string();}
-                        else {self.a1 = battle::Action::Swap(5);}
-                    }
-                },
+                KeyCode::Escape => {self.state = battle::State::Picking; self.selected = 0; self.pick();},
+                KeyCode::Key1 => {if self.selected != 0 {self.select();} self.selected = 0;},
+                KeyCode::Key2 => {if self.selected != 1 {self.select();} self.selected = 1;},
+                KeyCode::Key3 => {if self.selected != 2 {self.select();} self.selected = 2;},
+                KeyCode::Key4 => {if self.selected != 3 {self.select();} self.selected = 3;},
+                KeyCode::Key5 => {if self.selected != 4 {self.select();} self.selected = 4;},
+                KeyCode::Key6 => {if self.selected != 5 {self.select();} self.selected = 5;},
+                KeyCode::Return => if self.own_team[self.selected as usize].health() != 0 && self.selected != self.p1 as u8 {self.own_sent = false; self.a1 = battle::Action::Swap (self.selected as usize); self.selected = 0; self.pick();} else {self.denied();}
                 _ => (),
                 };
             },
             battle::State::SelfReplace => {match key {
-                KeyCode::Key0 => event::quit(ctx),
-                KeyCode::Key1 => self.selected = 0,
-                KeyCode::Key2 => self.selected = 1,
-                KeyCode::Key3 => self.selected = 2,
-                KeyCode::Key4 => self.selected = 3,
-                KeyCode::Key5 => self.selected = 4,
-                KeyCode::Key6 => self.selected = 5,
-                KeyCode::Return => {self.check_swap(self.selected as usize); if !self.own_team[self.p1].dead() {self.state = self.ret_state();}},
+                KeyCode::Key1 => {if self.selected != 0 {self.select();} self.selected = 0;},
+                KeyCode::Key2 => {if self.selected != 1 {self.select();} self.selected = 1;},
+                KeyCode::Key3 => {if self.selected != 2 {self.select();} self.selected = 2;},
+                KeyCode::Key4 => {if self.selected != 3 {self.select();} self.selected = 3;},
+                KeyCode::Key5 => {if self.selected != 4 {self.select();} self.selected = 4;},
+                KeyCode::Key6 => {if self.selected != 5 {self.select();} self.selected = 5;},
+                KeyCode::Return => {if !self.own_team[self.selected as usize].dead() {self.swap(self.selected as usize, true);self.state = self.ret_state(); self.selected = 0; self.pick();} else {self.denied();}},
                 _ => (),
                 };
             }

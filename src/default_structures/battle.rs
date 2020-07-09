@@ -31,6 +31,9 @@ pub struct BattleAssets {
     pub death: audio::Source,
     pub low: audio::Source,
     pub send: audio::Source,
+    pub weak: audio::Source,
+    pub normal: audio::Source,
+    pub strong: audio::Source,
 }
 
 impl BattleAssets {
@@ -57,6 +60,12 @@ impl BattleAssets {
         low.set_volume(0.25);
         let mut send = audio::Source::new(ctx, "/sounds/send.wav").unwrap();
         send.set_volume(0.25);
+        let mut weak = audio::Source::new(ctx, "/sounds/weak.wav").unwrap();
+        weak.set_volume(0.25);
+        let mut normal = audio::Source::new(ctx, "/sounds/normal.wav").unwrap();
+        normal.set_volume(0.25);
+        let mut strong = audio::Source::new(ctx, "/sounds/strong.wav").unwrap();
+        strong.set_volume(0.25);
         BattleAssets{
             healthbar: health.unwrap(),
             healthbar2: health2.unwrap(),
@@ -74,6 +83,9 @@ impl BattleAssets {
             death: death,
             low: low,
             send: send,
+            weak: weak,
+            normal: normal,
+            strong: strong,
         }
     }
 }
@@ -244,6 +256,18 @@ impl Battle {
 
     pub fn send(&mut self) {
         let _ = self.assets.send.play();
+    }
+
+    pub fn weak(&mut self) {
+        let _ = self.assets.weak.play();
+    }
+    
+    pub fn normal(&mut self) {
+        let _ = self.assets.normal.play();
+    }
+    
+    pub fn strong(&mut self) {
+        let _ = self.assets.strong.play();
     }
 
     pub fn ret_state(&mut self) -> State {
@@ -449,14 +473,15 @@ impl Battle {
                 self.text.push_str(" It is very effective!");
             } 
             else {self.text.push_str(if mult < 1.0 {" It is not very effective"} else {""})} 
-            
             self.textcount = 0;
         }
         self.timer = self.dmg + 120;
-            
-        
-
-
+        match mult {
+            0.5 | 0.25 => self.weak(),
+            2.0 | 4.0 => self.strong(),
+            1.0 => self.normal(),
+            _ => {},
+        };
     }
 
     pub fn enemy_swap(&mut self) {

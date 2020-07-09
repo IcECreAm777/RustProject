@@ -28,6 +28,9 @@ pub struct BattleAssets {
     pub select: audio::Source,
     pub pick: audio::Source,
     pub denied: audio::Source,
+    pub death: audio::Source,
+    pub low: audio::Source,
+    pub send: audio::Source,
 }
 
 impl BattleAssets {
@@ -48,6 +51,12 @@ impl BattleAssets {
         pick.set_volume(0.25);
         let mut denied = audio::Source::new(ctx, "/sounds/denied.wav").unwrap();
         denied.set_volume(0.25);
+        let mut death = audio::Source::new(ctx, "/sounds/death.wav").unwrap();
+        death.set_volume(0.25);
+        let mut low = audio::Source::new(ctx, "/sounds/low.wav").unwrap();
+        low.set_volume(0.25);
+        let mut send = audio::Source::new(ctx, "/sounds/send.wav").unwrap();
+        send.set_volume(0.25);
         BattleAssets{
             healthbar: health.unwrap(),
             healthbar2: health2.unwrap(),
@@ -62,6 +71,9 @@ impl BattleAssets {
             select: select,
             pick: pick,
             denied: denied,
+            death: death,
+            low: low,
+            send: send,
         }
     }
 }
@@ -74,7 +86,9 @@ pub struct Battlemon {
     pub evasion: u32,
     pub accuracy: u32,
     pub status: attacks::Status,
-    pub flinch: bool
+    pub flinch: bool,
+    pub offset: u16,
+    pub died: bool
 }
 
 impl Battlemon {
@@ -87,9 +101,14 @@ impl Battlemon {
             accuracy: 0,
             status: attacks::Status::None,
             flinch: false,
+            offset: 0,
+            died: false,
         }
     }
 
+    pub fn offset(&mut self) {
+        self.offset += if self.dead() && !self.died && self.offset != 30 {1} else {0};
+    }
     pub fn name(&self) -> &'static str {
         self.pokemon.name
     }
@@ -164,7 +183,6 @@ impl Battle {
             audio::Source::from_data(ctx, own[4].pokemon.assets.battle_cry.clone()).unwrap(),
             audio::Source::from_data(ctx, own[5].pokemon.assets.battle_cry.clone()).unwrap(),
         ];
-
         let mut soundsb: [audio::Source; 6] = [
             audio::Source::from_data(ctx, enemy[0].pokemon.assets.battle_cry.clone()).unwrap(),
             audio::Source::from_data(ctx, enemy[1].pokemon.assets.battle_cry.clone()).unwrap(),
@@ -176,7 +194,9 @@ impl Battle {
 
         for i in 0..6 {
             soundsa[i as usize].set_volume(0.25);
+            soundsa[i as usize].set_fade_in(Duration::new(1,0));
             soundsb[i as usize].set_volume(0.25);
+            soundsb[i as usize].set_fade_in(Duration::new(1,0));
         }
         
         Battle {
@@ -214,10 +234,23 @@ impl Battle {
         let _ = self.assets.denied.play();
     }
 
-    pub fn ret_state(&self) -> State {
+    pub fn death(&mut self) {
+        let _ = self.assets.death.play();
+    }
+
+    pub fn low(&mut self) {
+        let _ = self.assets.low.play();
+    }
+
+    pub fn send(&mut self) {
+        let _ = self.assets.send.play();
+    }
+
+    pub fn ret_state(&mut self) -> State {
         match self.ret {
             State::After2 => State::After2,
             State::Between => State::Between,
+            State::Picking => {self.text = "What will you do?".to_string(); self.textcount = 0; State::Picking},
             _ => State::None,
         }
     }
@@ -259,7 +292,10 @@ impl Battle {
 
     // function to compare the speed values of two Battlemon
     pub fn speed_test(&self) -> bool {
-        self.own_team[self.p1].pokemon.init >= self.enemy_team[self.p2].pokemon.init
+        self.own_team[self.p1].pokemon.init as f32 *
+        (if self.own_team[self.p1].status == attacks::Status::Paralysis {0.5} else {1.0}) >= 
+        self.enemy_team[self.p2].pokemon.init as f32 *
+        (if self.enemy_team[self.p2].status == attacks::Status::Paralysis {0.5} else {1.0})
         // TODO: implement check for paralysis -> if so init - 75% or 50% (gen 7/8 orso)
     }
 
@@ -273,11 +309,16 @@ impl Battle {
 
     // basic swap
     pub fn swap(&mut self, slot: usize, which: bool) {
-        ggez::timer::sleep(Duration::new(1,0));
-        if which {self.p1 = slot;}
-        else {self.p2 = slot;}
+        if which {
+            self.own_team[self.p1].offset = 0;
+            self.p1 = slot;
+        }
+        else {
+            self.enemy_team[self.p2].offset = 0;
+            self.p2 = slot;
+        }
+        self.send();
         self.timer = 120;
-        self.text = String::new();
         if which {
             self.own_sent = true;
             self.text = format!("You sent out {}", self.own_team[slot].name());
@@ -366,8 +407,9 @@ impl Battle {
     // basic normal atk calc
     pub fn dmg_attack(&mut self, atk: attacks::Attack, target: bool) {
         let user = !(target);
+        let mult: f32;
         if user {
-            let mult = effective(&atk.etype, &self.enemy_team[self.p2].pokemon.ftype)*effective(&atk.etype, &self.enemy_team[self.p2].pokemon.stype);
+            mult = effective(&atk.etype, &self.enemy_team[self.p2].pokemon.ftype)*effective(&atk.etype, &self.enemy_team[self.p2].pokemon.stype);
             let brt: f32= if self.own_team[self.p1].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
         
             let basic: f32 = if atk.atype == attacks::AttackType::Physical 
@@ -380,7 +422,7 @@ impl Battle {
             self.user = false;
             }
         else {
-            let mult = effective(&atk.etype, &self.own_team[self.p1].pokemon.ftype)*effective(&atk.etype, &self.own_team[self.p1].pokemon.stype);
+            mult = effective(&atk.etype, &self.own_team[self.p1].pokemon.ftype)*effective(&atk.etype, &self.own_team[self.p1].pokemon.stype);
             let brt: f32 = if self.enemy_team[self.p2].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
         
             let basic: f32 = if atk.atype == attacks::AttackType::Physical
@@ -395,10 +437,19 @@ impl Battle {
         self.text = String::new();
         if user {
             self.text = format!("{} used {}!", self.own_team[self.p1].name(), atk.name);
+            if mult > 1.0 {
+                self.text.push_str(" It is very effective!");
+            } 
+            else {self.text.push_str(if mult < 1.0 {" It is not very effective"} else {""})} 
             self.textcount = 0;
         }
         else {
             self.text = format!("Enemy {} used {}!", self.enemy_team[self.p2].name(), atk.name);
+            if mult > 1.0 {
+                self.text.push_str(" It is very effective!");
+            } 
+            else {self.text.push_str(if mult < 1.0 {" It is not very effective"} else {""})} 
+            
             self.textcount = 0;
         }
         self.timer = self.dmg + 120;

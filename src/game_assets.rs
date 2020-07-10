@@ -413,16 +413,32 @@ impl EventHandler for battle::Battle {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         if self.timer == 0 {
             match self.state {
+                battle::State::Pre => {
+                    match self.theme {
+                        1 => {self.theme1(); self.timer = 180;},
+                        3 => {self.theme3(); self.timer = 150;},
+                        4 => {self.theme4(); self.timer = 180;},
+                        _ => {},
+                    };
+                    self.text = "             May thee vibe to the gl'rious battleth theme".to_string();
+                    self.textcount = self.text.len();
+                    self.state = battle::State::Start; 
+                },
+        
                 battle::State::Start => {
                     if !self.own_sent || self.own_sounds[self.p1].playing() {
                         if !self.own_sent {
                             self.text = format!("You sent out {}", self.own_team[self.p1].name());
                             self.textcount = 0;
-                            //self.send();
                             let _ = self.own_sounds[self.p1].play();
                             self.send();
                             self.own_sent = true;
-                            self.dmg = 60;
+                            match self.theme {
+                                1 => self.dmg = 80,
+                                3 => self.dmg = 10,
+                                4 => self.dmg = 30,
+                                _ => {},
+                            };
                         }
                     }
                     else {
@@ -465,25 +481,56 @@ impl EventHandler for battle::Battle {
                 },
 
                 battle::State::A1 => {
-                    self.ret = battle::State::Between;
+                    self.ret = battle::State::E1;
                     match self.a1 {
                         battle::Action::Swap(slot) => self.swap(slot, true),
                         battle::Action::Attack(atk) => self.atk_init(atk, false),
                         _ => {},
                     };
                     self.a1 = battle::Action::Picking;
-                    self.state = battle::State::Between;
+                    self.state = battle::State::E1;
                 },
 
                 battle::State::A2 => {
-                    self.ret = battle::State::Between;
+                    self.ret = battle::State::E3;
                     match self.a2 {
                         battle::Action::Swap(slot) => self.swap(slot, false),
                         battle::Action::Attack(atk) => self.atk_init(atk, true),
                         _ => {},
                     };
                     self.a2 = battle::Action::Picking;
+                    self.state = battle::State::E3;
+                },
+
+                battle::State::E1 => {
+                    self.ret = battle::State::E2;
+                    self.apply_effect(self.e1, true);
+                    self.e1 = attacks::Effect::None;
+                    self.state = battle::State::E2;
+                },
+
+                battle::State::E2 => {
+                    self.ret = battle::State::Between;
+                    self.apply_effect(self.e2, true);
+                    self.e2 = attacks::Effect::None;
                     self.state = battle::State::Between;
+
+                },
+
+                battle::State::E3 => {
+                    self.ret = battle::State::E4;
+                    self.apply_effect(self.e3, false);
+                    self.e3 = attacks::Effect::None;
+                    self.state = battle::State::E4;
+
+                },
+
+                battle::State::E4 => {
+                    self.ret = battle::State::Between;
+                    self.apply_effect(self.e4, false);
+                    self.e4 = attacks::Effect::None;
+                    self.state = battle::State::Between;
+
                 },
 
                 battle::State::After1 => {   // check if any effects to be applied
@@ -496,11 +543,16 @@ impl EventHandler for battle::Battle {
 
                 battle::State::After2 => {
                     self.stat_eff(false);
+                    self.state = battle::State::Cycle;
+                    self.ret = battle::State::Cycle;
+                },
+
+                battle::State::Cycle => {
                     self.state = battle::State::Picking;
                     self.ret = battle::State::Picking;
                     self.text = "What will you do?".to_string();
                     self.textcount = 0;
-                },
+                }
 
                 battle::State::SelfReplace => {
                     if self.own_team[self.p1].died {
@@ -548,7 +600,7 @@ impl EventHandler for battle::Battle {
             if self.dmg == 0 {} 
             else { 
                 if self.user {
-                    if self.own_team[self.p1].current_health == 1 {
+                    if self.own_team[self.p1].current_health == 1 && self.dmg > 0 {
                         self.own_team[self.p1].died = true;
                         self.own_team[self.p1].current_health = 0;
                         self.timer = 60; 
@@ -558,11 +610,24 @@ impl EventHandler for battle::Battle {
                         self.state = battle::State::SelfReplace;
                         self.a1 = battle::Action::Picking;
                     }
-                    else {self.own_team[self.p1].current_health -= 1;}
-                    self.dmg -= 1;
+                    else {
+                        if self.own_team[self.p1].current_health == self.own_team[self.p1].health() && self.dmg <= 0 {
+                            self.dmg = 0;
+                        }
+                        else {
+                            self.own_team[self.p1].current_health = 
+                            if self.dmg > 0 {
+                                self.own_team[self.p1].current_health - 1
+                            }
+                            else {
+                                self.own_team[self.p1].current_health + 1
+                            };
+                        }
+                    }
+                    self.dmg -= if self.dmg > 0 {1} else {if self.dmg < 0 {-1} else {0}};
                 }
                 else {
-                    if self.enemy_team[self.p2].current_health == 1 {
+                    if self.enemy_team[self.p2].current_health == 1  && self.dmg > 0 {
                         self.enemy_team[self.p2].died = true;
                         self.enemy_team[self.p2].current_health = 0;
                         self.timer = 60; 
@@ -572,8 +637,21 @@ impl EventHandler for battle::Battle {
                         self.state = battle::State::EnemyReplace;
                         self.a2 = battle::Action::Picking;
                     }
-                    else {self.enemy_team[self.p2].current_health -= 1;}
-                    self.dmg -= 1;
+                    else {
+                        if self.enemy_team[self.p2].current_health == self.enemy_team[self.p2].health() && self.dmg <= 0 {
+                            self.dmg = 0;
+                        }
+                        else {
+                            self.enemy_team[self.p2].current_health = 
+                            if self.dmg > 0 {
+                                self.enemy_team[self.p2].current_health - 1
+                            }
+                            else {
+                                self.enemy_team[self.p2].current_health + 1
+                            };
+                        }
+                    }
+                    self.dmg -= if self.dmg > 0 {1} else {if self.dmg < 0 {-1} else {0}};
                 }
             }
             self.textcount += if self.textcount < self.text.len() {1} else {0};
@@ -622,7 +700,7 @@ impl EventHandler for battle::Battle {
             let rect = graphics::Rect::new(0.0,0.0,1.0,fract as f32);
             self.enemy_team[self.p2].offset();
             graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().src(rect).scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:514.0,y:200.0+8.5*self.enemy_team[self.p2].offset as f32}))?;
-            match self.own_team[self.p1].status {
+            match self.enemy_team[self.p2].status {
                 attacks::Status::Burn => graphics::draw(ctx, &self.assets.brn, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
                 attacks::Status::Freeze(_val) => graphics::draw(ctx, &self.assets.frz, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
                 attacks::Status::Paralysis => graphics::draw(ctx, &self.assets.par, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,

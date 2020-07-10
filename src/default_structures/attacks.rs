@@ -61,8 +61,8 @@ impl Status {
             Status::Poison => "Poison",
             Status::Paralysis => "Paralysis",
             Status::None => "None",
-            Status::Freeze(u8) => "Freeze",
-            Status::Sleep(u8) => "Sleep",
+            Status::Freeze(_u8) => "Freeze",
+            Status::Sleep(_u8) => "Sleep",
         }
 
     }
@@ -110,13 +110,13 @@ pub enum StatChange2 {       // Werte mit i8/u8 sind mit einer Chance z.B. 33,2%
 pub enum Effect {
     None,
     Prio,
-    Status,                     // seperate enum for applying with chance?
+    Status (Status, u8),
     StatusChange1 (StatChange1),
     StatusChange2 (StatChange2),
     Flinch10,
     Flinch33,
-    Absorb,
-    Recoil
+    Absorb(i32),
+    Recoil(i32),
     //Dot (Dot)
 }
 
@@ -126,10 +126,10 @@ pub fn dummy() -> Attack {
         etype: Type::Normal,
         atype: AttackType::Physical,
         strength: 25,
-        acc: 0,
+        acc: 50,
         //ap: 0,
-        effect_1: Effect::None,
-        effect_2: Effect::None,
+        effect_1: Effect::Absorb(0),
+        effect_2: Effect::Recoil(0),
         //mirror move: false
     }
 }
@@ -142,7 +142,7 @@ pub fn absorb() -> Attack {
         strength: 20,
         acc: 100,
         //ap: 25,
-        effect_1: Effect::Absorb,
+        effect_1: Effect::Absorb(0),
         effect_2: Effect::None,
         //mirror move: True
     }
@@ -299,7 +299,7 @@ pub fn blizzard() -> Attack {
         strength: 110,
         acc: 90,
         //ap: 5,
-        effect_1: Effect::None,//effect: 10% freeze chance,
+        effect_1: Effect::Status(Status::Freeze(0), 10),//effect: 10% freeze chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -313,7 +313,7 @@ pub fn body_slam() -> Attack {
         strength: 85,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: 30% paral, kann keine normal paralysieren(??),
+        effect_1: Effect::Status(Status::Paralysis, 30),//effect: 30% paral, kann keine normal paralysieren(??),
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -608,7 +608,7 @@ pub fn double_edge() -> Attack {
         strength: 120, //100 in gen1
         acc: 100,
         //ap: 15,
-        effect_1: Effect::Recoil,//1/4th
+        effect_1: Effect::Recoil(0),//1/4th
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -692,7 +692,7 @@ pub fn ember() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 25,
-        effect_1: Effect::None,//effect: 10% burn chance,
+        effect_1: Effect::Status(Status::Burn, 10),//effect: 10% burn chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -720,7 +720,7 @@ pub fn fire_blast() -> Attack {
         strength: 110,
         acc: 85,
         //ap: 5,
-        effect_1: Effect::None,//effect: 30% burn chance,
+        effect_1: Effect::Status(Status::Burn, 30),//effect: 30% burn chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -734,7 +734,7 @@ pub fn fire_punch() -> Attack {
         strength: 75,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: 10% burn chance,
+        effect_1: Effect::Status(Status::Burn, 10),//effect: 10% burn chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -776,7 +776,7 @@ pub fn flamethrower() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: 10% burn chance,
+        effect_1: Effect::Status(Status::Burn, 10),//effect: 10% burn chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -860,7 +860,7 @@ pub fn glare() -> Attack {
         strength: 0,
         acc: 75, // gen 1 75, gen 5 90, gen 6+ 100
         //ap: 30,
-        effect_1: Effect::None,//effect: paralysis (gen 1 can hit ghost),
+        effect_1: Effect::Status(Status::Paralysis, 100),//effect: paralysis (gen 1 can hit ghost),
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1071,7 +1071,7 @@ pub fn ice_beam() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 10,
-        effect_1: Effect::None,//effect: 10% freeze chance,
+        effect_1: Effect::Status(Status::Freeze(0), 10),//effect: 10% freeze chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1085,7 +1085,7 @@ pub fn ice_punch() -> Attack {
         strength: 75,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: 10% freeze chance,
+        effect_1: Effect::Status(Status::Freeze(0), 10),//effect: 10% freeze chance,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1141,7 +1141,7 @@ pub fn leech_life() -> Attack {
         strength: 80,
         acc: 100,
         //ap: 10,
-        effect_1: Effect::Absorb,
+        effect_1: Effect::Absorb(0),
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1184,7 +1184,7 @@ pub fn lick() -> Attack {
         strength: 30,
         acc: 100,
         //ap: 30,
-        effect_1: Effect::None,//effect: 30% paral chance, cannot paral ghost in gen1,
+        effect_1: Effect::Status(Status::Paralysis, 30),//effect: 30% paral chance, cannot paral ghost in gen1,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1212,7 +1212,7 @@ pub fn lovely_kiss() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 10,
-        effect_1: Effect::None,//effect: schleep,
+        effect_1: Effect::Status(Status::Sleep(0), 100),//effect: schleep,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1254,7 +1254,7 @@ pub fn mega_drain() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::Absorb,
+        effect_1: Effect::Absorb(0),
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1437,7 +1437,7 @@ pub fn poison_gas() -> Attack {
         strength: 0,
         acc: 90, //gen 1 55
         //ap: 40,
-        effect_1: Effect::None,//effect: poison,
+        effect_1: Effect::Status(Status::Poison, 100),//effect: poison,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1451,7 +1451,7 @@ pub fn poison_powder() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 35,
-        effect_1: Effect::None,//effect: poisons (not steel/poison),
+        effect_1: Effect::Status(Status::Poison, 100),//effect: poisons (not steel/poison),
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1465,7 +1465,7 @@ pub fn poison_sting() -> Attack {
         strength: 15,
         acc: 100,
         //ap: 35,
-        effect_1: Effect::None,//effect: 20% poison,
+        effect_1: Effect::Status(Status::Poison, 20),//effect: 20% poison,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1774,7 +1774,7 @@ pub fn sing() -> Attack {
         strength: 0,
         acc: 55,
         //ap: 15,
-        effect_1: Effect::None,//effect: schleep,
+        effect_1: Effect::Status(Status::Sleep(0), 100),//effect: schleep,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1844,7 +1844,7 @@ pub fn sleep_powder() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 15,
-        effect_1: Effect::None,//effect: schleep,
+        effect_1: Effect::Status(Status::Sleep(0), 100),//effect: schleep,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1858,7 +1858,7 @@ pub fn sludge() -> Attack {
         strength: 65,
         acc: 100,
         //ap: 20,
-        effect_1: Effect::None,//effect: 40% poison,
+        effect_1: Effect::Status(Status::Poison, 40),//effect: 40% poison,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1872,7 +1872,7 @@ pub fn smog() -> Attack {
         strength: 30,
         acc: 70,
         //ap: 20,
-        effect_1: Effect::None,//effect: 40% poison,
+        effect_1: Effect::Status(Status::Poison, 40),//effect: 40% poison,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -1970,7 +1970,7 @@ pub fn spore() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: schleep,
+        effect_1: Effect::Status(Status::Sleep(0), 100),//effect: schleep,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2040,7 +2040,7 @@ pub fn stun_spore() -> Attack {
         strength: 0,
         acc: 75,
         //ap: 30,
-        effect_1: Effect::None,//effect: Paral,
+        effect_1: Effect::Status(Status::Paralysis, 100),//effect: Paral,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2054,7 +2054,7 @@ pub fn submission() -> Attack {
         strength: 80,
         acc: 80,
         //ap: 20,
-        effect_1: Effect::Recoil,//effect: 25% recoil,
+        effect_1: Effect::Recoil(0),//effect: 25% recoil,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2180,7 +2180,7 @@ pub fn take_down() -> Attack {
         strength: 90,
         acc: 85,
         //ap: 20,
-        effect_1: Effect::Recoil,//effect: 1/4 recoil,
+        effect_1: Effect::Recoil(0),//effect: 1/4 recoil,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2222,7 +2222,7 @@ pub fn thunder() -> Attack {
         strength: 110,
         acc: 70,
         //ap: 10,
-        effect_1: Effect::None,//effect: 10% paral not elec, later during fly bounce sky drop,
+        effect_1: Effect::Status(Status::Paralysis, 10),//effect: 10% paral not elec, later during fly bounce sky drop,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2236,7 +2236,7 @@ pub fn thunder_punch() -> Attack {
         strength: 75,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: 10% paral not elec,
+        effect_1: Effect::Status(Status::Paralysis, 10),//effect: 10% paral not elec,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2250,7 +2250,7 @@ pub fn thunder_shock() -> Attack {
         strength: 40,
         acc: 100,
         //ap: 30,
-        effect_1: Effect::None,//effect: 10% paral not elec,
+        effect_1: Effect::Status(Status::Paralysis, 10),//effect: 10% paral not elec,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2264,7 +2264,7 @@ pub fn thunder_wave() -> Attack {
         strength: 0,
         acc: 100,
         //ap: 20,
-        effect_1: Effect::None,//effect: paral cannot ground,
+        effect_1: Effect::Status(Status::Paralysis, 100),//effect: paral cannot ground,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2278,7 +2278,7 @@ pub fn thunderbolt() -> Attack {
         strength: 90,
         acc: 100,
         //ap: 15,
-        effect_1: Effect::None,//effect: 10% paral not elec auch later schon,
+        effect_1: Effect::Status(Status::Paralysis, 10),//effect: 10% paral not elec auch later schon,
         effect_2: Effect::None,
         //mirror move: True,
     }
@@ -2292,7 +2292,7 @@ pub fn toxic() -> Attack {
         strength: 0,
         acc: 90, //gen 1 85
         //ap: 10,
-        effect_1: Effect::None,//effect: badly poisons dmg: N*x x is 1/16 of target max hp, while badly poisend n++ every dmg by poison or leech seed
+        effect_1: Effect::Status(Status::Poison, 100),//effect: badly poisons dmg: N*x x is 1/16 of target max hp, while badly poisend n++ every dmg by poison or leech seed
         //haze/switch/end -> normal poison, rest: cured but N remains(maybe change),
         effect_2: Effect::None,
         //mirror move: True,

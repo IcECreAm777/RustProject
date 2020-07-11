@@ -322,6 +322,9 @@ impl Battle {
             soundsb[i as usize].set_volume(0.25);
             soundsb[i as usize].set_fade_in(Duration::new(1,0));
         }
+
+        self.own_sounds = soundsa;
+        self.enemy_sounds = soundsb;
     }
 
     pub fn theme1(&mut self) {

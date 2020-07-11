@@ -31,11 +31,11 @@ impl EventHandler for Game {
                 let e = self.team.teams.generate_ai_team(ctx);
                 let enemy = self.team.generate_battle_team(ctx, e);
                 
-                self.battle.init_cries(ctx);
                 self.team.assets.music.stop();
     
                 self.battle.own_team = own;
                 self.battle.enemy_team = enemy;
+                self.battle.init_cries(ctx);
                 self.fight = true;
             } else {
                 self.battle.update(ctx).unwrap()
@@ -813,7 +813,7 @@ impl EventHandler for battle::Battle {
             battle::State::PickAtk => {
                 let mut x: f32 = 25.0;
                 let mut y: f32 = 520.0; 
-                graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().scale(Point2{x:0.5,y:0.5}).dest(Point2{x:5.0+(self.selected%3)as f32*250.0,y:y-3.0+(self.selected/2) as f32*50.0}))?;
+                graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().scale(Point2{x:0.5,y:0.5}).dest(Point2{x:5.0+(self.selected%2)as f32*250.0,y:y-3.0+(self.selected/2) as f32*50.0}))?;
                 for i in 0..4 {
                     if self.own_team[self.p1].pokemon.moves[i as usize] == attacks::dummy() {
                         continue;
@@ -840,7 +840,7 @@ impl EventHandler for battle::Battle {
                         continue;
                     }
                     let color: graphics::Color = if i != self.p1 {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
-                    let poki = graphics::Text::new(format!("{} {}/{}",self.own_team[i as usize].name(), self.own_team[i as usize].current_health, self.own_team[self.p1].pokemon.health));
+                    let poki = graphics::Text::new(format!("{} {}/{}",self.own_team[i as usize].name(), self.own_team[i as usize].current_health, self.own_team[i as usize].pokemon.health));
                     graphics::draw(ctx, &poki, graphics::DrawParam::default().scale(Point2{x:1.1,y:1.1}).dest(Point2{x: x,y: y}).color(color))?;
                     match i {
                         0 | 1 => x += 300.0,
@@ -907,10 +907,10 @@ impl EventHandler for battle::Battle {
             battle::State::PickAtk => {match key {
                 KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => {self.state = battle::State::Picking; self.selected = 0; self.pick();},
-                KeyCode::Key1 => self.selected = if self.own_team[self.p1].pokemon.moves[0] == attacks::dummy() {0} else {0},
-                KeyCode::Key2 => self.selected = if self.own_team[self.p1].pokemon.moves[1] == attacks::dummy() {self.selected} else {1},
-                KeyCode::Key3 => self.selected = if self.own_team[self.p1].pokemon.moves[2] == attacks::dummy() {self.selected} else {2},
-                KeyCode::Key4 => self.selected = if self.own_team[self.p1].pokemon.moves[3] == attacks::dummy() {self.selected} else {3},
+                KeyCode::Key1 => if self.selected != 0 && self.own_team[self.p1].pokemon.moves[0] != attacks::dummy() {self.select(); self.selected = 0;},
+                KeyCode::Key2 => if self.selected != 1 && self.own_team[self.p1].pokemon.moves[1] != attacks::dummy() {self.select(); self.selected = 1;},
+                KeyCode::Key3 => if self.selected != 2 && self.own_team[self.p1].pokemon.moves[2] != attacks::dummy() {self.select(); self.selected = 2;},
+                KeyCode::Key4 => if self.selected != 3 && self.own_team[self.p1].pokemon.moves[3] != attacks::dummy() {self.select(); self.selected = 3;},
                 KeyCode::Return => {self.a1 = battle::Action::Attack(self.own_team[self.p1].pokemon.moves[self.selected as usize]); self.selected = 0; self.pick();},
                 _ => (),
                 };
@@ -918,25 +918,31 @@ impl EventHandler for battle::Battle {
             battle::State::PickSlot => {match key {
                 KeyCode::Key0 => event::quit(ctx),
                 KeyCode::Escape => {self.state = battle::State::Picking; self.selected = 0; self.pick();},
-                KeyCode::Key1 => {if self.selected != 0 {self.select();} self.selected = 0;},
-                KeyCode::Key2 => {if self.selected != 1 {self.select();} self.selected = 1;},
-                KeyCode::Key3 => {if self.selected != 2 {self.select();} self.selected = 2;},
-                KeyCode::Key4 => {if self.selected != 3 {self.select();} self.selected = 3;},
-                KeyCode::Key5 => {if self.selected != 4 {self.select();} self.selected = 4;},
-                KeyCode::Key6 => {if self.selected != 5 {self.select();} self.selected = 5;},
+                KeyCode::Key1 => if self.selected != 0 && self.own_team[0].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 0;},
+                KeyCode::Key2 => if self.selected != 1 && self.own_team[1].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 1;},
+                KeyCode::Key3 => if self.selected != 2 && self.own_team[2].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 2;},
+                KeyCode::Key4 => if self.selected != 3 && self.own_team[3].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 3;},
+                KeyCode::Key5 => if self.selected != 4 && self.own_team[4].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 4;},
+                KeyCode::Key6 => if self.selected != 5 && self.own_team[5].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 5;},
                 KeyCode::Return => if !self.own_team[self.selected as usize].dead() && self.selected != self.p1 as u8 {self.own_sent = false; self.a1 = battle::Action::Swap (self.selected as usize); self.selected = 0; self.pick();} else {self.denied();}
                 _ => (),
                 };
             },
             battle::State::SelfReplace => {match key {
                 KeyCode::Key0 => event::quit(ctx),
-                KeyCode::Key1 => {if self.selected != 0 {self.select();} self.selected = 0;},
+                KeyCode::Key1 => if self.selected != 0 && self.own_team[0].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 0;},
+                KeyCode::Key2 => if self.selected != 1 && self.own_team[1].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 1;},
+                KeyCode::Key3 => if self.selected != 2 && self.own_team[2].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 2;},
+                KeyCode::Key4 => if self.selected != 3 && self.own_team[3].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 3;},
+                KeyCode::Key5 => if self.selected != 4 && self.own_team[4].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 4;},
+                KeyCode::Key6 => if self.selected != 5 && self.own_team[5].name() != pokemon::dummy_pokemon(ctx).name {self.select(); self.selected = 5;},
+                /*KeyCode::Key1 => {if self.selected != 0 {self.select();} self.selected = 0;},
                 KeyCode::Key2 => {if self.selected != 1 {self.select();} self.selected = 1;},
                 KeyCode::Key3 => {if self.selected != 2 {self.select();} self.selected = 2;},
                 KeyCode::Key4 => {if self.selected != 3 {self.select();} self.selected = 3;},
                 KeyCode::Key5 => {if self.selected != 4 {self.select();} self.selected = 4;},
                 KeyCode::Key6 => {if self.selected != 5 {self.select();} self.selected = 5;},
-                KeyCode::Return => {if !self.own_team[self.selected as usize].dead() {self.swap(self.selected as usize, true);self.state = self.ret_state(); self.selected = 0; self.pick(); ggez::timer::sleep(Duration::new(0,500));} else {self.denied();}},
+            */    KeyCode::Return => {if !self.own_team[self.selected as usize].dead() {self.swap(self.selected as usize, true);self.state = self.ret_state(); self.selected = 0; self.pick(); ggez::timer::sleep(Duration::new(0,500));} else {self.denied();}},
                 _ => (),
                 };
             }

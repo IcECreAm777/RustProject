@@ -147,6 +147,21 @@ impl Battlemon {
         }
     }
 
+    pub fn new(pok: pokemon::Pokemon) -> Battlemon {
+        let hp = pok.health;
+        Battlemon {
+            pokemon: pok,
+            stats: [0; 7],
+            current_health: hp,
+            evasion: 0,
+            accuracy: 0,
+            status: attacks::Status::None,
+            flinch: false,
+            offset: 0,
+            died: false,
+        }
+    }
+
     pub fn stat_reset(&mut self) {
         for i in 0..7 {
             self.stats[i] = 0;

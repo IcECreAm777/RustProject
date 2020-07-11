@@ -1,9 +1,8 @@
-use ggez::{Context, ContextBuilder, GameResult, filesystem};
-use ggez::audio::{self, Source, SoundSource};
+use ggez::{Context, GameResult};
+use ggez::audio::{self, SoundSource};
 use ggez::event::{self, EventHandler, KeyCode, KeyMods};
-use ggez::graphics::{self, Image, Color, Scale, DrawMode, DrawParam};
+use ggez::graphics::{self, Image, Scale, DrawMode, DrawParam};
 use crate::default_structures::{battle, team_picking, attacks, pokemon};
-use std::fmt::Display;
 use mint::{self, Point2, Vector2};
 use std::time::Duration;
 
@@ -503,16 +502,9 @@ impl TeamPickingGame {
         Ok(())
     }
 
-    pub fn generate_battle_team(&mut self, ctx: &mut Context, team: [pokemon::Pokemon; 6]) -> [battle::Battlemon; 6] {
-        /*
-        let fml = []
-        for ..
-            fml [i] = new
-        fml
-        */
-
-        [battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),
-        battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),]
+    pub fn generate_battle_team(&mut self, _ctx: &mut Context, team: [pokemon::Pokemon; 6]) -> [battle::Battlemon; 6] {
+        [battle::Battlemon::new(team[0].clone()),battle::Battlemon::new(team[1].clone()),battle::Battlemon::new(team[2].clone()),
+        battle::Battlemon::new(team[3].clone()),battle::Battlemon::new(team[4].clone()),battle::Battlemon::new(team[5].clone()),]
     }
 }
 
@@ -822,9 +814,9 @@ impl EventHandler for battle::Battle {
                 let mut y: f32 = 520.0; 
                 graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().scale(Point2{x:0.5,y:0.5}).dest(Point2{x:5.0+(self.selected%3)as f32*250.0,y:y-3.0+(self.selected/2) as f32*50.0}))?;
                 for i in 0..4 {
-                    /*if self.own_team[self.p1].pokemon.moves[i as usize] == attacks::dummy() {
+                    if self.own_team[self.p1].pokemon.moves[i as usize] == attacks::dummy() {
                         continue;
-                    }*/
+                    }
                     let color: graphics::Color = if i != self.selected {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
                     let atki = graphics::Text::new(self.own_team[self.p1].pokemon.moves[i as usize].name());
                     graphics::draw(ctx, &atki, graphics::DrawParam::default().scale(Point2{x:1.25,y:1.25}).dest(Point2{x: x,y: y}).color(color))?;
@@ -843,9 +835,9 @@ impl EventHandler for battle::Battle {
                 let mut y: f32 = 520.0;
                 graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().scale(Point2{x:0.5,y:0.5}).dest(Point2{x:5.0+(self.selected%3)as f32*300.0,y:y-3.0+(self.selected/3) as f32*50.0}))?;
                 for i in 0..6 {
-                    /*if self.own_team[i as usize].name() == "Dummy" {
+                    if self.own_team[i as usize].name() == "Dummy" {
                         continue;
-                    }*/
+                    }
                     let color: graphics::Color = if i != self.p1 {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
                     let poki = graphics::Text::new(format!("{} {}/{}",self.own_team[i as usize].name(), self.own_team[i as usize].current_health, self.own_team[self.p1].pokemon.health));
                     graphics::draw(ctx, &poki, graphics::DrawParam::default().scale(Point2{x:1.1,y:1.1}).dest(Point2{x: x,y: y}).color(color))?;

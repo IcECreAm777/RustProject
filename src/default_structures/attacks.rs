@@ -1984,7 +1984,7 @@ pub fn string_shot() -> Attack {
     }
 }
 
-pub fn struggle() -> Attack {
+pub fn _struggle() -> Attack {
     Attack {
         name: "Struggle",
         etype: Type::Normal,

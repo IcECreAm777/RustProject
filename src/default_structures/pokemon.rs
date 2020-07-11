@@ -3,7 +3,7 @@ use crate::default_structures::{Type, attacks};
 use crate::game_assets::PokemonAssets;
 use std::fmt::{Display, Result, Formatter};
 use std::hash::{Hash, Hasher};
-use ggez::{Context, GameResult};
+use ggez::{Context};
 
 #[derive(Clone)]
 pub struct Pokemon {

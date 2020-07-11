@@ -92,10 +92,10 @@ pub fn dummy() -> Attack {
         etype: Type::Normal,
         atype: AttackType::Physical,
         strength: 25,
-        acc: 50,
+        acc: 75,
         //ap: 0,
-        effect_1: Effect::StatusChange1(1,-1,100),
-        effect_2: Effect::Recoil(0),
+        effect_1: Effect::StatusChange1(1,-1,0),
+        effect_2: Effect::StatusChange1(1,2,50),
         //mirror move: false
     }
 }

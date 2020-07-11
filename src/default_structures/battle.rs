@@ -347,6 +347,10 @@ impl Battle {
         match self.ret {
             State::After2 => State::After2,
             State::Between => State::Between,
+            State::E1 => State::E1,
+            State::E2 => State::E2,
+            State::E3 => State::E3,
+            State::E4 => State::E4,
             State::Picking => {self.text = "What will you do?".to_string(); self.textcount = 0; State::Picking},
             _ => State::None,
         }
@@ -389,9 +393,9 @@ impl Battle {
 
     // function to compare the speed values of two Battlemon
     pub fn speed_test(&mut self) -> bool {
-        (self.own_team[self.p1].pokemon.init as i32 + self.numerator(true,5)*self.own_team[self.p1].pokemon.init as i32 / self.denominator(true,5)) as f32 *
+        (self.numerator(true,5)*self.own_team[self.p1].pokemon.init/ self.denominator(true,5)) as f32 *
         (if self.own_team[self.p1].status == attacks::Status::Paralysis {0.5} else {1.0}) >= 
-        (self.enemy_team[self.p2].pokemon.init as i32 + self.numerator(false,5)*self.enemy_team[self.p2].pokemon.init as i32 / self.denominator(false,5)) as f32 *
+        (self.numerator(false,5)*self.enemy_team[self.p2].pokemon.init/ self.denominator(false,5)) as f32 *
         (if self.enemy_team[self.p2].status == attacks::Status::Paralysis {0.5} else {1.0})
         // TODO: implement check for paralysis -> if so init - 75% or 50% (gen 7/8 orso)
     }
@@ -539,12 +543,12 @@ impl Battle {
             let brt: f32= if self.own_team[self.p1].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
         
             let basic: f32 = if atk.atype == attacks::AttackType::Physical 
-                                    {(((42*atk.strength*(self.own_team[self.p1].pokemon.atk+self.numerator(true,1)*self.own_team[self.p1].pokemon.atk/self.denominator(true,1)))as f32)/
-                                            ((50*(self.enemy_team[self.p2].pokemon.def+self.numerator(false,3)*self.enemy_team[self.p2].pokemon.def/self.denominator(false,3)))as f32))/
+                                    {(((42*atk.strength*(self.numerator(true,1)*self.own_team[self.p1].pokemon.atk/self.denominator(true,1)))as f32)/
+                                            ((50*(self.numerator(false,3)*self.enemy_team[self.p2].pokemon.def/self.denominator(false,3)))as f32))/
                                         brt+2.0
                                     }
-                             else   {(((42*atk.strength*(self.own_team[self.p1].pokemon.sp_atk+self.numerator(true,2)*self.own_team[self.p1].pokemon.sp_atk/self.denominator(true,2)))as f32)/
-                                            ((50*(self.enemy_team[self.p2].pokemon.sp_def+self.numerator(false,4)*self.enemy_team[self.p2].pokemon.sp_def/self.denominator(false,4)))as f32))/
+                             else   {(((42*atk.strength*(self.numerator(true,2)*self.own_team[self.p1].pokemon.sp_atk/self.denominator(true,2)))as f32)/
+                                            ((50*(self.numerator(false,4)*self.enemy_team[self.p2].pokemon.sp_def/self.denominator(false,4)))as f32))/
                                         brt+2.0};
             let stab: f32 = stab(&atk.etype, &self.own_team[self.p1].pokemon);
             let z = rand::thread_rng().gen_range(85,101) as f32;
@@ -559,11 +563,11 @@ impl Battle {
             let brt: f32 = if self.enemy_team[self.p2].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
 
             let basic: f32 = if atk.atype == attacks::AttackType::Physical
-                                    {(((42*atk.strength*(self.enemy_team[self.p2].pokemon.atk+self.numerator(false,1)*self.enemy_team[self.p2].pokemon.atk/self.denominator(false,1)))as f32)/
-                                            ((50*(self.own_team[self.p1].pokemon.def+self.numerator(true,3)*self.own_team[self.p1].pokemon.def/self.denominator(true,3)))as f32))/
+                                    {(((42*atk.strength*(self.numerator(false,1)*self.enemy_team[self.p2].pokemon.atk/self.denominator(false,1)))as f32)/
+                                            ((50*(self.numerator(true,3)*self.own_team[self.p1].pokemon.def/self.denominator(true,3)))as f32))/
                                         brt+2.0}
-                            else    {(((42*atk.strength*(self.enemy_team[self.p2].pokemon.sp_atk+self.numerator(false,2)*self.enemy_team[self.p2].pokemon.sp_atk/self.denominator(false,2)))as f32)/
-                                            ((50*(self.own_team[self.p1].pokemon.sp_def+self.numerator(true,4)*self.own_team[self.p1].pokemon.sp_def/self.denominator(true,4)))as f32))/
+                            else    {(((42*atk.strength*(self.numerator(false,2)*self.enemy_team[self.p2].pokemon.sp_atk/self.denominator(false,2)))as f32)/
+                                            ((50*(self.numerator(true,4)*self.own_team[self.p1].pokemon.sp_def/self.denominator(true,4)))as f32))/
                                     brt+2.0};
             let stab: f32 = stab(&atk.etype, &self.enemy_team[self.p2].pokemon);
             let z = rand::thread_rng().gen_range(85,101) as f32;

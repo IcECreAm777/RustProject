@@ -584,8 +584,7 @@ impl EventHandler for battle::Battle {
                             if i.current_health != 0 {done = false; break;}
                         }
                         self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
-                        if !done {self.enemy_swap();} else {event::quit(ctx);}
-                        self.state = self.ret_state();
+                        if !done {self.enemy_swap(); self.state = self.ret_state();} else {event::quit(ctx);}
                     }
                 }
                 _ => {},

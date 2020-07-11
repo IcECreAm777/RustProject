@@ -298,6 +298,32 @@ impl Battle {
         }
     }
 
+    pub fn init_cries(&mut self, ctx: &mut Context) {
+        let mut soundsa: [audio::Source; 6] = [
+            audio::Source::from_data(ctx, self.own_team[0].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.own_team[1].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.own_team[2].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.own_team[3].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.own_team[4].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.own_team[5].pokemon.assets.battle_cry.clone()).unwrap(),
+        ];
+        let mut soundsb: [audio::Source; 6] = [
+            audio::Source::from_data(ctx, self.enemy_team[0].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.enemy_team[1].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.enemy_team[2].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.enemy_team[3].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.enemy_team[4].pokemon.assets.battle_cry.clone()).unwrap(),
+            audio::Source::from_data(ctx, self.enemy_team[5].pokemon.assets.battle_cry.clone()).unwrap(),
+        ];
+
+        for i in 0..6 {
+            soundsa[i as usize].set_volume(0.25);
+            soundsa[i as usize].set_fade_in(Duration::new(1,0));
+            soundsb[i as usize].set_volume(0.25);
+            soundsb[i as usize].set_fade_in(Duration::new(1,0));
+        }
+    }
+
     pub fn theme1(&mut self) {
         let _ = self.assets.gen1.play();
     }

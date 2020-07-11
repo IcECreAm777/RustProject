@@ -30,7 +30,8 @@ impl EventHandler for Game {
                 let own = self.team.generate_battle_team(ctx, o);
                 let e = self.team.teams.generate_ai_team(ctx);
                 let enemy = self.team.generate_battle_team(ctx, e);
-    
+                
+                self.battle.init_cries(ctx);
                 self.team.assets.music.stop();
     
                 self.battle.own_team = own;

@@ -594,8 +594,6 @@ impl EventHandler for battle::Battle {
             Ok(())
         }
 
-        // TODO: implement death "animation" and edit self.sent accordingly
-
         else {
             if self.dmg == 0 {} 
             else { 
@@ -680,13 +678,13 @@ impl EventHandler for battle::Battle {
             let fract: f32 = (90.0-(self.own_team[self.p1].offset*3) as f32)/90.0;
             let rect = graphics::Rect::new(0.0,0.0,1.0,fract);
             self.own_team[self.p1].offset();
-            graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().src(rect).scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:30.0,y:200.0+8.5*(self.own_team[self.p1].offset as f32)}))?;
+            graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().src(rect).scale(Point2{x:4.0,y:4.0}).dest(Point2{x:30.0,y:200.0+8.5*(self.own_team[self.p1].offset as f32)}))?;
             match self.own_team[self.p1].status {
-                attacks::Status::Burn => graphics::draw(ctx, &self.assets.brn, graphics::DrawParam::default().dest(mint::Vector2{x:230.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Freeze(_val) => graphics::draw(ctx, &self.assets.frz, graphics::DrawParam::default().dest(mint::Vector2{x:230.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Paralysis => graphics::draw(ctx, &self.assets.par, graphics::DrawParam::default().dest(mint::Vector2{x:230.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Sleep(_val) => graphics::draw(ctx, &self.assets.slp, graphics::DrawParam::default().dest(mint::Vector2{x:230.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Poison => graphics::draw(ctx, &self.assets.psn, graphics::DrawParam::default().dest(mint::Vector2{x:230.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
+                attacks::Status::Burn => graphics::draw(ctx, &self.assets.brn, graphics::DrawParam::default().dest(Point2{x:230.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Freeze(_val) => graphics::draw(ctx, &self.assets.frz, graphics::DrawParam::default().dest(Point2{x:230.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Paralysis => graphics::draw(ctx, &self.assets.par, graphics::DrawParam::default().dest(Point2{x:230.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Sleep(_val) => graphics::draw(ctx, &self.assets.slp, graphics::DrawParam::default().dest(Point2{x:230.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Poison => graphics::draw(ctx, &self.assets.psn, graphics::DrawParam::default().dest(Point2{x:230.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
                 _ => {},
             };
         }
@@ -699,18 +697,18 @@ impl EventHandler for battle::Battle {
             let fract: f32 = (90.0-(self.enemy_team[self.p2].offset*3) as f32)/90.0;
             let rect = graphics::Rect::new(0.0,0.0,1.0,fract as f32);
             self.enemy_team[self.p2].offset();
-            graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().src(rect).scale(mint::Vector2{x:4.0,y:4.0}).dest(Point2{x:514.0,y:200.0+8.5*self.enemy_team[self.p2].offset as f32}))?;
+            graphics::draw(ctx, &self.enemy_team[self.p2].pokemon.assets.front_sprite, graphics::DrawParam::default().src(rect).scale(Point2{x:4.0,y:4.0}).dest(Point2{x:514.0,y:200.0+8.5*self.enemy_team[self.p2].offset as f32}))?;
             match self.enemy_team[self.p2].status {
-                attacks::Status::Burn => graphics::draw(ctx, &self.assets.brn, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Freeze(_val) => graphics::draw(ctx, &self.assets.frz, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Paralysis => graphics::draw(ctx, &self.assets.par, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Sleep(_val) => graphics::draw(ctx, &self.assets.slp, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
-                attacks::Status::Poison => graphics::draw(ctx, &self.assets.psn, graphics::DrawParam::default().dest(mint::Vector2{x:530.0,y:10.0}).scale(mint::Vector2{x:0.5,y:0.5}))?,
+                attacks::Status::Burn => graphics::draw(ctx, &self.assets.brn, graphics::DrawParam::default().dest(Point2{x:530.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Freeze(_val) => graphics::draw(ctx, &self.assets.frz, graphics::DrawParam::default().dest(Point2{x:530.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Paralysis => graphics::draw(ctx, &self.assets.par, graphics::DrawParam::default().dest(Point2{x:530.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Sleep(_val) => graphics::draw(ctx, &self.assets.slp, graphics::DrawParam::default().dest(Point2{x:530.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
+                attacks::Status::Poison => graphics::draw(ctx, &self.assets.psn, graphics::DrawParam::default().dest(Point2{x:530.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
                 _ => {},
             };
         }
 
-        graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(Point2{x:345.0,y:0.0}).scale(mint::Vector2{x:0.5,y:0.5}))?; 
+        graphics::draw(ctx, &self.assets.ball, graphics::DrawParam::default().dest(Point2{x:345.0,y:0.0}).scale(Point2{x:0.5,y:0.5}))?; 
         
         match self.state {
             battle::State::PickAtk => {
@@ -778,18 +776,18 @@ impl EventHandler for battle::Battle {
         }
         if self.own_sent {
             let text1 = graphics::Text::new(self.own_team[self.p1].name());
-            graphics::draw(ctx, &text1, graphics::DrawParam::default().dest(Point2{x:17.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+            graphics::draw(ctx, &text1, graphics::DrawParam::default().dest(Point2{x:17.0,y:12.0}).scale(Point2{x:1.25,y:1.25}).color(graphics::BLACK))?;
             let healthh1 = format!("{}/{}", self.own_team[self.p1].current_health.to_string(), self.own_team[self.p1].health().to_string());
             let hn1 = graphics::Text::new(healthh1);
-            graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(Point2{x:14.0,y:52.0}).scale(mint::Vector2{x:1.20,y:1.20}).color(graphics::BLACK))?;
+            graphics::draw(ctx, &hn1, graphics::DrawParam::default().dest(Point2{x:14.0,y:52.0}).scale(Point2{x:1.20,y:1.20}).color(graphics::BLACK))?;
         }
         if self.enemy_sent {
             let text2 = graphics::Text::new(self.enemy_team[self.p2].name());
-            graphics::draw(ctx, &text2, graphics::DrawParam::default().dest(Point2{x:540.0,y:12.0}).scale(mint::Vector2{x:1.25,y:1.25}).color(graphics::BLACK))?;
+            graphics::draw(ctx, &text2, graphics::DrawParam::default().dest(Point2{x:540.0,y:12.0}).scale(Point2{x:1.25,y:1.25}).color(graphics::BLACK))?;
             // TODO: calculation for name length for 2nd name text
             let healthh2 = format!("{}/{}", self.enemy_team[self.p2].current_health.to_string(), self.enemy_team[self.p2].health().to_string());
             let hn2 = graphics::Text::new(healthh2);
-            graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(Point2{x:717.0,y:52.0}).scale(mint::Vector2{x:1.2,y:1.2}).color(graphics::BLACK))?;
+            graphics::draw(ctx, &hn2, graphics::DrawParam::default().dest(Point2{x:717.0,y:52.0}).scale(Point2{x:1.2,y:1.2}).color(graphics::BLACK))?;
         }
         graphics::present(ctx)?;
 

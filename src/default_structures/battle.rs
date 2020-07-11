@@ -33,6 +33,8 @@ pub struct BattleAssets {
     pub denied: audio::Source,
     pub death: audio::Source,
     pub low: audio::Source,
+    pub up: audio::Source,
+    pub down: audio::Source,
     pub send: audio::Source,
     pub weak: audio::Source,
     pub normal: audio::Source,
@@ -71,6 +73,10 @@ impl BattleAssets {
         death.set_volume(0.25);
         let mut low = audio::Source::new(ctx, "/sounds/low.wav").unwrap();
         low.set_volume(0.25);
+        let mut up = audio::Source::new(ctx, "/sounds/up.wav").unwrap();
+        up.set_volume(0.25);
+        let mut down = audio::Source::new(ctx, "/sounds/down.wav").unwrap();
+        down.set_volume(0.25);
         let mut send = audio::Source::new(ctx, "/sounds/send.wav").unwrap();
         send.set_volume(0.25);
         let mut weak = audio::Source::new(ctx, "/sounds/weak.wav").unwrap();
@@ -101,6 +107,8 @@ impl BattleAssets {
             death: death,
             low: low,
             send: send,
+            up: up,
+            down: down,
             weak: weak,
             normal: normal,
             strong: strong,
@@ -113,6 +121,7 @@ impl BattleAssets {
 pub struct Battlemon {
     pub pokemon: pokemon::Pokemon,
     //pub assets: PokemonAssets,
+    pub stats: [i32; 7], //atk, spatk, def, spdef, init, acc, eva
     pub current_health: u32,
     pub evasion: u32,
     pub accuracy: u32,
@@ -127,6 +136,7 @@ impl Battlemon {
     pub fn dummy(ctx: &mut Context) -> Battlemon {
         Battlemon {
             pokemon: default_structures::pokemon::dummy_pokemon(ctx),
+            stats: [0; 7],
             current_health: pokemon::dummy_pokemon(ctx).health,
             evasion: 0,
             accuracy: 0,
@@ -134,6 +144,12 @@ impl Battlemon {
             flinch: false,
             offset: 0,
             died: false,
+        }
+    }
+
+    pub fn stat_reset(&mut self) {
+        for i in 0..7 {
+            self.stats[i] = 0;
         }
     }
 
@@ -303,6 +319,14 @@ impl Battle {
         let _ = self.assets.send.play();
     }
 
+    pub fn up(&mut self) {
+        let _ = self.assets.up.play();
+    }
+
+    pub fn down(&mut self) {
+        let _ = self.assets.down.play();
+    }
+
     pub fn weak(&mut self) {
         let _ = self.assets.weak.play();
     }
@@ -346,7 +370,7 @@ impl Battle {
     }
 
     // determine upon picking of both actions, which to perform first
-    pub fn prio(&self) -> State {
+    pub fn prio(&mut self) -> State {
         match self.a1 {
             Action::Swap(_) => return State::A1,
             _ => {},
@@ -364,10 +388,10 @@ impl Battle {
     }
 
     // function to compare the speed values of two Battlemon
-    pub fn speed_test(&self) -> bool {
-        self.own_team[self.p1].pokemon.init as f32 *
+    pub fn speed_test(&mut self) -> bool {
+        (self.own_team[self.p1].pokemon.init as i32 + self.numerator(true,5)*self.own_team[self.p1].pokemon.init as i32 / self.denominator(true,5)) as f32 *
         (if self.own_team[self.p1].status == attacks::Status::Paralysis {0.5} else {1.0}) >= 
-        self.enemy_team[self.p2].pokemon.init as f32 *
+        (self.enemy_team[self.p2].pokemon.init as i32 + self.numerator(false,5)*self.enemy_team[self.p2].pokemon.init as i32 / self.denominator(false,5)) as f32 *
         (if self.enemy_team[self.p2].status == attacks::Status::Paralysis {0.5} else {1.0})
         // TODO: implement check for paralysis -> if so init - 75% or 50% (gen 7/8 orso)
     }
@@ -451,6 +475,60 @@ impl Battle {
         }
     }
 
+    pub fn numerator(&mut self, user: bool, slot: usize) -> i32 {
+        let val: i32;
+        if user {
+            val = match self.own_team[self.p1].stats[slot] {
+                1 => 3,
+                2 => 4,
+                3 => 5,
+                4 => 6,
+                5 => 7,
+                6 => 8,
+                _ => 2
+            };
+        }
+        else {
+            val = match self.enemy_team[self.p2].stats[slot] {
+                1 => 3,
+                2 => 4,
+                3 => 5,
+                4 => 6,
+                5 => 7,
+                6 => 8,
+                _ => 2
+            };
+        }
+        val
+    }
+
+    pub fn denominator(&mut self, user: bool, slot: usize) -> i32 {
+        let val: i32;
+        if user {
+            val = match self.own_team[self.p1].stats[slot] {
+                -1 => 3,
+                -2 => 4,
+                -3 => 5,
+                -4 => 6,
+                -5 => 7,
+                -6 => 8,
+                _ => 2,
+            };
+        }
+        else {
+            val = match self.enemy_team[self.p2].stats[slot] {
+                -1 => 3,
+                -2 => 4,
+                -3 => 5,
+                -4 => 6,
+                -5 => 7,
+                -6 => 8,
+                _ => 2,
+            };
+        }
+        val
+    }
+
     // basic normal atk calc
     pub fn dmg_attack(&mut self, atk: attacks::Attack, target: bool) {
         let user = !(target);
@@ -461,8 +539,13 @@ impl Battle {
             let brt: f32= if self.own_team[self.p1].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
         
             let basic: f32 = if atk.atype == attacks::AttackType::Physical 
-                                    {(((42*atk.strength*(self.own_team[self.p1].pokemon.atk))as f32)/((50*self.enemy_team[self.p2].pokemon.def)as f32))/(brt as f32)+2.0}
-                             else {((42*atk.strength*(self.own_team[self.p1].pokemon.sp_atk))as f32)/((50*self.enemy_team[self.p2].pokemon.sp_def)as f32)/(brt)+2.0};
+                                    {(((42*atk.strength*(self.own_team[self.p1].pokemon.atk+self.numerator(true,1)*self.own_team[self.p1].pokemon.atk/self.denominator(true,1)))as f32)/
+                                            ((50*(self.enemy_team[self.p2].pokemon.def+self.numerator(false,3)*self.enemy_team[self.p2].pokemon.def/self.denominator(false,3)))as f32))/
+                                        brt+2.0
+                                    }
+                             else   {(((42*atk.strength*(self.own_team[self.p1].pokemon.sp_atk+self.numerator(true,2)*self.own_team[self.p1].pokemon.sp_atk/self.denominator(true,2)))as f32)/
+                                            ((50*(self.enemy_team[self.p2].pokemon.sp_def+self.numerator(false,4)*self.enemy_team[self.p2].pokemon.sp_def/self.denominator(false,4)))as f32))/
+                                        brt+2.0};
             let stab: f32 = stab(&atk.etype, &self.own_team[self.p1].pokemon);
             let z = rand::thread_rng().gen_range(85,101) as f32;
             let damage: f32 = basic*_mult*stab*(z/100.0); //TODO: Crit
@@ -474,10 +557,14 @@ impl Battle {
         else { if miss <= atk.acc {
             _mult = effective(&atk.etype, &self.own_team[self.p1].pokemon.ftype)*effective(&atk.etype, &self.own_team[self.p1].pokemon.stype);
             let brt: f32 = if self.enemy_team[self.p2].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
-        
+
             let basic: f32 = if atk.atype == attacks::AttackType::Physical
-                                    {(((42*atk.strength*(self.enemy_team[self.p2].pokemon.atk))as f32)/((50*self.own_team[self.p1].pokemon.def)as f32))/(brt)+2.0}
-                            else {((42*atk.strength*(self.enemy_team[self.p2].pokemon.sp_atk))as f32)/((50*self.own_team[self.p1].pokemon.sp_def)as f32)/(brt)+2.0};
+                                    {(((42*atk.strength*(self.enemy_team[self.p2].pokemon.atk+self.numerator(false,1)*self.enemy_team[self.p2].pokemon.atk/self.denominator(false,1)))as f32)/
+                                            ((50*(self.own_team[self.p1].pokemon.def+self.numerator(true,3)*self.own_team[self.p1].pokemon.def/self.denominator(true,3)))as f32))/
+                                        brt+2.0}
+                            else    {(((42*atk.strength*(self.enemy_team[self.p2].pokemon.sp_atk+self.numerator(false,2)*self.enemy_team[self.p2].pokemon.sp_atk/self.denominator(false,2)))as f32)/
+                                            ((50*(self.own_team[self.p1].pokemon.sp_def+self.numerator(true,4)*self.own_team[self.p1].pokemon.sp_def/self.denominator(true,4)))as f32))/
+                                    brt+2.0};
             let stab: f32 = stab(&atk.etype, &self.enemy_team[self.p2].pokemon);
             let z = rand::thread_rng().gen_range(85,101) as f32;
             let damage: f32 = basic*_mult*stab*(z/100.0); //TODO: Crit
@@ -485,6 +572,7 @@ impl Battle {
             self.user = true;
             self.set_effects(&atk, user);
         }}
+        // TODO: move set_effects into below here and add checks for conditions depending on misses OR apply certain effects either way before dmg calc
         if user {
             self.text = format!("{} used {}!", self.own_team[self.p1].name(), atk.name);
             match (_mult*4.0) as u8 {
@@ -535,6 +623,10 @@ impl Battle {
                     if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
                 attacks::Effect::Recoil(_) => attacks::Effect::Recoil(self.dmg/4),
                 attacks::Effect::Absorb(_) => attacks::Effect::Absorb(self.dmg/2),
+                attacks::Effect::StatusChange1(slot, value, chance) => {
+                    if rand::thread_rng().gen_range(1,101) <= chance {attacks::Effect::StatusChange1(slot, value, chance)}
+                    else {attacks::Effect::None}
+                },
                 _ => attacks::Effect::None,
             };
             self.e1 = to_set1;
@@ -545,6 +637,10 @@ impl Battle {
                     if rand::thread_rng().gen_range(0,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
                 attacks::Effect::Flinch33 => 
                     if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
+                attacks::Effect::StatusChange1(slot, value, chance) => {
+                    if rand::thread_rng().gen_range(1,101) <= chance {attacks::Effect::StatusChange1(slot, value, chance)}
+                    else {attacks::Effect::None}
+                },    
                 attacks::Effect::Recoil(_) => attacks::Effect::Recoil(self.dmg/4),
                 attacks::Effect::Absorb(_) => attacks::Effect::Absorb(self.dmg/2),
                 _ => attacks::Effect::None,
@@ -559,6 +655,10 @@ impl Battle {
                     if rand::thread_rng().gen_range(0,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
                 attacks::Effect::Flinch33 => 
                     if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
+                attacks::Effect::StatusChange1(slot, value, chance) => {
+                    if rand::thread_rng().gen_range(1,101) <= chance {attacks::Effect::StatusChange1(slot, value, chance)}
+                    else {attacks::Effect::None}
+                },    
                 attacks::Effect::Recoil(_) => attacks::Effect::Recoil(self.dmg/4),
                 attacks::Effect::Absorb(_) => attacks::Effect::Absorb(self.dmg/2),
                 _ => attacks::Effect::None,
@@ -571,6 +671,10 @@ impl Battle {
                     if rand::thread_rng().gen_range(0,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
                 attacks::Effect::Flinch33 => 
                     if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
+                attacks::Effect::StatusChange1(slot, value, chance) => {
+                    if rand::thread_rng().gen_range(1,101) <= chance {attacks::Effect::StatusChange1(slot, value, chance)}
+                    else {attacks::Effect::None}
+                },
                 attacks::Effect::Recoil(_) => attacks::Effect::Recoil(self.dmg/4),
                 attacks::Effect::Absorb(_) => attacks::Effect::Absorb(self.dmg/2),
                 _ => attacks::Effect::None,
@@ -620,6 +724,58 @@ impl Battle {
                         };
                     } 
                 },
+
+                attacks::Effect::StatusChange1(slot, value, _) => {
+                    let stat: &str = match slot {
+                        1 => "Attack",
+                        2 => "Special Attack",
+                        3 => "Defense",
+                        4 => "Special Defense",
+                        5 => "Speed",
+                        6 => "Accuracy",
+                        7 => "Evasion",
+                        _ => "",
+                    };
+                    if value > 0 {
+                        if self.own_team[self.p1].stats[slot] < 6 {
+                            self.own_team[self.p1].stats[slot] += value;
+                            if self.own_team[self.p1].stats[slot] > 6 {self.own_team[self.p1].stats[slot] = 6;}
+                            let much: &str = match value {
+                                1 => "rose!",
+                                2 => "rose sharpyl!",
+                                _ => "", 
+                            };
+                            self.text = format!("{}'s {} {}", self.own_team[self.p1].name(), stat, much);
+                            self.textcount = 0;
+                            self.up();
+                        } 
+                        else {
+                            //self.own_team[self.p1].stats[slot] = 6;
+                            self.text = format!("{}'s {} won't go any higher!", self.own_team[self.p1].name(), stat);
+                            self.textcount = 0;
+                        }
+                    }
+                    else {
+                        if self.enemy_team[self.p2].stats[slot] > -6 {
+                            self.enemy_team[self.p2].stats[slot] += value;
+                            if self.enemy_team[self.p2].stats[slot] < -6 {self.enemy_team[self.p2].stats[slot] = -6;}
+                            let much: &str = match value {
+                                -1 => "fell!",
+                                -2 => "harshly fell",
+                                _ => "",
+                            };
+                            self.text = format!("Enemy {}'s {} {}", self.enemy_team[self.p2].name(), stat, much);
+                            self.textcount = 0;
+                            self.down();
+                        }
+                        else {
+                            self.text = format!("Enemy {}'s {} won't go any lower!", self.enemy_team[self.p2].name(), stat);
+                            self.textcount = 0;
+                        }
+                    }
+                    self.timer = 120;
+                },
+
                 attacks::Effect::Recoil(val) => {
                     self.user = true;
                     self.dmg = val;
@@ -678,6 +834,61 @@ impl Battle {
                         };
                     } 
                 },
+
+                attacks::Effect::StatusChange1(slot, value, _) => {
+                    let stat: &str = match slot {
+                        1 => "Attack",
+                        2 => "Special Attack",
+                        3 => "Defense",
+                        4 => "Special Defense",
+                        5 => "Speed",
+                        6 => "Accuracy",
+                        7 => "Evasion",
+                        _ => "",
+                    };
+                    if value > 0 {
+                        if self.enemy_team[self.p2].stats[slot] < 6 {
+                            self.enemy_team[self.p2].stats[slot] += value;
+                            if self.enemy_team[self.p2].stats[slot] > 6 {self.enemy_team[self.p2].stats[slot] = 6;}
+                            let much: &str = match value {
+                                1 => "rose!",
+                                2 => "rose sharpyl!",
+                                _ => "", 
+                            };
+                            self.text = format!("Enemy {}'s {} {}", self.enemy_team[self.p2].name(), stat, much);
+                            self.textcount = 0;
+                            self.timer = 90;
+                            self.up();
+                        } 
+                        else {
+                            //self.own_team[self.p1].stats[slot] = 6;
+                            self.text = format!("Enemy {}'s {} won't go any higher!", self.enemy_team[self.p2].name(), stat);
+                            self.textcount = 0;
+                            self.timer = 90;
+                        }
+                    }
+                    else {
+                        if self.own_team[self.p1].stats[slot] > -6 {
+                            self.own_team[self.p1].stats[slot] += value;
+                            if self.own_team[self.p1].stats[slot] < -6 {self.own_team[self.p1].stats[slot] = -6;}
+                            let much: &str = match value {
+                                -1 => "fell!",
+                                -2 => "harshly fell",
+                                _ => "",
+                            };
+                            self.text = format!("{}'s {} {}", self.own_team[self.p1].name(), stat, much);
+                            self.textcount = 0;
+                            self.timer = 90;
+                            self.down();
+                        }
+                        else {
+                            self.text = format!("{}'s {} won't go any lower!", self.own_team[self.p1].name(), stat);
+                            self.textcount = 0;
+                            self.timer = 90;
+                        }
+                    }
+                },
+
                 attacks::Effect::Recoil(val) => {
                     self.user = false;
                     self.dmg = val;
@@ -703,10 +914,12 @@ impl Battle {
     pub fn swap(&mut self, slot: usize, which: bool) {
         if which {
             self.own_team[self.p1].offset = 0;
+            self.own_team[self.p1].stat_reset();
             self.p1 = slot;
         }
         else {
             self.enemy_team[self.p2].offset = 0;
+            self.enemy_team[self.p2].stat_reset();
             self.p2 = slot;
         }
         self.send();

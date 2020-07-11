@@ -8,17 +8,93 @@ use mint::{self, Point2, Vector2};
 use std::time::Duration;
 
 // **********************************************************************
+// Main Game
+// **********************************************************************
+
+pub struct Game {
+    team: TeamPickingGame,
+    battle: battle::Battle,
+    picking: bool,
+    fight: bool
+}
+
+impl EventHandler for Game {
+    fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
+
+        if self.picking {
+            self.picking = !self.team.finished;
+            self.team.update(ctx).unwrap()
+        } else {
+            if !self.fight {
+                let o = [self.team.teams.team[0].clone(), self.team.teams.team[1].clone(), self.team.teams.team[2].clone(), self.team.teams.team[3].clone(), 
+                    self.team.teams.team[4].clone(), self.team.teams.team[5].clone()];
+                let own = self.team.generate_battle_team(ctx, o);
+                let e = self.team.teams.generate_ai_team(ctx);
+                let enemy = self.team.generate_battle_team(ctx, e);
+    
+                self.team.assets.music.stop();
+    
+                self.battle.own_team = own;
+                self.battle.enemy_team = enemy;
+                self.fight = true;
+            } else {
+                self.battle.update(ctx).unwrap()
+            }
+        }
+        
+        Ok(())
+    }
+
+    fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
+        if self.picking {
+            self.team.draw(ctx).unwrap()
+        } else {
+            self.battle.draw(ctx).unwrap()
+        }
+
+        Ok(())
+    }
+
+    fn key_down_event(&mut self, ctx: &mut Context, keycode: KeyCode, _keymods: KeyMods, _repeat: bool) {
+        if self.picking {
+            self.team.key_down_event(ctx, keycode, _keymods, _repeat);
+        } else {
+            self.battle.key_down_event(ctx, keycode, _keymods, _repeat);
+        }
+    }
+}
+
+impl Game {
+    pub fn new(ctx: &mut Context) -> GameResult<Game> {
+        let team = TeamPickingGame::new(ctx);
+        let battle = battle::Battle::new(
+        [battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),
+                battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),], 
+        [battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),
+                battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),],
+            ctx);
+
+        Ok(Game {
+            team, 
+            battle, 
+            picking: true,
+            fight: false
+        })
+    }
+}
+
+// **********************************************************************
 // Assets used in every scene
 // **********************************************************************
 
 /// Assets used in every scene
 /// On Loading all assets are initialized
-struct GeneralGameAssets {
+pub struct GeneralGameAssets {
     title_font: graphics::Font
 }
 
 impl GeneralGameAssets {
-    fn new(ctx: &mut Context) -> GameResult<GeneralGameAssets> {
+    pub fn new(ctx: &mut Context) -> GameResult<GeneralGameAssets> {
         let title_font = graphics::Font::new(ctx, "/Pokemon_Solid.ttf")?;
 
         Ok(GeneralGameAssets {
@@ -34,8 +110,10 @@ struct TeamPickingAssets {
 
 impl TeamPickingAssets {
     fn new(ctx: &mut Context) -> GameResult<TeamPickingAssets> {
-        let music = audio::Source::new(ctx, "/sounds/team_picking.mp3")?;
+        let mut music = audio::Source::new(ctx, "/sounds/team_picking.mp3")?;
         let background = Image::new(ctx, "/Evening_Sunshine.jpg")?;
+
+        music.set_repeat(true);
 
         Ok(TeamPickingAssets {
             music,
@@ -80,8 +158,9 @@ impl EventHandler for PokemonGame {
 }
 
 pub struct TeamPickingGame {
+    pub finished: bool,
+    pub teams: team_picking::Team,
     assets: TeamPickingAssets,
-    teams: team_picking::Team,
     general: PokemonGame, 
     header: graphics::Text,
     pokemon_selection: bool,
@@ -90,7 +169,8 @@ pub struct TeamPickingGame {
     selected_pokemon_index: i16,
     selected_header_index: i8, 
     selected_attack_header_index: i8,
-    selected_attack_index: i16
+    selected_attack_index: i16,
+    
 }
 
 impl TeamPickingGame {
@@ -106,19 +186,18 @@ impl TeamPickingGame {
             selected_pokemon_index: 0,
             selected_header_index:  0,
             selected_attack_header_index: 0,
-            selected_attack_index: 0
+            selected_attack_index: 0, 
+            finished: false
         };
 
         tpg.header.set_font(tpg.general.assets.title_font, Scale{x: 50.0, y: 50.0});
-        let _ = tpg.assets.music.play_detached(); //TODO doesn't loop
+        let _ = tpg.assets.music.play(); //TODO doesn't loop
         tpg
     }
 }
 
 impl EventHandler for TeamPickingGame {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
-        
-
         Ok(())
     }
 
@@ -135,6 +214,9 @@ impl EventHandler for TeamPickingGame {
         Self::draw_pokemon_header(_ctx, self.teams.team[4].clone(), Point2{x:500.0, y:100.0})?;
         Self::draw_pokemon_header(_ctx, self.teams.team[5].clone(), Point2{x:600.0, y:100.0})?;
 
+        let confirm = graphics::Text::new("Confirm");
+        graphics::draw(_ctx, &confirm, graphics::DrawParam::default().dest(Point2{x:700.0, y:100.0}))?;
+
         let rect_p: Point2<f32>;
         match self.selected_header_index {
             0 => rect_p = Point2{x: 95.0, y: 95.0},
@@ -143,6 +225,7 @@ impl EventHandler for TeamPickingGame {
             3 => rect_p = Point2{x: 395.0, y: 95.0},
             4 => rect_p = Point2{x: 495.0, y: 95.0},
             5 => rect_p = Point2{x: 595.0, y: 95.0},
+            6 => rect_p = Point2{x: 695.0, y: 95.0},
             _ => rect_p = Point2{x: 0.0, y: 0.0}
         }
 
@@ -272,17 +355,29 @@ impl EventHandler for TeamPickingGame {
     fn key_down_event(&mut self, ctx: &mut Context, key: KeyCode, _keymods: KeyMods, _: bool) {
         if !self.pokemon_selection {
             match key {
-                KeyCode::Space => self.pokemon_selection = true,
-                KeyCode::Return => self.pokemon_selection = true,
+                KeyCode::Space => {
+                    if self.selected_header_index > 5 {
+                        self.finished = true;
+                    } else {
+                        self.pokemon_selection = true;
+                    }
+                },
+                KeyCode::Return => {
+                    if self.selected_header_index > 5 {
+                        self.finished = true;
+                    } else {
+                        self.pokemon_selection = true;
+                    }
+                },
                 KeyCode::Left => {
                     self.selected_header_index = self.selected_header_index - 1;
                     if self.selected_header_index < 0 {
-                        self.selected_header_index = 5;
+                        self.selected_header_index = 6;
                     }
                 },
                 KeyCode::Right => {
                     self.selected_header_index = self.selected_header_index + 1;
-                    if self.selected_header_index > 5 {
+                    if self.selected_header_index > 6 {
                         self.selected_header_index = 0;
                     }
                 },
@@ -406,6 +501,18 @@ impl TeamPickingGame {
         let name = graphics::Text::new(format!("{}", atk));
         graphics::draw(ctx, &name, DrawParam::default().dest(pos).scale(Vector2{x: 1.3, y: 1.3}))?;
         Ok(())
+    }
+
+    pub fn generate_battle_team(&mut self, ctx: &mut Context, team: [pokemon::Pokemon; 6]) -> [battle::Battlemon; 6] {
+        /*
+        let fml = []
+        for ..
+            fml [i] = new
+        fml
+        */
+
+        [battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),
+        battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),]
     }
 }
 

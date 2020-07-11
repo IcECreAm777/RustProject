@@ -284,15 +284,15 @@ impl Battle {
     }
 
     pub fn theme1(&mut self) {
-        let _ = self.assets.gen1.play_detached();
+        let _ = self.assets.gen1.play();
     }
     
     pub fn theme3(&mut self) {
-        let _ = self.assets.gen3.play_detached();
+        let _ = self.assets.gen3.play();
     }
     
     pub fn theme4(&mut self) {
-        let _ = self.assets.gen4.play_detached();
+        let _ = self.assets.gen4.play();
     }
 
     pub fn pick(&mut self) {
@@ -746,7 +746,7 @@ impl Battle {
                             if self.own_team[self.p1].stats[slot] > 6 {self.own_team[self.p1].stats[slot] = 6;}
                             let much: &str = match value {
                                 1 => "rose!",
-                                2 => "rose sharpyl!",
+                                2 => "rose sharply!",
                                 _ => "", 
                             };
                             self.text = format!("{}'s {} {}", self.own_team[self.p1].name(), stat, much);
@@ -856,7 +856,7 @@ impl Battle {
                             if self.enemy_team[self.p2].stats[slot] > 6 {self.enemy_team[self.p2].stats[slot] = 6;}
                             let much: &str = match value {
                                 1 => "rose!",
-                                2 => "rose sharpyl!",
+                                2 => "rose sharply!",
                                 _ => "", 
                             };
                             self.text = format!("Enemy {}'s {} {}", self.enemy_team[self.p2].name(), stat, much);

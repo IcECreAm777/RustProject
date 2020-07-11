@@ -28,19 +28,22 @@ impl Team {
         self.team[pindex].moves[aindex] = attack;
     } 
 
-    pub fn generate_ai_team(&mut self) {
+    pub fn generate_ai_team(&mut self, ctx: &mut Context) -> [pokemon::Pokemon; 6] {
         let mut rng = rand::thread_rng();
-        for i in 0..self.team.len() {
+        let mut team = [pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx),
+            pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx)];
+        for i in 0..team.len() {
             let pokedex = rng.gen_range(0, self.usable_moves_table.len());
-            self.team[i] = self.usable_moves_table.get_index(pokedex).unwrap().0.clone();
+            team[i] = self.usable_moves_table.get_index(pokedex).unwrap().0.clone();
             //prevent duplicates
-            while self.has_dup(&self.team[i].moves) {
-                for j in 0..self.team[i].moves.len() {
+            while self.has_dup(&team[i].moves) {
+                for j in 0..team[i].moves.len() {
                     let moves = self.usable_moves_table.get_index(pokedex).unwrap().1;
-                    self.team[i].moves[j] = moves[rng.gen_range(0, moves.len())];
+                    team[i].moves[j] = moves[rng.gen_range(0, moves.len())];
                 }
             }
         }
+        team
     } 
 
     pub fn has_dup<T: PartialEq>(&self, slice: &[T]) -> bool {

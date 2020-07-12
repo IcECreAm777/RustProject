@@ -20,14 +20,6 @@ impl Team {
         team
     }
 
-    pub fn pick_pokemon(&mut self, index: usize, pokemon: pokemon::Pokemon) {
-        self.team[index] = pokemon;
-    }
-
-    pub fn pick_attack(&mut self, pindex: usize, aindex: usize, attack: attacks::Attack) {
-        self.team[pindex].moves[aindex] = attack;
-    } 
-
     pub fn generate_ai_team(&mut self, ctx: &mut Context) -> [pokemon::Pokemon; 6] {
         let mut rng = rand::thread_rng();
         let mut team = [pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx), pokemon::dummy_pokemon(ctx),

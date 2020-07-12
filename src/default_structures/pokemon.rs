@@ -54,7 +54,7 @@ pub fn dummy_pokemon(ctx: &mut Context) -> Pokemon {
         sp_def: 10,
         init: 10,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/000 - Dummy.wav", "/sprites/dummy.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/000 - Dummy.wav", "/sprites/dummy.png", "/sprites/dummy.png").unwrap()
     }
 }
 
@@ -70,7 +70,7 @@ pub fn abra(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/063 - Abra.wav", "/sprites/63.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/063 - Abra.wav", "/sprites/63.png", "/sprites/63A.png").unwrap()
     }
 }
 
@@ -86,7 +86,7 @@ pub fn aerodactyl(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 238,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/142 - Aerodactyl.wav", "/sprites/142.png").unwrap() 
+        assets: PokemonAssets::new(ctx, "/battle_cries/142 - Aerodactyl.wav", "/sprites/142.png", "/sprites/142A.png").unwrap() 
     }
 }
 
@@ -102,7 +102,7 @@ pub fn alakazam(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 220,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/065 - Alakazam.wav", "/sprites/65.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/065 - Alakazam.wav", "/sprites/65.png", "/sprites/65A.png").unwrap()
     }
 }
 
@@ -118,7 +118,7 @@ pub fn arbok(ctx: &mut Context) -> Pokemon {
         sp_def: 146,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/024 - Arbok.wav", "/sprites/24.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/024 - Arbok.wav", "/sprites/24.png", "/sprites/24A.png").unwrap()
     }
 }
 
@@ -134,7 +134,7 @@ pub fn arcanine(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 175,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/059 - Arcanine.wav", "/sprites/59.png").unwrap() 
+        assets: PokemonAssets::new(ctx, "/battle_cries/059 - Arcanine.wav", "/sprites/59.png", "/sprites/59A.png").unwrap() 
     }
 }
 
@@ -150,7 +150,7 @@ pub fn articuno(ctx: &mut Context) -> Pokemon {
         sp_def: 229,
         init: 157,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/144 - Articuno.wav", "/sprites/144.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/144 - Articuno.wav", "/sprites/144.png", "/sprites/144A.png").unwrap()
     }
 }
 
@@ -166,7 +166,7 @@ pub fn beedrill(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 139,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/015 - Beedrill.wav", "/sprites/15.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/015 - Beedrill.wav", "/sprites/15.png", "/sprites/15A.png").unwrap()
     }
 }
 
@@ -182,7 +182,7 @@ pub fn bellsprout(ctx: &mut Context) -> Pokemon {
         sp_def: 58,
         init: 76,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/069 - Bellsprout.wav", "/sprites/69.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/069 - Bellsprout.wav", "/sprites/69.png", "/sprites/69A.png").unwrap()
     }
 }
 
@@ -198,7 +198,7 @@ pub fn blastoise(ctx: &mut Context) -> Pokemon {
         sp_def: 193,
         init: 144,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/009 - Blastoise.wav", "/sprites/9.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/009 - Blastoise.wav", "/sprites/9.png", "/sprites/9A.png").unwrap()
     }
 }
 
@@ -214,7 +214,7 @@ pub fn bulbasur(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/001 - bulbasaur.wav", "/sprites/1.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/001 - bulbasaur.wav", "/sprites/1.png", "/sprites/1A.png").unwrap()
     }
 }
 
@@ -230,7 +230,7 @@ pub fn butterfree(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/012 - Butterfree.wav", "/sprites/12.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/012 - Butterfree.wav", "/sprites/12.png", "/sprites/12A.png").unwrap()
     }
 }
 
@@ -246,7 +246,7 @@ pub fn caterpie(ctx: &mut Context) -> Pokemon {
         sp_def: 40,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/010 - Caterpie.wav", "/sprites/10.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/010 - Caterpie.wav", "/sprites/10.png", "/sprites/10A.png").unwrap()
     }
 }
 
@@ -262,7 +262,7 @@ pub fn chansey(ctx: &mut Context) -> Pokemon {
         sp_def: 193,
         init: 94,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/113 - Chansey.wav", "/sprites/113.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/113 - Chansey.wav", "/sprites/113.png", "/sprites/113A.png").unwrap()
     }
 }
 
@@ -278,7 +278,7 @@ pub fn charizard(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/006 - Charizard.wav", "/sprites/6.png").unwrap() 
+        assets: PokemonAssets::new(ctx, "/battle_cries/006 - Charizard.wav", "/sprites/6.png", "/sprites/6A.png").unwrap() 
     }
 }
 
@@ -294,7 +294,7 @@ pub fn charmander(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 121,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/004 - Charmander.wav", "/sprites/4.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/004 - Charmander.wav", "/sprites/4.png", "/sprites/4A.png").unwrap()
     }
 }
 
@@ -310,7 +310,7 @@ pub fn charmaleon(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/005 - Charmeleon.wav", "/sprites/5.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/005 - Charmeleon.wav", "/sprites/5.png", "/sprites/5A.png").unwrap()
     }
 }
 
@@ -326,7 +326,7 @@ pub fn clefable(ctx: &mut Context) -> Pokemon {
         sp_def: 166,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/036 - Clefable.wav", "/sprites/36.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/036 - Clefable.wav", "/sprites/36.png", "/sprites/36A.png").unwrap()
     }
 }
 
@@ -342,7 +342,7 @@ pub fn clefairy(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 67,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/035 - Clefairy.wav", "/sprites/35.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/035 - Clefairy.wav", "/sprites/35.png", "/sprites/35A.png").unwrap()
     }
 }
 
@@ -358,7 +358,7 @@ pub fn cloyster(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/091 - Cloyster.wav", "/sprites/91.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/091 - Cloyster.wav", "/sprites/91.png", "/sprites/91A.png").unwrap()
     }
 }
 
@@ -374,7 +374,7 @@ pub fn cubone(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 67,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/104 - Cubone.wav", "/sprites/104.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/104 - Cubone.wav", "/sprites/104.png", "/sprites/104A.png").unwrap()
     }
 }
 
@@ -390,7 +390,7 @@ pub fn dewgong(ctx: &mut Context) -> Pokemon {
         sp_def: 175,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/087 - Dewgong.wav", "/sprites/87.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/087 - Dewgong.wav", "/sprites/87.png", "/sprites/87A.png").unwrap()
     }
 }
 pub fn diglett(ctx: &mut Context) -> Pokemon {
@@ -405,7 +405,7 @@ pub fn diglett(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 175,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/050 - Diglett.wav", "/sprites/50.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/050 - Diglett.wav", "/sprites/50.png", "/sprites/50A.png").unwrap()
     }
 }
 
@@ -421,7 +421,7 @@ pub fn ditto(ctx: &mut Context) -> Pokemon {
         sp_def: 90,
         init: 90,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/132 - Ditto.wav", "/sprites/132.png").unwrap() 
+        assets: PokemonAssets::new(ctx, "/battle_cries/132 - Ditto.wav", "/sprites/132.png", "/sprites/132A.png").unwrap() 
     }
 }
 
@@ -437,7 +437,7 @@ pub fn dodrio(ctx: &mut Context) -> Pokemon {
         sp_def: 112,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/085 - Dodrio.wav", "/sprites/85.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/085 - Dodrio.wav", "/sprites/85.png", "/sprites/85A.png").unwrap()
     }
 }
 
@@ -453,7 +453,7 @@ pub fn doduo(ctx: &mut Context) -> Pokemon {
         sp_def: 67,
         init: 139,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/084 - Doduo.wav", "/sprites/84.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/084 - Doduo.wav", "/sprites/84.png", "/sprites/84A.png").unwrap()
     }
 }
 
@@ -469,7 +469,7 @@ pub fn dragonair(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/148 - Dragonair.wav", "/sprites/148.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/148 - Dragonair.wav", "/sprites/148.png", "/sprites/148A.png").unwrap()
     }
 }
 
@@ -485,7 +485,7 @@ pub fn dragonite(ctx: &mut Context) -> Pokemon {
         sp_def: 184,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/149 - Dragonite.wav", "/sprites/149.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/149 - Dragonite.wav", "/sprites/149.png", "/sprites/149A.png").unwrap()
     }
 }
 
@@ -501,7 +501,7 @@ pub fn dratini(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 94,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/147 - Dratini.wav", "/sprites/147.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/147 - Dratini.wav", "/sprites/147.png", "/sprites/147A.png").unwrap()
     }
 }
 
@@ -517,7 +517,7 @@ pub fn drowzee(ctx: &mut Context) -> Pokemon {
         sp_def: 166,
         init: 80,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/096 - Drowzee.wav", "/sprites/96.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/096 - Drowzee.wav", "/sprites/96.png", "/sprites/96A.png").unwrap()
     }
 }
 
@@ -533,7 +533,7 @@ pub fn dugtrio(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 220,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/051 - Dugtrio.wav", "/sprites/51.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/051 - Dugtrio.wav", "/sprites/51.png", "/sprites/51A.png").unwrap()
     }
 }
 
@@ -549,7 +549,7 @@ pub fn eevee(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/133 - Eevee.wav", "/sprites/133.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/133 - Eevee.wav", "/sprites/133.png", "/sprites/133A.png").unwrap()
     }
 }
 
@@ -565,7 +565,7 @@ pub fn ekans(ctx: &mut Context) -> Pokemon {
         sp_def: 101,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/023 - Ekans.wav", "/sprites/23.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/023 - Ekans.wav", "/sprites/23.png", "/sprites/23A.png").unwrap()
     }
 }
 
@@ -581,7 +581,7 @@ pub fn electabuzz(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 193,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/125 - Electabuzz.wav", "/sprites/125.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/125 - Electabuzz.wav", "/sprites/125.png", "/sprites/125A.png").unwrap()
     }
 }
 
@@ -597,7 +597,7 @@ pub fn electrode(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init:256 ,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/101 - Electrode.wav", "/sprites/101.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/101 - Electrode.wav", "/sprites/101.png", "/sprites/101A.png").unwrap()
     }
 }
 
@@ -613,7 +613,7 @@ pub fn exeggcute(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 76,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/102 - Exeggcute.wav", "/sprites/102.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/102 - Exeggcute.wav", "/sprites/102.png", "/sprites/102A.png").unwrap()
     }
 }
 
@@ -629,7 +629,7 @@ pub fn exeggcutor(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/103 - Exeggutor.wav", "/sprites/103.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/103 - Exeggutor.wav", "/sprites/103.png", "/sprites/103A.png").unwrap()
     }
 }
 
@@ -645,7 +645,7 @@ pub fn farfetch(ctx: &mut Context) -> Pokemon {
         sp_def: 116,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/083 - Farfetch'd.wav", "/sprites/83.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/083 - Farfetch'd.wav", "/sprites/83.png", "/sprites/83A.png").unwrap()
     }
 }
 
@@ -661,7 +661,7 @@ pub fn fearow(ctx: &mut Context) -> Pokemon {
         sp_def: 114,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/022 - Fearow.wav", "/sprites/22.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/022 - Fearow.wav", "/sprites/22.png", "/sprites/22A.png").unwrap()
     }
 }
 
@@ -677,7 +677,7 @@ pub fn flareon(ctx: &mut Context) -> Pokemon {
         sp_def: 202,
         init: 121,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/136 - Flareon.wav", "/sprites/136.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/136 - Flareon.wav", "/sprites/136.png", "/sprites/136A.png").unwrap()
     }
 }
 
@@ -693,7 +693,7 @@ pub fn gastly(ctx: &mut Context) -> Pokemon {
         sp_def: 67,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/092 - Gastly.wav", "/sprites/92.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/092 - Gastly.wav", "/sprites/92.png", "/sprites/92A.png").unwrap()
     }
 }
 
@@ -709,7 +709,7 @@ pub fn gengar(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 202,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/094 - Gengar.wav", "/sprites/94.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/094 - Gengar.wav", "/sprites/94.png", "/sprites/94A.png").unwrap()
     }
 }
 
@@ -725,7 +725,7 @@ pub fn geodude(ctx: &mut Context) -> Pokemon {
         sp_def: 58,
         init: 40,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/074 - Geodude.wav", "/sprites/74.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/074 - Geodude.wav", "/sprites/74.png", "/sprites/74A.png").unwrap()
     }
 }
 
@@ -741,7 +741,7 @@ pub fn gloom(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 76,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/044 - Gloom.wav", "/sprites/44.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/044 - Gloom.wav", "/sprites/44.png", "/sprites/44A.png").unwrap()
     }
 }
 
@@ -757,7 +757,7 @@ pub fn golbat(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/042 - Golbat.wav", "/sprites/42.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/042 - Golbat.wav", "/sprites/42.png", "/sprites/42A.png").unwrap()
     }
 }
 
@@ -773,7 +773,7 @@ pub fn goldeen(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 117,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/118 - Goldeen.wav", "/sprites/118.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/118 - Goldeen.wav", "/sprites/118.png", "/sprites/118A.png").unwrap()
     }
 }
 
@@ -789,7 +789,7 @@ pub fn golduck(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 157,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/055 - Golduck.wav", "/sprites/55.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/055 - Golduck.wav", "/sprites/55.png", "/sprites/55A.png").unwrap()
     }
 }
 
@@ -805,7 +805,7 @@ pub fn golem(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/076 - Golem.wav", "/sprites/76.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/076 - Golem.wav", "/sprites/76.png", "/sprites/76A.png").unwrap()
     }
 }
 
@@ -821,7 +821,7 @@ pub fn graveler(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 67,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/075 - Graveler.wav", "/sprites/75.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/075 - Graveler.wav", "/sprites/75.png", "/sprites/75A.png").unwrap()
     }
 }
 
@@ -837,7 +837,7 @@ pub fn grimer(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 49,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/088 - Grimer.wav", "/sprites/88.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/088 - Grimer.wav", "/sprites/88.png", "/sprites/88A.png").unwrap()
     }
 }
 
@@ -853,7 +853,7 @@ pub fn growlithe(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/058 - Growlithe.wav", "/sprites/58.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/058 - Growlithe.wav", "/sprites/58.png", "/sprites/58A.png").unwrap()
     }
 }
 
@@ -869,7 +869,7 @@ pub fn gyarados(ctx: &mut Context) -> Pokemon {
         sp_def: 184,
         init: 150,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/130 - Gyarados.wav", "/sprites/130.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/130 - Gyarados.wav", "/sprites/130.png", "/sprites/130A.png").unwrap()
     }
 }
 
@@ -885,7 +885,7 @@ pub fn haunter(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 175,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/093 - Haunter.wav", "/sprites/93.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/093 - Haunter.wav", "/sprites/93.png", "/sprites/93A.png").unwrap()
     }
 }
 
@@ -901,7 +901,7 @@ pub fn hitmonchan(ctx: &mut Context) -> Pokemon {
         sp_def: 202,
         init: 141,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/107 - Hitmonchan.wav", "/sprites/107.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/107 - Hitmonchan.wav", "/sprites/107.png", "/sprites/107A.png").unwrap()
     }
 }
 
@@ -917,7 +917,7 @@ pub fn hitmonlee(ctx: &mut Context) -> Pokemon {
         sp_def: 202,
         init: 161,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/106 - Hitmonlee.wav", "/sprites/106.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/106 - Hitmonlee.wav", "/sprites/106.png", "/sprites/106A.png").unwrap()
     }
 }
 
@@ -933,7 +933,7 @@ pub fn horsea(ctx: &mut Context) -> Pokemon {
         sp_def: 49,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/116 - Horsea.wav", "/sprites/116.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/116 - Horsea.wav", "/sprites/116.png", "/sprites/116A.png").unwrap()
     }
 }
 
@@ -949,7 +949,7 @@ pub fn hypno(ctx: &mut Context) -> Pokemon {
         sp_def: 211,
         init: 125,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/097 - Hypno.wav", "/sprites/97.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/097 - Hypno.wav", "/sprites/97.png", "/sprites/97A.png").unwrap()
     }
 }
 
@@ -965,7 +965,7 @@ pub fn ivysaur(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/002 - Ivysaur.wav", "/sprites/2.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/002 - Ivysaur.wav", "/sprites/2.png", "/sprites/2A.png").unwrap()
     }
 }
 
@@ -981,7 +981,7 @@ pub fn jigglypuff(ctx: &mut Context) -> Pokemon {
         sp_def: 49,
         init: 40,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/039 - Jigglypuff.wav", "/sprites/39.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/039 - Jigglypuff.wav", "/sprites/39.png", "/sprites/39A.png").unwrap()
     }
 }
 
@@ -997,7 +997,7 @@ pub fn jolteon(ctx: &mut Context) -> Pokemon {
         sp_def: 175,
         init: 238,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/135 - Jolteon.wav", "/sprites/135.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/135 - Jolteon.wav", "/sprites/135.png", "/sprites/135A.png").unwrap()
     }
 }
 
@@ -1013,7 +1013,7 @@ pub fn jynx(ctx: &mut Context) -> Pokemon {
         sp_def: 175,
         init: 175,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/124 - Jynx.wav", "/sprites/124.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/124 - Jynx.wav", "/sprites/124.png", "/sprites/124A.png").unwrap()
     }
 }
 
@@ -1029,7 +1029,7 @@ pub fn kabuto(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/140 - Kabuto.wav", "/sprites/140.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/140 - Kabuto.wav", "/sprites/140.png", "/sprites/140A.png").unwrap()
     }
 }
 
@@ -1045,7 +1045,7 @@ pub fn kabutops(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/141 - Kabutops.wav", "/sprites/141.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/141 - Kabutops.wav", "/sprites/141.png", "/sprites/141A.png").unwrap()
     }
 }
 
@@ -1061,7 +1061,7 @@ pub fn kadabra(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 193,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/064 - Kadabra.wav", "/sprites/64.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/064 - Kadabra.wav", "/sprites/64.png", "/sprites/64A.png").unwrap()
     }
 }
 
@@ -1077,7 +1077,7 @@ pub fn kakuna(ctx: &mut Context) -> Pokemon {
         sp_def: 49,
         init: 67,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/014 - Kakuna.wav", "/sprites/14.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/014 - Kakuna.wav", "/sprites/14.png", "/sprites/14A.png").unwrap()
         
     }
 }
@@ -1094,7 +1094,7 @@ pub fn kangaskhan(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/115 - Kangaskhan.wav", "/sprites/115.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/115 - Kangaskhan.wav", "/sprites/115.png", "/sprites/115A.png").unwrap()
     }
 }
 
@@ -1110,7 +1110,7 @@ pub fn kingler(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 139,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/099 - Kingler.wav", "/sprites/99.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/099 - Kingler.wav", "/sprites/99.png", "/sprites/99A.png").unwrap()
     }
 }
 
@@ -1126,7 +1126,7 @@ pub fn koffing(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 67,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/109 - Koffing.wav", "/sprites/109.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/109 - Koffing.wav", "/sprites/109.png", "/sprites/109A.png").unwrap()
     }
 }
 
@@ -1142,7 +1142,7 @@ pub fn krabby(ctx: &mut Context) -> Pokemon {
         sp_def: 49,
         init: 94,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/098 - Krabby.wav", "/sprites/98.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/098 - Krabby.wav", "/sprites/98.png", "/sprites/98A.png").unwrap()
     }
 }
 
@@ -1158,7 +1158,7 @@ pub fn lapras(ctx: &mut Context) -> Pokemon {
         sp_def: 175,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/131 - Lapras.wav", "/sprites/131.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/131 - Lapras.wav", "/sprites/131.png", "/sprites/131A.png").unwrap()
     }
 }
 
@@ -1174,7 +1174,7 @@ pub fn lickitung(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 58,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/108 - Lickitung.wav", "/sprites/108.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/108 - Lickitung.wav", "/sprites/108.png", "/sprites/108A.png").unwrap()
     }
 }
 
@@ -1190,7 +1190,7 @@ pub fn machamp(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/068 - Machamp.wav", "/sprites/68.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/068 - Machamp.wav", "/sprites/68.png", "/sprites/68A.png").unwrap()
     }
 }
 
@@ -1206,7 +1206,7 @@ pub fn machoke(ctx: &mut Context) -> Pokemon {
         sp_def: 112,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/067 - Machoke.wav", "/sprites/67.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/067 - Machoke.wav", "/sprites/67.png", "/sprites/67A.png").unwrap()
     }
 }
 
@@ -1222,7 +1222,7 @@ pub fn machop(ctx: &mut Context) -> Pokemon {
         sp_def: 67,
         init: 67,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/066 - Machop.wav", "/sprites/66.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/066 - Machop.wav", "/sprites/66.png", "/sprites/66A.png").unwrap()
     }
 }
 
@@ -1238,7 +1238,7 @@ pub fn magikarp(ctx: &mut Context) -> Pokemon {
         sp_def: 40,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/129 - Magikarp.wav", "/sprites/129.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/129 - Magikarp.wav", "/sprites/129.png", "/sprites/129A.png").unwrap()
     }
 }
 
@@ -1254,7 +1254,7 @@ pub fn magmar(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 171,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/126 - Magmar.wav", "/sprites/126.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/126 - Magmar.wav", "/sprites/126.png", "/sprites/126A.png").unwrap()
     }
 }
 
@@ -1270,7 +1270,7 @@ pub fn magnemite(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/081 - Magnemite.wav", "/sprites/81.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/081 - Magnemite.wav", "/sprites/81.png", "/sprites/81A.png").unwrap()
     }
 }
 
@@ -1286,7 +1286,7 @@ pub fn magneton(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/082 - Magneton.wav", "/sprites/82.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/082 - Magneton.wav", "/sprites/82.png", "/sprites/82A.png").unwrap()
     }
 }
 
@@ -1302,7 +1302,7 @@ pub fn mankey(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/056 - Mankey.wav", "/sprites/56.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/056 - Mankey.wav", "/sprites/56.png", "/sprites/56A.png").unwrap()
     }
 }
 
@@ -1318,7 +1318,7 @@ pub fn marowak(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/105 - Marowak.wav", "/sprites/105.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/105 - Marowak.wav", "/sprites/105.png", "/sprites/105A.png").unwrap()
     }
 }
 
@@ -1334,7 +1334,7 @@ pub fn meowth(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/052 - Meowth.wav", "/sprites/52.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/052 - Meowth.wav", "/sprites/52.png", "/sprites/52A.png").unwrap()
     }
 }
 
@@ -1350,7 +1350,7 @@ pub fn metapod(ctx: &mut Context) -> Pokemon {
         sp_def: 49,
         init: 58,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/011 - Metapod.wav", "/sprites/11.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/011 - Metapod.wav", "/sprites/11.png", "/sprites/11A.png").unwrap()
     }
 }
 
@@ -1366,7 +1366,7 @@ pub fn mew(ctx: &mut Context) -> Pokemon {
         sp_def: 184,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/151 - Mew.wav", "/sprites/151.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/151 - Mew.wav", "/sprites/151.png", "/sprites/151A.png").unwrap()
     }
 }
 
@@ -1382,7 +1382,7 @@ pub fn mewtwo(ctx: &mut Context) -> Pokemon {
         sp_def: 166,
         init: 238,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/150 - Mewtwo.wav", "/sprites/150.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/150 - Mewtwo.wav", "/sprites/150.png", "/sprites/150A.png").unwrap()
     }
 }
 
@@ -1398,7 +1398,7 @@ pub fn moltres(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/146 - Moltres.wav", "/sprites/146.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/146 - Moltres.wav", "/sprites/146.png", "/sprites/146A.png").unwrap()
     }
 }
 
@@ -1414,7 +1414,7 @@ pub fn mrmime(ctx: &mut Context) -> Pokemon {
         sp_def: 220,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/122 - Mr. Mime.wav", "/sprites/122.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/122 - Mr. Mime.wav", "/sprites/122.png", "/sprites/122A.png").unwrap()
     }
 }
 
@@ -1430,7 +1430,7 @@ pub fn muk(ctx: &mut Context) -> Pokemon {
         sp_def: 184,
         init: 94,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/089 - Muk.wav", "/sprites/89.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/089 - Muk.wav", "/sprites/89.png", "/sprites/89A.png").unwrap()
     }
 }
 
@@ -1446,7 +1446,7 @@ pub fn nidoking(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 157,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/034 - Nidoking.wav", "/sprites/34.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/034 - Nidoking.wav", "/sprites/34.png", "/sprites/34A.png").unwrap()
     }
 }
 
@@ -1462,7 +1462,7 @@ pub fn nidoqueen(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 141,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/031 - Nidoqueen.wav", "/sprites/31.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/031 - Nidoqueen.wav", "/sprites/31.png", "/sprites/31A.png").unwrap()
     }
 }
 
@@ -1478,7 +1478,7 @@ pub fn nidoranf(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 78,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/029 - Nidoran (Female).wav", "/sprites/29.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/029 - Nidoran (Female).wav", "/sprites/29.png", "/sprites/29A.png").unwrap()
     }
 }
 
@@ -1494,7 +1494,7 @@ pub fn nidoranm(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 94,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/032 - Nidoran (Male).wav", "/sprites/32.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/032 - Nidoran (Male).wav", "/sprites/32.png", "/sprites/32A.png").unwrap()
     }
 }
 
@@ -1510,7 +1510,7 @@ pub fn nidorina(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 105,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/030 - Nidorina.wav", "/sprites/30.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/030 - Nidorina.wav", "/sprites/30.png", "/sprites/30A.png").unwrap()
     }
 }
 
@@ -1526,7 +1526,7 @@ pub fn nidorino(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 121,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/033 - Nidorino.wav", "/sprites/33.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/033 - Nidorino.wav", "/sprites/33.png", "/sprites/33A.png").unwrap()
     }
 }
 
@@ -1542,7 +1542,7 @@ pub fn ninetales(ctx: &mut Context) -> Pokemon {
         sp_def: 184,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/038 - Ninetales.wav", "/sprites/38.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/038 - Ninetales.wav", "/sprites/38.png", "/sprites/38A.png").unwrap()
     }
 }
 
@@ -1558,7 +1558,7 @@ pub fn oddish(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 58,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/043 - Oddish.wav", "/sprites/43.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/043 - Oddish.wav", "/sprites/43.png", "/sprites/43A.png").unwrap()
     }
 }
 
@@ -1574,7 +1574,7 @@ pub fn omanyte(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 67,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/138 - Omanyte.wav", "/sprites/138.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/138 - Omanyte.wav", "/sprites/138.png", "/sprites/138A.png").unwrap()
     }
 }
 
@@ -1590,7 +1590,7 @@ pub fn omastar(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/139 - Omastar.wav", "/sprites/139.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/139 - Omastar.wav", "/sprites/139.png", "/sprites/139A.png").unwrap()
     }
 }
 
@@ -1606,7 +1606,7 @@ pub fn onix(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/095 - Onix.wav", "/sprites/95.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/095 - Onix.wav", "/sprites/95.png", "/sprites/95A.png").unwrap()
 
     }
 }
@@ -1623,7 +1623,7 @@ pub fn paras(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 49,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/046 - Paras.wav", "/sprites/46.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/046 - Paras.wav", "/sprites/46.png", "/sprites/46A.png").unwrap()
     }
 }
 
@@ -1639,7 +1639,7 @@ pub fn parasect(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 58,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/047 - Parasect.wav", "/sprites/47.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/047 - Parasect.wav", "/sprites/47.png", "/sprites/47A.png").unwrap()
     }
 }
 
@@ -1655,7 +1655,7 @@ pub fn persian(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 211,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/053 - Persian.wav", "/sprites/53.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/053 - Persian.wav", "/sprites/53.png", "/sprites/53A.png").unwrap()
     }
 }
 
@@ -1671,7 +1671,7 @@ pub fn pidgeot(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 168,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/018 - Pidgeot.wav", "/sprites/18.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/018 - Pidgeot.wav", "/sprites/18.png", "/sprites/18A.png").unwrap()
     }
 }
 
@@ -1687,7 +1687,7 @@ pub fn pidgeotto(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 132,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/017 - Pidgeotto.wav", "/sprites/17.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/017 - Pidgeotto.wav", "/sprites/17.png", "/sprites/17A.png").unwrap()
     }
 }
 
@@ -1703,7 +1703,7 @@ pub fn pidgey(ctx: &mut Context) -> Pokemon {
         sp_def: 67,
         init: 105,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/016 - Pidgey.wav", "/sprites/16.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/016 - Pidgey.wav", "/sprites/16.png", "/sprites/16A.png").unwrap()
     }
 }
 
@@ -1719,7 +1719,7 @@ pub fn pikachu(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/025 - Pikachu.wav", "/sprites/25.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/025 - Pikachu.wav", "/sprites/25.png", "/sprites/25A.png").unwrap()
     }
 }
 
@@ -1735,7 +1735,7 @@ pub fn pinsir(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 157,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/127 - Pinsir.wav", "/sprites/127.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/127 - Pinsir.wav", "/sprites/127.png", "/sprites/127A.png").unwrap()
     }
 }
 
@@ -1751,7 +1751,7 @@ pub fn poliwag(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/060 - Poliwag.wav", "/sprites/60.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/060 - Poliwag.wav", "/sprites/60.png", "/sprites/60A.png").unwrap()
     }
 }
 
@@ -1767,7 +1767,7 @@ pub fn poliwhirl(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/061 - Poliwhirl.wav", "/sprites/61.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/061 - Poliwhirl.wav", "/sprites/61.png", "/sprites/61A.png").unwrap()
     }
 }
 
@@ -1783,7 +1783,7 @@ pub fn poliwrath(ctx: &mut Context) -> Pokemon {
         sp_def: 166,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/062 - Poliwrath.wav", "/sprites/62.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/062 - Poliwrath.wav", "/sprites/62.png", "/sprites/62A.png").unwrap()
     }
 }
 
@@ -1799,7 +1799,7 @@ pub fn ponyta(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/077 - Ponyta.wav", "/sprites/77.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/077 - Ponyta.wav", "/sprites/77.png", "/sprites/77A.png").unwrap()
     }
 }
 
@@ -1815,7 +1815,7 @@ pub fn porygon(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 76,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/137 - Porygon.wav", "/sprites/137.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/137 - Porygon.wav", "/sprites/137.png", "/sprites/137A.png").unwrap()
 
     }
 }
@@ -1832,7 +1832,7 @@ pub fn primeape(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 175,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/057 - Primeape.wav", "/sprites/57.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/057 - Primeape.wav", "/sprites/57.png", "/sprites/57A.png").unwrap()
     }
 }
 
@@ -1848,7 +1848,7 @@ pub fn psyduck(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/054 - Psyduck.wav", "/sprites/54.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/054 - Psyduck.wav", "/sprites/54.png", "/sprites/54A.png").unwrap()
     }
 }
 
@@ -1864,7 +1864,7 @@ pub fn raichu(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/026 - Raichu.wav", "/sprites/26.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/026 - Raichu.wav", "/sprites/26.png", "/sprites/26A.png").unwrap()
     }
 }
 
@@ -1880,7 +1880,7 @@ pub fn rapidash(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 193,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/078 - Rapidash.wav", "/sprites/78.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/078 - Rapidash.wav", "/sprites/78.png", "/sprites/78A.png").unwrap()
     }
 }
 
@@ -1896,7 +1896,7 @@ pub fn raticate(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 179,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/020 - raticate.wav", "/sprites/20.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/020 - raticate.wav", "/sprites/20.png", "/sprites/20A.png").unwrap()
     }
 }
 
@@ -1912,7 +1912,7 @@ pub fn rattata(ctx: &mut Context) -> Pokemon {
         sp_def: 67,
         init: 134,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/019 - Rattata.wav", "/sprites/19.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/019 - Rattata.wav", "/sprites/19.png", "/sprites/19A.png").unwrap()
     }
 }
 
@@ -1928,7 +1928,7 @@ pub fn rhydon(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 76,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/112 - Rhydon.wav", "/sprites/112.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/112 - Rhydon.wav", "/sprites/112.png", "/sprites/112A.png").unwrap()
     }
 }
 
@@ -1944,7 +1944,7 @@ pub fn rhyhorn(ctx: &mut Context) -> Pokemon {
         sp_def: 58,
         init: 49,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/111 - Rhyhorn.wav", "/sprites/111.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/111 - Rhyhorn.wav", "/sprites/111.png", "/sprites/111A.png").unwrap()
     }
 }
 
@@ -1960,7 +1960,7 @@ pub fn sandshrew(ctx: &mut Context) -> Pokemon {
         sp_def: 58,
         init: 76,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/027 - Sandshrew.wav", "/sprites/27.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/027 - Sandshrew.wav", "/sprites/27.png", "/sprites/27A.png").unwrap()
     }
 }
 
@@ -1976,7 +1976,7 @@ pub fn sandslash(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 121,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/028 - Sandslash.wav", "/sprites/28.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/028 - Sandslash.wav", "/sprites/28.png", "/sprites/28A.png").unwrap()
     }
 }
 
@@ -1992,7 +1992,7 @@ pub fn scyther(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 193,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/123 - Scyther.wav", "/sprites/123.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/123 - Scyther.wav", "/sprites/123.png", "/sprites/123A.png").unwrap()
     }
 }
 
@@ -2008,7 +2008,7 @@ pub fn seadra(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 157,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/117 - Seadra.wav", "/sprites/117.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/117 - Seadra.wav", "/sprites/117.png", "/sprites/117A.png").unwrap()
     }
 }
 
@@ -2024,7 +2024,7 @@ pub fn seaking(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 126,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/119 - Seaking.wav", "/sprites/119.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/119 - Seaking.wav", "/sprites/119.png", "/sprites/119A.png").unwrap()
     }
 }
 
@@ -2040,7 +2040,7 @@ pub fn seel(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/086 - Seel.wav", "/sprites/86.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/086 - Seel.wav", "/sprites/86.png", "/sprites/86A.png").unwrap()
     }
 }
 
@@ -2056,7 +2056,7 @@ pub fn shellder(ctx: &mut Context) -> Pokemon {
         sp_def: 49,
         init: 76,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/090 - Shellder.wav", "/sprites/90.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/090 - Shellder.wav", "/sprites/90.png", "/sprites/90A.png").unwrap()
     }
 }
 
@@ -2072,7 +2072,7 @@ pub fn slowbro(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 58,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/080 - Slowbro.wav", "/sprites/80.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/080 - Slowbro.wav", "/sprites/80.png", "/sprites/80A.png").unwrap()
     }
 }
 
@@ -2088,7 +2088,7 @@ pub fn slowpoke(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 31,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/079 - Slowpoke.wav", "/sprites/79.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/079 - Slowpoke.wav", "/sprites/79.png", "/sprites/79A.png").unwrap()
     }
 }
 
@@ -2104,7 +2104,7 @@ pub fn snorlax(ctx: &mut Context) -> Pokemon {
         sp_def: 202,
         init: 58,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/143 - Snorlax.wav", "/sprites/143.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/143 - Snorlax.wav", "/sprites/143.png", "/sprites/143A.png").unwrap()
     }
 }
 
@@ -2120,7 +2120,7 @@ pub fn spearow(ctx: &mut Context) -> Pokemon {
         sp_def: 60,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/021 - Spearow.wav", "/sprites/21.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/021 - Spearow.wav", "/sprites/21.png", "/sprites/21A.png").unwrap()
     }
 }
 
@@ -2136,7 +2136,7 @@ pub fn squirtle(ctx: &mut Context) -> Pokemon {
         sp_def: 119,
         init: 81,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/007 - Squirtle.wav", "/sprites/7.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/007 - Squirtle.wav", "/sprites/7.png", "/sprites/7A.png").unwrap()
     }
 }
 
@@ -2152,7 +2152,7 @@ pub fn starmie(ctx: &mut Context) -> Pokemon {
         sp_def: 157,
         init: 211,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/121 - Starmie.wav", "/sprites/121.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/121 - Starmie.wav", "/sprites/121.png", "/sprites/121A.png").unwrap()
     }
 }
 
@@ -2168,7 +2168,7 @@ pub fn staryu(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 157,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/120 - Staryu.wav", "/sprites/120.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/120 - Staryu.wav", "/sprites/120.png", "/sprites/120A.png").unwrap()
     }
 }
 
@@ -2184,7 +2184,7 @@ pub fn tangela(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/114 - Tangela.wav", "/sprites/114.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/114 - Tangela.wav", "/sprites/114.png", "/sprites/114A.png").unwrap()
     }
 }
 
@@ -2200,7 +2200,7 @@ pub fn tauros(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 202,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/128 - Tauros.wav", "/sprites/128.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/128 - Tauros.wav", "/sprites/128.png", "/sprites/128A.png").unwrap()
     }
 }
 
@@ -2216,7 +2216,7 @@ pub fn tentacool(ctx: &mut Context) -> Pokemon {
         sp_def: 184,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/072 - Tentacool.wav", "/sprites/72.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/072 - Tentacool.wav", "/sprites/72.png", "/sprites/72A.png").unwrap()
     }
 }
 
@@ -2232,7 +2232,7 @@ pub fn tentacruel(ctx: &mut Context) -> Pokemon {
         sp_def: 220,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/073 - Tentacruel.wav", "/sprites/73.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/073 - Tentacruel.wav", "/sprites/73.png", "/sprites/73A.png").unwrap()
     }
 }
 
@@ -2248,7 +2248,7 @@ pub fn vaporeon(ctx: &mut Context) -> Pokemon {
         sp_def: 175,
         init: 121,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/134 - Vaporeon.wav", "/sprites/134.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/134 - Vaporeon.wav", "/sprites/134.png", "/sprites/134A.png").unwrap()
     }
 }
 
@@ -2264,7 +2264,7 @@ pub fn venomoth(ctx: &mut Context) -> Pokemon {
         sp_def: 139,
         init: 166,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/049 - Venomoth.wav", "/sprites/49.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/049 - Venomoth.wav", "/sprites/49.png", "/sprites/49A.png").unwrap()
     }
 }
 
@@ -2280,7 +2280,7 @@ pub fn venonat(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/048 - Venonat.wav", "/sprites/48.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/048 - Venonat.wav", "/sprites/48.png", "/sprites/48A.png").unwrap()
     }
 }
 
@@ -2296,7 +2296,7 @@ pub fn venusaur(ctx: &mut Context) -> Pokemon {
         sp_def: 184,
         init: 148,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/003 - Venusaur.wav", "/sprites/3.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/003 - Venusaur.wav", "/sprites/3.png", "/sprites/3A.png").unwrap()
     }
 }
 
@@ -2312,7 +2312,7 @@ pub fn victreebel(ctx: &mut Context) -> Pokemon {
         sp_def: 112,
         init: 130,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/071 - Victreebel.wav", "/sprites/71.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/071 - Victreebel.wav", "/sprites/71.png", "/sprites/71A.png").unwrap()
     }
 }
 
@@ -2328,7 +2328,7 @@ pub fn vileplume(ctx: &mut Context) -> Pokemon {
         sp_def: 166,
         init: 94,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/045 - Vileplume.wav", "/sprites/45.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/045 - Vileplume.wav", "/sprites/45.png", "/sprites/45A.png").unwrap()
     }
 }
 
@@ -2344,7 +2344,7 @@ pub fn voltorb(ctx: &mut Context) -> Pokemon {
         sp_def: 103,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/100 - Voltorb.wav", "/sprites/100.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/100 - Voltorb.wav", "/sprites/100.png", "/sprites/100A.png").unwrap()
     }
 }
 
@@ -2360,7 +2360,7 @@ pub fn vulpix(ctx: &mut Context) -> Pokemon {
         sp_def: 121,
         init: 121,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/037 - Vulpix.wav", "/sprites/37.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/037 - Vulpix.wav", "/sprites/37.png", "/sprites/37A.png").unwrap()
     }
 }
 
@@ -2376,7 +2376,7 @@ pub fn wartortle(ctx: &mut Context) -> Pokemon {
         sp_def: 148,
         init: 108,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/008 - Wartortle.wav", "/sprites/8.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/008 - Wartortle.wav", "/sprites/8.png", "/sprites/8A.png").unwrap()
     }
 }
 
@@ -2392,7 +2392,7 @@ pub fn weedle(ctx: &mut Context) -> Pokemon {
         sp_def: 40,
         init: 94,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/013 - Weedle.wav", "/sprites/13.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/013 - Weedle.wav", "/sprites/13.png", "/sprites/13A.png").unwrap()
     }
 }
 
@@ -2408,7 +2408,7 @@ pub fn weepinbell(ctx: &mut Context) -> Pokemon {
         sp_def: 85,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/070 - Weepinbell.wav", "/sprites/70.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/070 - Weepinbell.wav", "/sprites/70.png", "/sprites/70A.png").unwrap()
     }
 }
 
@@ -2424,7 +2424,7 @@ pub fn weezing(ctx: &mut Context) -> Pokemon {
         sp_def: 130,
         init: 112,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/110 - Weezing.wav", "/sprites/110.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/110 - Weezing.wav", "/sprites/110.png", "/sprites/110A.png").unwrap()
     }
 }
 
@@ -2440,7 +2440,7 @@ pub fn wigglytuff(ctx: &mut Context) -> Pokemon {
         sp_def: 94,
         init: 85,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/040 - Wigglytuff.wav", "/sprites/40.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/040 - Wigglytuff.wav", "/sprites/40.png", "/sprites/40A.png").unwrap()
     }
 }
 
@@ -2456,7 +2456,7 @@ pub fn zapdos(ctx: &mut Context) -> Pokemon {
         sp_def: 166,
         init: 184,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/145 - Zapdos.wav", "/sprites/145.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/145 - Zapdos.wav", "/sprites/145.png", "/sprites/145A.png").unwrap()
     }
 }
 
@@ -2472,6 +2472,6 @@ pub fn zubat(ctx: &mut Context) -> Pokemon {
         sp_def: 76,
         init: 103,
         moves: [attacks::dummy(); 4],
-        assets: PokemonAssets::new(ctx, "/battle_cries/041 - Zubat.wav", "/sprites/41.png").unwrap()
+        assets: PokemonAssets::new(ctx, "/battle_cries/041 - Zubat.wav", "/sprites/41.png", "/sprites/41A.png").unwrap()
     }
 }

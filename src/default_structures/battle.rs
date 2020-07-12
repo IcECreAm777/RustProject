@@ -242,6 +242,8 @@ pub struct Battle {
     pub e2: attacks::Effect,
     pub e3: attacks::Effect,
     pub e4: attacks::Effect,
+    pub finished: bool,
+    pub won: bool,
 }
 
 impl Battle {
@@ -295,6 +297,8 @@ impl Battle {
             e2: attacks::Effect::None,
             e3: attacks::Effect::None,
             e4: attacks::Effect::None,
+            finished: false,
+            won: false,
         }
     }
 

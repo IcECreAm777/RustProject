@@ -14,11 +14,25 @@ pub struct Game {
     team: TeamPickingGame,
     battle: battle::Battle,
     picking: bool,
-    fight: bool
+    fight: bool,
+    cycle: bool,
 }
 
 impl EventHandler for Game {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
+
+        if self.cycle {
+            self.team = TeamPickingGame::new(ctx);
+            self.battle = battle::Battle::new(
+                [battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),
+                battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),], 
+        [battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),
+                battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),], ctx
+            );
+            self.picking = true;
+            self.fight = false;
+            self.cycle = false;
+        }
 
         if self.picking {
             self.picking = !self.team.finished;
@@ -38,7 +52,10 @@ impl EventHandler for Game {
                 self.battle.init_cries(ctx);
                 self.fight = true;
             } else {
-                self.battle.update(ctx).unwrap()
+                self.battle.update(ctx).unwrap();
+                if self.battle.finished {
+                    self.cycle = true;
+                }
             }
         }
         
@@ -78,7 +95,8 @@ impl Game {
             team, 
             battle, 
             picking: true,
-            fight: false
+            fight: false,
+            cycle: false,
         })
     }
 }
@@ -510,7 +528,7 @@ impl TeamPickingGame {
 }
 
 impl EventHandler for battle::Battle {
-    fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
+    fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
         if self.timer == 0 {
             match self.state {
                 battle::State::Pre => {
@@ -653,7 +671,7 @@ impl EventHandler for battle::Battle {
                     self.text = "What will you do?".to_string();
                     self.textcount = 0;
                 }
-
+                // TODO: add effect unchecker after dying
                 battle::State::SelfReplace => {
                     if self.own_team[self.p1].died {
                         self.own_team[self.p1].died = false;
@@ -664,11 +682,11 @@ impl EventHandler for battle::Battle {
                     else {
                         let mut done: bool = true;
                         for i in self.own_team.iter() {
-                             if i.current_health != 0 {done = false; break;}
+                             if i.current_health != 0 && i.name() != "Dummy" {done = false; break;}
                         }
-                        self.state = if done {battle::State::Fin} else {battle::State::SelfReplace};
-                        if done {event::quit(ctx);}
-                        if self.own_team[self.p1].current_health != 0 {self.state = self.ret_state();}
+                        //self.state = if done {battle::State::Fin} else {battle::State::SelfReplace};
+                        if done {self.state = battle::State::Fin; self.won = false;}
+                        else {if self.own_team[self.p1].current_health != 0 {self.state = self.ret_state();}}
                     }
                 },
                 battle::State::EnemyReplace => {
@@ -683,10 +701,38 @@ impl EventHandler for battle::Battle {
                         for i in self.enemy_team.iter() {
                             if i.current_health != 0 {done = false; break;}
                         }
-                        self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
-                        if !done {self.enemy_swap(); self.state = self.ret_state();} else {event::quit(ctx);}
+                        //self.state = if done {battle::State::Fin} else {battle::State::EnemyReplace};
+                        if done {self.state = battle::State::Fin; self.won = true;}
+                        else {self.enemy_swap(); self.state = self.ret_state();}
                     }
-                }
+                },
+
+                battle::State::Fin => {
+                    let theme = match self.theme {
+                        1 => self.assets.gen1.stopped(),
+                        3 => self.assets.gen3.stopped(),
+                        4 => self.assets.gen4.stopped(),
+                        _ => true,
+                    };
+                    if theme {self.finished = true;}
+                    else {
+                        match self.theme {
+                            1 => self.assets.gen1.stop(),
+                            3 => self.assets.gen3.stop(),
+                            4 => self.assets.gen4.stop(),
+                            _ => {},
+                        };
+                        self.timer = 300;
+                        if self.won {
+                            self.text = "Congratulations, you've won!".to_string();
+                            //play victory sound
+                        }
+                        else { 
+                            self.text = "Bruh, that's kinda cringe".to_string();
+                        }
+                        self.textcount = 0;
+                    }
+                },
                 _ => {},
             };
             self.textcount += if self.textcount < self.text.len() {1} else {0};
@@ -777,7 +823,7 @@ impl EventHandler for battle::Battle {
             let fract: f32 = (90.0-(self.own_team[self.p1].offset*3) as f32)/90.0;
             let rect = graphics::Rect::new(0.0,0.0,1.0,fract);
             self.own_team[self.p1].offset();
-            graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.front_sprite, graphics::DrawParam::default().src(rect).scale(Point2{x:4.0,y:4.0}).dest(Point2{x:30.0,y:200.0+8.5*(self.own_team[self.p1].offset as f32)}))?;
+            graphics::draw(ctx, &self.own_team[self.p1].pokemon.assets.back_sprite, graphics::DrawParam::default().src(rect).scale(Point2{x:4.0,y:4.0}).dest(Point2{x:30.0,y:200.0+8.5*(self.own_team[self.p1].offset as f32)}))?;
             match self.own_team[self.p1].status {
                 attacks::Status::Burn => graphics::draw(ctx, &self.assets.brn, graphics::DrawParam::default().dest(Point2{x:230.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
                 attacks::Status::Freeze(_val) => graphics::draw(ctx, &self.assets.frz, graphics::DrawParam::default().dest(Point2{x:230.0,y:10.0}).scale(Point2{x:0.5,y:0.5}))?,
@@ -959,17 +1005,20 @@ impl EventHandler for battle::Battle {
 #[derive(Clone)]
 pub struct PokemonAssets {
     pub battle_cry: audio::SoundData,
-    pub front_sprite: graphics::Image
+    pub front_sprite: graphics::Image,
+    pub back_sprite: graphics::Image,
 }
 
 impl PokemonAssets {
-    pub fn new(ctx: &mut Context, cry: &'static str, sprite: &'static str) -> GameResult<PokemonAssets> {
+    pub fn new(ctx: &mut Context, cry: &'static str, sprite: &'static str, sprite2: &'static str) -> GameResult<PokemonAssets> {
         let battle_cry = audio::SoundData::new(ctx, cry)?;
         let front_sprite = graphics::Image::new(ctx, sprite)?;
+        let back_sprite = graphics::Image::new(ctx, sprite2)?;
 
         Ok(PokemonAssets {
             battle_cry,
-            front_sprite
+            front_sprite,
+            back_sprite,
         })
     }
 }

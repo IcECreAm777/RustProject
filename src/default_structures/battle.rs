@@ -26,8 +26,11 @@ pub struct BattleAssets {
     pub slp: graphics::Image,
     pub psn: graphics::Image,
     pub gen1: audio::Source,
+    pub gen1win: audio::Source,
     pub gen3: audio::Source,
+    pub gen3win: audio::Source,
     pub gen4: audio::Source,
+    pub gen4win: audio::Source,
     pub select: audio::Source,
     pub pick: audio::Source,
     pub denied: audio::Source,
@@ -57,12 +60,18 @@ impl BattleAssets {
         let mut gen1 = audio::Source::new(ctx, "/sounds/gen1.wav").unwrap();
         gen1.set_volume(0.1);
         gen1.set_repeat(true);
+        let mut gen1win = audio::Source::new(ctx, "/sounds/gen1win.wav").unwrap();
+        gen1win.set_volume(0.1);
         let mut gen3 = audio::Source::new(ctx, "/sounds/gen3.wav").unwrap();
         gen3.set_volume(0.1);
         gen3.set_repeat(true);
+        let mut gen3win = audio::Source::new(ctx, "/sounds/gen3win.wav").unwrap();
+        gen3win.set_volume(0.1);
         let mut gen4 = audio::Source::new(ctx, "/sounds/gen4.wav").unwrap();
         gen4.set_volume(0.1);
         gen4.set_repeat(true);
+        let mut gen4win = audio::Source::new(ctx, "/sounds/gen4win.wav").unwrap();
+        gen4win.set_volume(0.1);
         let mut select = audio::Source::new(ctx, "/sounds/select.wav").unwrap();
         select.set_volume(0.1);
         let mut pick = audio::Source::new(ctx, "/sounds/pick.wav").unwrap();
@@ -99,8 +108,11 @@ impl BattleAssets {
             slp: slp.unwrap(),
             psn: psn.unwrap(),
             gen1: gen1,
+            gen1win: gen1win,
             gen3: gen3,
+            gen3win: gen3win,
             gen4: gen4,
+            gen4win: gen4win,
             select: select,
             pick: pick,
             denied: denied,
@@ -335,12 +347,24 @@ impl Battle {
         let _ = self.assets.gen1.play();
     }
     
+    pub fn win1(&mut self) {
+        let _ = self.assets.gen1win.play();
+    }
+
     pub fn theme3(&mut self) {
         let _ = self.assets.gen3.play();
     }
     
+    pub fn win3(&mut self) {
+        let _ = self.assets.gen3win.play();
+    }
+
     pub fn theme4(&mut self) {
         let _ = self.assets.gen4.play();
+    }
+
+    pub fn win4(&mut self) {
+        let _ = self.assets.gen4win.play();
     }
 
     pub fn pick(&mut self) {
@@ -489,7 +513,10 @@ impl Battle {
                 _ => {},
             };
             //for now: just default attack, no differentiation yet
-            self.dmg_attack(atk, target);
+            match atk.atype {
+                attacks::AttackType::Status => self.status_attack(atk, target),
+                _ => self.dmg_attack(atk, target), 
+            };
         }
         else {
             if self.enemy_team[self.p2].flinch {
@@ -523,8 +550,34 @@ impl Battle {
                 _ => {},
             };
             //for now: just default attack, no differentiation yet
-            self.dmg_attack(atk, target);
+            match atk.atype {
+                attacks::AttackType::Status => self.status_attack(atk, target),
+                _ => self.dmg_attack(atk, target), 
+            };
         }
+    }
+
+    pub fn status_attack(&mut self, atk: attacks::Attack, target: bool) {
+        let user = !target;
+        let miss = rand::thread_rng().gen_range(0,101);
+
+        if user {
+            if miss <= atk.acc {self.set_effects(&atk, user);}
+            self.text = format!("{} used {}!", self.own_team[self.p1].name(), atk.name());
+            if miss > atk.acc {
+                self.text.push_str(" It missed!");
+            }
+            self.textcount = 0;
+        }
+        else {
+            if miss <= atk.acc {self.set_effects(&atk, user);}
+            self.text = format!("Enemy {} used {}!", self.enemy_team[self.p2].name(), atk.name());
+            if miss > atk.acc {
+                self.text.push_str(" It missed!");
+            }
+            self.textcount = 0;
+        }
+        self.timer = 90;
     }
 
     pub fn numerator(&mut self, user: bool, slot: usize) -> i32 {
@@ -624,7 +677,7 @@ impl Battle {
             self.user = true;
             self.set_effects(&atk, user);
         }}
-        // TODO: move set_effects into below here and add checks for conditions depending on misses OR apply certain effects either way before dmg calc
+
         if user {
             self.text = format!("{} used {}!", self.own_team[self.p1].name(), atk.name);
             match (_mult*4.0) as u8 {
@@ -962,6 +1015,34 @@ impl Battle {
         }
     }
 
+    pub fn clear_effects(&mut self, user: bool) {
+        if user {
+            match self.e3 {
+                attacks::Effect::Flinch10 | attacks::Effect::Flinch33 => self.e3 = attacks::Effect::None,
+                attacks::Effect::StatusChange1(_, val, _) => if val < 0 {self.e3 = attacks::Effect::None;}
+                _ => {},
+            };
+            match self.e4 {
+                attacks::Effect::Flinch10 | attacks::Effect::Flinch33 => self.e4 = attacks::Effect::None,
+                attacks::Effect::StatusChange1(_, val, _) => if val < 0 {self.e4 = attacks::Effect::None;}
+                _ => {},
+            }
+        }
+
+        else {
+            match self.e1 {
+                attacks::Effect::Flinch10 | attacks::Effect::Flinch33 => self.e1 = attacks::Effect::None,
+                attacks::Effect::StatusChange1(_, val, _) => if val < 0 {self.e1 = attacks::Effect::None;}
+                _ => {},
+            };
+            match self.e2 {
+                attacks::Effect::Flinch10 | attacks::Effect::Flinch33 => self.e2 = attacks::Effect::None,
+                attacks::Effect::StatusChange1(_, val, _) => if val < 0 {self.e2 = attacks::Effect::None;}
+                _ => {},
+            };
+        }
+    }
+
     // basic swap
     pub fn swap(&mut self, slot: usize, which: bool) {
         if which {
@@ -1010,6 +1091,12 @@ impl Battle {
         }
         self.enemy_sent = false;
         self.swap(slot, false);
+    }
+
+    pub fn enemy_action(&mut self) {
+        let random = rand::thread_rng().gen_range(0,4);
+        self.a2 = Action::Attack(self.enemy_team[self.p2].pokemon.moves[random]);
+        // gotta make that more elaborate probably
     }
 
     pub fn stat_eff(&mut self, who: bool) {

@@ -22,6 +22,13 @@ impl EventHandler for Game {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
 
         if self.cycle {
+            let theme = self.battle.theme;
+            match theme {
+                1 => self.stop1(),
+                3 => self.stop3(),
+                4 => self.stop4(),
+                _ => {},
+            };
             self.team = TeamPickingGame::new(ctx);
             self.battle = battle::Battle::new(
                 [battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),battle::Battlemon::dummy(ctx),
@@ -98,6 +105,18 @@ impl Game {
             fight: false,
             cycle: false,
         })
+    }
+
+    pub fn stop1(&mut self) {
+        self.battle.assets.gen1win.stop();
+    }
+
+    pub fn stop3(&mut self) {
+        self.battle.assets.gen3win.stop();
+    }
+
+    pub fn stop4(&mut self) {
+        self.battle.assets.gen4win.stop();
     }
 }
 
@@ -587,7 +606,9 @@ impl EventHandler for battle::Battle {
                         self.state = self.prio();
                         self.timer = 30;
                     }
-                    self.a2 = battle::Action::Attack(self.enemy_team[self.p2].pokemon.moves[1]);
+                    if self.a2 == battle::Action::Picking {
+                        self.enemy_action();
+                    }
                 },
 
                 battle::State::PickAtk => {if self.a1 != battle::Action::Picking {self.state = battle::State::Picking; self.text = "".to_string();}},
@@ -725,7 +746,12 @@ impl EventHandler for battle::Battle {
                         self.timer = 300;
                         if self.won {
                             self.text = "Congratulations, you've won!".to_string();
-                            //play victory sound
+                            match self.theme {
+                                1 => self.win1(),
+                                3 => self.win3(),
+                                4 => self.win4(),
+                                _ => {},
+                            };
                         }
                         else { 
                             self.text = "Bruh, that's kinda cringe".to_string();
@@ -750,6 +776,7 @@ impl EventHandler for battle::Battle {
                         self.dmg = 1;
                         self.text = format!("{} fainted!", self.own_team[self.p1].name());
                         self.textcount = 0;
+                        self.clear_effects(true);
                         self.state = battle::State::SelfReplace;
                         self.a1 = battle::Action::Picking;
                     }
@@ -777,6 +804,7 @@ impl EventHandler for battle::Battle {
                         self.dmg = 1;
                         self.text = format!("Enemy {} fainted!", self.enemy_team[self.p2].name());
                         self.textcount = 0;
+                        self.clear_effects(false);
                         self.state = battle::State::EnemyReplace;
                         self.a2 = battle::Action::Picking;
                     }

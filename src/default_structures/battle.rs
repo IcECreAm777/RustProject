@@ -15,6 +15,7 @@ pub enum Action {
 }
 
 pub struct BattleAssets {
+    pub bg1: graphics::Image,
     pub healthbar: graphics::Image,
     pub healthbar2: graphics::Image,
     pub ball: graphics::Image,
@@ -47,6 +48,7 @@ pub struct BattleAssets {
 
 impl BattleAssets {
     fn new(ctx: &mut Context) -> BattleAssets {
+        let bg1 = graphics::Image::new(ctx, "/bg1.png");
         let health = graphics::Image::new(ctx, "/healthbar.png");
         let health2 = graphics::Image::new(ctx, "/healthbar2.png");
         let ball = graphics::Image::new(ctx, "/ball.png");
@@ -97,6 +99,7 @@ impl BattleAssets {
         let mut absorb = audio::Source::new(ctx, "/sounds/absorb.wav").unwrap();
         absorb.set_volume(0.25);
         BattleAssets{
+            bg1: bg1.unwrap(),
             healthbar: health.unwrap(),
             healthbar2: health2.unwrap(),
             ball: ball.unwrap(),

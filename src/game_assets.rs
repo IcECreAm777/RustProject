@@ -834,7 +834,7 @@ impl EventHandler for battle::Battle {
     
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
-
+        graphics::draw(ctx, &self.assets.bg1, graphics::DrawParam::default().scale(Point2{x:1.2,y:1.2}))?;
         graphics::draw(ctx, &self.assets.healthbar, graphics::DrawParam::default().dest(Point2{x:0.0,y:0.0}))?;
         graphics::draw(ctx, &self.assets.healthbar2, graphics::DrawParam::default().dest(Point2{x:500.0,y:0.0}))?;
         graphics::draw(ctx, &self.assets.botbox, graphics::DrawParam::default().dest(Point2{x:0.0,y:500.0}))?;

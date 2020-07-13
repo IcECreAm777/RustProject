@@ -292,7 +292,7 @@ impl Battle {
             p1: 0,
             p2: 0,
             a1: Action::Picking,
-            a2: Action::Swap(2),
+            a2: Action::Picking,
             text: "".to_string(),
             textcount: 0,
             state: State::Pre,

@@ -692,7 +692,7 @@ impl EventHandler for battle::Battle {
                     self.text = "What will you do?".to_string();
                     self.textcount = 0;
                 }
-                // TODO: add effect unchecker after dying
+
                 battle::State::SelfReplace => {
                     if self.own_team[self.p1].died {
                         self.own_team[self.p1].died = false;
@@ -705,11 +705,11 @@ impl EventHandler for battle::Battle {
                         for i in self.own_team.iter() {
                              if i.current_health != 0 && i.name() != "Dummy" {done = false; break;}
                         }
-                        //self.state = if done {battle::State::Fin} else {battle::State::SelfReplace};
                         if done {self.state = battle::State::Fin; self.won = false;}
                         else {if self.own_team[self.p1].current_health != 0 {self.state = self.ret_state();}}
                     }
                 },
+                
                 battle::State::EnemyReplace => {
                     if self.enemy_team[self.p2].died {
                         self.enemy_team[self.p2].died = false;
@@ -892,8 +892,8 @@ impl EventHandler for battle::Battle {
                     if self.own_team[self.p1].pokemon.moves[i as usize] == attacks::dummy() {
                         continue;
                     }
-                    let color: graphics::Color = if i != self.selected {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
-                    let atki = graphics::Text::new(self.own_team[self.p1].pokemon.moves[i as usize].name());
+                    let color: graphics::Color = graphics::BLACK;
+                    let atki = graphics::Text::new(format!("{}: {}",i+1,self.own_team[self.p1].pokemon.moves[i as usize].name()));
                     graphics::draw(ctx, &atki, graphics::DrawParam::default().scale(Point2{x:1.25,y:1.25}).dest(Point2{x: x,y: y}).color(color))?;
                     match i {
                         0 => x += 250.0,
@@ -911,10 +911,15 @@ impl EventHandler for battle::Battle {
                 graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().scale(Point2{x:0.5,y:0.5}).dest(Point2{x:5.0+(self.selected%3)as f32*300.0,y:y-3.0+(self.selected/3) as f32*50.0}))?;
                 for i in 0..6 {
                     if self.own_team[i as usize].name() == "Dummy" {
+                        match i {
+                            0 | 1 => x += 300.0,
+                            2 => {x -= 600.0; y += 50.0;}
+                            _ => x += 300.0,
+                        }
                         continue;
                     }
                     let color: graphics::Color = if i != self.p1 {graphics::BLACK} else {graphics::Color::new(1.0,0.0,0.0,1.0)};
-                    let poki = graphics::Text::new(format!("{} {}/{}",self.own_team[i as usize].name(), self.own_team[i as usize].current_health, self.own_team[i as usize].pokemon.health));
+                    let poki = graphics::Text::new(format!("{}: {} {}/{}",i+1,self.own_team[i as usize].name(), self.own_team[i as usize].current_health, self.own_team[i as usize].pokemon.health));
                     graphics::draw(ctx, &poki, graphics::DrawParam::default().scale(Point2{x:1.1,y:1.1}).dest(Point2{x: x,y: y}).color(color))?;
                     match i {
                         0 | 1 => x += 300.0,
@@ -932,8 +937,8 @@ impl EventHandler for battle::Battle {
                 if self.textcount == self.text.len() {
                     graphics::draw(ctx, &self.assets.indic, graphics::DrawParam::default().dest(Point2{x:460.0 + (self.selected as f32 *150.0),y:530.0}))?;
                     graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:25.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
-                    graphics::draw(ctx, &graphics::Text::new("Attack"), graphics::DrawParam::default().dest(Point2{x:500.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
-                    graphics::draw(ctx, &graphics::Text::new("Switch"), graphics::DrawParam::default().dest(Point2{x:650.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
+                    graphics::draw(ctx, &graphics::Text::new("1: Attack"), graphics::DrawParam::default().dest(Point2{x:500.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
+                    graphics::draw(ctx, &graphics::Text::new("2: Switch"), graphics::DrawParam::default().dest(Point2{x:650.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;
                 }
                 else {
                     graphics::draw(ctx, &info, graphics::DrawParam::default().dest(Point2{x:25.0,y:540.0}).scale(Point2{x:1.75,y:1.75}).color(graphics::BLACK))?;

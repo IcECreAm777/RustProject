@@ -504,7 +504,7 @@ impl Battle {
                     return;
                 }
                 attacks::Status::Paralysis => {
-                    if rand::thread_rng().gen_range(0,100) <= 25 {
+                    if rand::thread_rng().gen_range(1,101) <= 25 {
                         self.text = format!("{} is paralysed and could not move!", self.own_team[self.p1].name());
                         self.textcount = 0;
                         self.timer = 90;
@@ -541,7 +541,7 @@ impl Battle {
                     return;
                 }
                 attacks::Status::Paralysis => {
-                    if rand::thread_rng().gen_range(0,100) <= 25 {
+                    if rand::thread_rng().gen_range(1,101) <= 25 {
                         self.text = format!("Enemy {} is paralysed and could not move!", self.enemy_team[self.p2].name());
                         self.textcount = 0;
                         self.timer = 90;
@@ -550,7 +550,7 @@ impl Battle {
                 },
                 _ => {},
             };
-            //for now: just default attack, no differentiation yet
+
             match atk.atype {
                 attacks::AttackType::Status => self.status_attack(atk, target),
                 _ => self.dmg_attack(atk, target), 
@@ -560,7 +560,7 @@ impl Battle {
 
     pub fn status_attack(&mut self, atk: attacks::Attack, target: bool) {
         let user = !target;
-        let miss = rand::thread_rng().gen_range(0,101);
+        let miss = rand::thread_rng().gen_range(1,101);
 
         if user {
             if miss <= atk.acc {self.set_effects(&atk, user);}
@@ -728,11 +728,11 @@ impl Battle {
         if user {
             let to_set1 = match atk.effect_1 {
                 attacks::Effect::Status(status, val) => 
-                    if rand::thread_rng().gen_range(0,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
                     attacks::Effect::Flinch10 => 
-                    if rand::thread_rng().gen_range(0,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
                 attacks::Effect::Flinch33 => 
-                    if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
                 attacks::Effect::Recoil(_) => attacks::Effect::Recoil(self.dmg/4),
                 attacks::Effect::Absorb(_) => attacks::Effect::Absorb(self.dmg/2),
                 attacks::Effect::StatusChange1(slot, value, chance) => {
@@ -744,11 +744,11 @@ impl Battle {
             self.e1 = to_set1;
             let to_set2 = match atk.effect_2 {
                 attacks::Effect::Status(status, val) => 
-                    if rand::thread_rng().gen_range(0,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
                     attacks::Effect::Flinch10 => 
-                    if rand::thread_rng().gen_range(0,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
                 attacks::Effect::Flinch33 => 
-                    if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
                 attacks::Effect::StatusChange1(slot, value, chance) => {
                     if rand::thread_rng().gen_range(1,101) <= chance {attacks::Effect::StatusChange1(slot, value, chance)}
                     else {attacks::Effect::None}
@@ -762,11 +762,11 @@ impl Battle {
         else {
             let to_set1 = match atk.effect_1 {
                 attacks::Effect::Status(status, val) => 
-                    if rand::thread_rng().gen_range(0,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
                     attacks::Effect::Flinch10 => 
-                    if rand::thread_rng().gen_range(0,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
                 attacks::Effect::Flinch33 => 
-                    if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
                 attacks::Effect::StatusChange1(slot, value, chance) => {
                     if rand::thread_rng().gen_range(1,101) <= chance {attacks::Effect::StatusChange1(slot, value, chance)}
                     else {attacks::Effect::None}
@@ -778,11 +778,11 @@ impl Battle {
             self.e3 = to_set1;
             let to_set2 = match atk.effect_2 {
                 attacks::Effect::Status(status, val) => 
-                    if rand::thread_rng().gen_range(0,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= val {attacks::Effect::Status(status, val)} else {attacks::Effect::None},
                     attacks::Effect::Flinch10 => 
-                    if rand::thread_rng().gen_range(0,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 10 {attacks::Effect::Flinch10} else {attacks::Effect::None},
                 attacks::Effect::Flinch33 => 
-                    if rand::thread_rng().gen_range(0,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
+                    if rand::thread_rng().gen_range(1,101) <= 33 {attacks::Effect::Flinch33} else {attacks::Effect::None},
                 attacks::Effect::StatusChange1(slot, value, chance) => {
                     if rand::thread_rng().gen_range(1,101) <= chance {attacks::Effect::StatusChange1(slot, value, chance)}
                     else {attacks::Effect::None}
@@ -898,7 +898,7 @@ impl Battle {
                 attacks::Effect::Absorb(val) => {
                     self.user = true;
                     self.dmg = -val;
-                    self.text = format!("{} absorbed health from enemy {}!", self.own_team[self.p1].name(), self.enemy_team[self.p2].name());
+                    self.text = format!("{} absorbed health from its enemy!", self.own_team[self.p1].name());
                     self.textcount = 0;
                     self.absorb();
                     self.timer = val as u32 + 120;
@@ -1011,7 +1011,7 @@ impl Battle {
                 attacks::Effect::Absorb(val) => {
                     self.user = false;
                     self.dmg = -val;
-                    self.text = format!("Enemy {} absorbed health from {}!", self.enemy_team[self.p2].name(), self.own_team[self.p1].name());
+                    self.text = format!("Enemy {} absorbed health from your pokemon!", self.enemy_team[self.p2].name());
                     self.textcount = 0;
                     self.absorb();
                     self.timer = val as u32 + 120;

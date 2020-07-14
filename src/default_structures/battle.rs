@@ -1,5 +1,4 @@
 use crate::default_structures::{pokemon, attacks, Type, self};
-//use crate::game_assets::PokemonAssets;
 use rand::prelude::*;
 use ggez::Context;
 use ggez::graphics;
@@ -472,7 +471,6 @@ impl Battle {
         (if self.own_team[self.p1].status == attacks::Status::Paralysis {0.5} else {1.0}) >= 
         (self.numerator(false,5)*self.enemy_team[self.p2].pokemon.init/ self.denominator(false,5)) as f32 *
         (if self.enemy_team[self.p2].status == attacks::Status::Paralysis {0.5} else {1.0})
-        // TODO: implement check for paralysis -> if so init - 75% or 50% (gen 7/8 orso)
     }
 
     // function to find out what action needs to be performed next
@@ -486,7 +484,7 @@ impl Battle {
     pub fn atk_init(&mut self, atk: attacks::Attack, target: bool) {
         if !target {
             if self.own_team[self.p1].flinch {
-                self.text = format!("{} flinched", self.own_team[self.p1].name());
+                self.text = format!("{} flinched!", self.own_team[self.p1].name());
                 self.textcount = 0;
                 self.timer = 90;
                 return;
@@ -494,20 +492,20 @@ impl Battle {
             
             match self.own_team[self.p1].status {
                 attacks::Status::Sleep(_val) => {
-                    self.text = format!("{} is fast asleep", self.own_team[self.p1].name());
+                    self.text = format!("{} is fast asleep!", self.own_team[self.p1].name());
                     self.textcount = 0;
                     self.timer = 90;
                     return;
                 },
                 attacks::Status::Freeze(_val) => {
-                    self.text = format!("{} is frozen solid", self.own_team[self.p1].name());
+                    self.text = format!("{} is frozen solid!", self.own_team[self.p1].name());
                     self.textcount = 0;
                     self.timer = 90;
                     return;
                 }
                 attacks::Status::Paralysis => {
                     if rand::thread_rng().gen_range(0,100) <= 25 {
-                        self.text = format!("{} is paralysed and could not move", self.own_team[self.p1].name());
+                        self.text = format!("{} is paralysed and could not move!", self.own_team[self.p1].name());
                         self.textcount = 0;
                         self.timer = 90;
                         return;
@@ -523,7 +521,7 @@ impl Battle {
         }
         else {
             if self.enemy_team[self.p2].flinch {
-                self.text = format!("Enemy {} flinched", self.enemy_team[self.p2].name());
+                self.text = format!("Enemy {} flinched!", self.enemy_team[self.p2].name());
                 self.textcount = 0;
                 self.timer = 90;
                 return;
@@ -531,20 +529,20 @@ impl Battle {
             
             match self.enemy_team[self.p2].status {
                 attacks::Status::Sleep(_val) => {
-                    self.text = format!("Enemy {} is fast asleep", self.enemy_team[self.p2].name());
+                    self.text = format!("Enemy {} is fast asleep!", self.enemy_team[self.p2].name());
                     self.textcount = 0;
                     self.timer = 90;
                     return;
                 },
                 attacks::Status::Freeze(_val) => {
-                    self.text = format!("Enemy {} is frozen solid", self.enemy_team[self.p2].name());
+                    self.text = format!("Enemy {} is frozen solid!", self.enemy_team[self.p2].name());
                     self.textcount = 0;
                     self.timer = 90;
                     return;
                 }
                 attacks::Status::Paralysis => {
                     if rand::thread_rng().gen_range(0,100) <= 25 {
-                        self.text = format!("Enemy {} is paralysed and could not move", self.enemy_team[self.p2].name());
+                        self.text = format!("Enemy {} is paralysed and could not move!", self.enemy_team[self.p2].name());
                         self.textcount = 0;
                         self.timer = 90;
                         return;
@@ -642,6 +640,7 @@ impl Battle {
         let user = !(target);
         let mut _mult: f32 = 5.0;
         let miss = rand::thread_rng().gen_range(1,101);
+        let crit = rand::thread_rng().gen_range(1,10001) <= 625;
         if user && miss <= atk.acc {
             _mult = effective(&atk.etype, &self.enemy_team[self.p2].pokemon.ftype)*effective(&atk.etype, &self.enemy_team[self.p2].pokemon.stype);
             let brt: f32= if self.own_team[self.p1].status == attacks::Status::Burn && atk.atype == attacks::AttackType::Physical {2.0} else {1.0};
@@ -656,7 +655,8 @@ impl Battle {
                                         brt+2.0};
             let stab: f32 = stab(&atk.etype, &self.own_team[self.p1].pokemon);
             let z = rand::thread_rng().gen_range(85,101) as f32;
-            let damage: f32 = basic*_mult*stab*(z/100.0); //TODO: Crit
+            let mut damage: f32 = basic*_mult*stab*(z/100.0);
+            if crit {damage = damage*2.0;}
             self.dmg = damage as i32;
             self.user = false;
             self.set_effects(&atk, user);
@@ -675,7 +675,8 @@ impl Battle {
                                     brt+2.0};
             let stab: f32 = stab(&atk.etype, &self.enemy_team[self.p2].pokemon);
             let z = rand::thread_rng().gen_range(85,101) as f32;
-            let damage: f32 = basic*_mult*stab*(z/100.0); //TODO: Crit
+            let mut damage: f32 = basic*_mult*stab*(z/100.0);
+            if crit {damage = damage*2.0;}
             self.dmg = damage as i32;
             self.user = true;
             self.set_effects(&atk, user);
@@ -686,15 +687,15 @@ impl Battle {
             match (_mult*4.0) as u8 {
                 4 => self.normal(),
                 2 | 1 => {
-                    self.text.push_str(" It is not very effective");
+                    self.text.push_str(" It is not very effective!");
                     self.weak();
                 },
                 8 | 16 => {
-                    self.text.push_str(" It is very effective");
+                    self.text.push_str(" It is very effective!");
                     self.strong();
                 },
-                0 => self.text.push_str(" It has no effect"),
-                20 => self.text.push_str(" It missed"),
+                0 => self.text.push_str(" It has no effect!"),
+                20 => self.text.push_str(" It missed!"),
                 _ => {}
             }; 
             self.textcount = 0;
@@ -704,18 +705,21 @@ impl Battle {
             match (_mult*4.0) as u8 {
                 4 => self.normal(),
                 2 | 1 => {
-                    self.text.push_str(" It is not very effective");
+                    self.text.push_str(" It is not very effective!");
                     self.weak();
                 },
                 8 | 16 => {
-                    self.text.push_str(" It is very effective");
+                    self.text.push_str(" It is very effective!");
                     self.strong();
                 },
-                0 => self.text.push_str(" It has no effect"),
-                20 => self.text.push_str(" It missed"),
+                0 => self.text.push_str(" It has no effect!"),
+                20 => self.text.push_str(" It missed!"),
                 _ => {}
-            }; 
+            };
             self.textcount = 0;
+        }
+        if crit && _mult != 0.0 {
+            self.text.push_str("A critical hit!");
         }
         self.timer = self.dmg as u32 + 90;
     }
@@ -858,7 +862,6 @@ impl Battle {
                             self.up();
                         } 
                         else {
-                            //self.own_team[self.p1].stats[slot] = 6;
                             self.text = format!("{}'s {} won't go any higher!", self.own_team[self.p1].name(), stat);
                             self.textcount = 0;
                         }
@@ -869,7 +872,7 @@ impl Battle {
                             if self.enemy_team[self.p2].stats[slot] < -6 {self.enemy_team[self.p2].stats[slot] = -6;}
                             let much: &str = match value {
                                 -1 => "fell!",
-                                -2 => "harshly fell",
+                                -2 => "harshly fell!",
                                 _ => "",
                             };
                             self.text = format!("Enemy {}'s {} {}", self.enemy_team[self.p2].name(), stat, much);
@@ -887,7 +890,7 @@ impl Battle {
                 attacks::Effect::Recoil(val) => {
                     self.user = true;
                     self.dmg = val;
-                    self.text = format!("{} was hit by recoil", self.own_team[self.p1].name());
+                    self.text = format!("{} was hit by recoil!", self.own_team[self.p1].name());
                     self.textcount = 0;
                     self.timer = val as u32 + 90;
                 },
@@ -895,7 +898,7 @@ impl Battle {
                 attacks::Effect::Absorb(val) => {
                     self.user = true;
                     self.dmg = -val;
-                    self.text = format!("{} absorbed health from enemy {}", self.own_team[self.p1].name(), self.enemy_team[self.p2].name());
+                    self.text = format!("{} absorbed health from enemy {}!", self.own_team[self.p1].name(), self.enemy_team[self.p2].name());
                     self.textcount = 0;
                     self.absorb();
                     self.timer = val as u32 + 120;
@@ -981,7 +984,7 @@ impl Battle {
                             if self.own_team[self.p1].stats[slot] < -6 {self.own_team[self.p1].stats[slot] = -6;}
                             let much: &str = match value {
                                 -1 => "fell!",
-                                -2 => "harshly fell",
+                                -2 => "harshly fell!",
                                 _ => "",
                             };
                             self.text = format!("{}'s {} {}", self.own_team[self.p1].name(), stat, much);
@@ -1000,7 +1003,7 @@ impl Battle {
                 attacks::Effect::Recoil(val) => {
                     self.user = false;
                     self.dmg = val;
-                    self.text = format!("Enemy {} was hit by recoil", self.enemy_team[self.p2].name());
+                    self.text = format!("Enemy {} was hit by recoil!", self.enemy_team[self.p2].name());
                     self.textcount = 0;
                     self.timer = val as u32 + 90;
                 },
@@ -1008,7 +1011,7 @@ impl Battle {
                 attacks::Effect::Absorb(val) => {
                     self.user = false;
                     self.dmg = -val;
-                    self.text = format!("Enemy {} absorbed health from {}", self.enemy_team[self.p2].name(), self.own_team[self.p1].name());
+                    self.text = format!("Enemy {} absorbed health from {}!", self.enemy_team[self.p2].name(), self.own_team[self.p1].name());
                     self.textcount = 0;
                     self.absorb();
                     self.timer = val as u32 + 120;
@@ -1062,13 +1065,13 @@ impl Battle {
         self.timer = 120;
         if which {
             self.own_sent = true;
-            self.text = format!("You sent out {}", self.own_team[slot].name());
+            self.text = format!("You sent out {}!", self.own_team[slot].name());
             self.textcount = 0;
             let _ = self.own_sounds[self.p1].play();
         }
         else {
             self.enemy_sent = true;
-            self.text = format!("Opponent sent out {}", self.enemy_team[slot].name());
+            self.text = format!("Opponent sent out {}!", self.enemy_team[slot].name());
             self.textcount = 0;
             let _ = self.enemy_sounds[self.p2].play();
         }
@@ -1108,7 +1111,7 @@ impl Battle {
                 attacks::Status::Burn | attacks::Status::Poison => {
                     self.user = true;
                     self.dmg = (self.own_team[self.p1].pokemon.health/16) as i32;    // maybe change poison to 1/8 like in gen2+
-                    self.text = format!("{} took {} damage", self.own_team[self.p1].name(), self.own_team[self.p1].status.name());
+                    self.text = format!("{} took {} damage!", self.own_team[self.p1].name(), self.own_team[self.p1].status.name());
                     self.textcount = 0;
                     self.timer = self.dmg as u32 + 90;
                 },
@@ -1120,7 +1123,7 @@ impl Battle {
                     }
                     else {
                         self.own_team[self.p1].status = attacks::Status::Sleep(val-1);
-                        self.text = format!("{} is still asleep", self.own_team[self.p1].name());
+                        self.text = format!("{} is still asleep!", self.own_team[self.p1].name());
                         self.textcount = 0;
                     }
                     self.timer = 60;
@@ -1133,7 +1136,7 @@ impl Battle {
                     }
                     else {
                         self.own_team[self.p1].status = attacks::Status::Freeze(val-1);
-                        self.text = format!("{} is still frozen", self.own_team[self.p1].name());
+                        self.text = format!("{} is still frozen!", self.own_team[self.p1].name());
                         self.textcount = 0;
                     }
                     self.timer = 60;
@@ -1146,7 +1149,7 @@ impl Battle {
                 attacks::Status::Burn | attacks::Status::Poison => {
                     self.user = false;
                     self.dmg = (self.enemy_team[self.p2].pokemon.health/16) as i32;  // maybe change poison to 1/8 like in gen2+
-                    self.text = format!("Enemy {} took {} damage", self.enemy_team[self.p2].name(), self.enemy_team[self.p2].status.name());
+                    self.text = format!("Enemy {} took {} damage!", self.enemy_team[self.p2].name(), self.enemy_team[self.p2].status.name());
                     self.textcount = 0;
                     self.timer = self.dmg as u32 + 90;
                 },
@@ -1158,7 +1161,7 @@ impl Battle {
                     }
                     else {
                         self.enemy_team[self.p2].status = attacks::Status::Sleep(val-1);
-                        self.text = format!("Enemy {} is still asleep", self.enemy_team[self.p2].name());
+                        self.text = format!("Enemy {} is still asleep!", self.enemy_team[self.p2].name());
                         self.textcount = 0;
                     }
                     self.timer = 60;
@@ -1171,7 +1174,7 @@ impl Battle {
                     }
                     else {
                         self.enemy_team[self.p2].status = attacks::Status::Freeze(val-1);
-                        self.text = format!("Enemy {} is still frozen", self.enemy_team[self.p2].name());
+                        self.text = format!("Enemy {} is still frozen!", self.enemy_team[self.p2].name());
                         self.textcount = 0;
                     }
                     self.timer = 60;
@@ -1180,17 +1183,6 @@ impl Battle {
             };
         }
     }
-/*
-            match attack.effect_1 {
-                attacks::Effect::Flinch10 => if rand::thread_rng().gen_range(0,100) <= 10 {target.flinch = true}, //randomness einbauen
-                attacks::Effect::Flinch33 => if rand::thread_rng().gen_range(0,100) <= 33 {target.flinch = true},
-                attacks::Effect::Absorb => if user.current_health + done/2 >= user.pokemon.health {user.current_health = user.pokemon.health;}
-                                           else {user.current_health += done/2;},
-                attacks::Effect::Recoil => if user.current_health - done/4 <= 0 {user.current_health = 0;}
-                                           else {user.current_health -= done/4;},
-                _ => {},
-            };
-            */
 }
 
 pub fn stab(atk_type: &Type, pok: &pokemon::Pokemon) -> f32 {
